@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--head-->
+<head>
+{{template "head" .Title}}
+</head>
+<!--/head-->
+
+<body>
+	<!--header-->
+	<header id="header">
+	{{template "login_header"}}
+	</header>
+	<!--/header-->
+	<section>
+	 <br>
+	 <br>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-1">
+					<div class="login-form"><!--login form-->
+						<h2>Login</h2>
+						<form action="/login" autocomplete="off" method="POST">
+							<input type="text" placeholder="Username" name="username" />
+							<input type="password" placeholder="Password" name="password"/>
+							<a href="https://www.w3schools.com">Reset Password</a> 
+							{{if .LoginError}}
+							<br>
+							<p style="color:red">{{.LoginError}}</p>
+							{{end}}
+							<button type="submit" class="btn btn-default">Login</button>
+						</form>
+					</div><!--/login form-->
+				</div>
+				<div class="col-sm-1">
+					<h2 class="or">OR</h2>
+				</div>
+				<div class="col-sm-4">
+					<div class="signup-form"><!--sign up form-->
+						<h2>Register</h2>
+						<form action="/register" autocomplete="off" method="POST">
+							<input type="text" placeholder="Username" name="username"/>
+							<input type="password" placeholder="Password" name="password"/>
+							<input type="email" placeholder="Email (For Change The Password; <optional>)" name="email"/>
+							{{if not .RegisterError}}
+							<br>
+							{{end}}
+							{{if .RegisterError}}
+							<p style="color:red">{{.RegisterError}}</p>
+							{{end}}
+							<button type="submit" class="btn btn-default">Register</button>
+						</form>
+					</div><!--/sign up form-->
+				</div>
+			</div>
+		</div>
+	</section>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+	<!--Footer-->
+	<footer id="footer">
+	{{template "footer"}}	
+	</footer>
+	<!--/Footer-->
+
+	<!--javascript-->
+	{{template "js"}}
+	<!--/javascript-->
+</body>
+</html>

@@ -1,0 +1,11 @@
+-- remove net/http (status codes)
+-- add wishlist (favorites)
+-- add forume model
+-- add blog model
+-- encrypt data form user to client
+-- secure database (is a good thing that each table has time information???)
+-- delete keys from source code
+-- fix authenticate function
+-- clean model fields don't composition from BaseModel like a cow
+-- if Ddos is happening block range of their ip
+-- check out session key in route file (middleware)
