@@ -9,3 +9,5 @@
 -- clean model fields don't composition from BaseModel like a cow
 -- if Ddos is happening block range of their ip
 -- check out session key in route file (middleware)
+-- remove constansts.Routes if is useless
+-- optimize model_function.GetCategoryByOrderingProductsCount function

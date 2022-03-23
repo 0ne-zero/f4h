@@ -13,8 +13,8 @@ func main() {
 
 	}
 	err = database.MigrateModels(db)
-	database.CreateTestData(db)
-	//database.CreateEssentialData(db)
+	//database.CreateTestData(db)
+	// database.CreateEssentialData(db)
 	// var user models.User
 	// db.Debug().Preload("Votes").Preload("Comments").Preload("Activity").Preload("Addresses").Preload("Polls").Preload("Products").Preload("Carts").Preload("WalletInfos").Preload("WalletInfos").Preload("Orders").Preload("Roles").First(&user)
 	// s, _ := models.IsExists(db, &user)

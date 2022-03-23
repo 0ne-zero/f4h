@@ -23,6 +23,8 @@ func MakeRoute() *gin.Engine {
 
 	// Too many request
 	r.Use(middleware.TooManyRequest())
+	// Not found
+	r.NoRoute(middleware.NotFound())
 
 	// // Use session
 	session_key := "secret"
@@ -35,19 +37,21 @@ func MakeRoute() *gin.Engine {
 	store.Options(sessions.Options{MaxAge: 0})
 	r.Use(sessions.Sessions("authentication", store))
 
+	// Public routes
+	r.GET("/login", controllers.Login_GET)
+	r.POST("/login", controllers.Login_POST)
+	r.POST("/register", controllers.Register_POST)
+
 	// Public authorized
 	authorized := r.Group("/")
 	authorized.Use(middleware.Authentication())
 	{
 		// Public authorized routes
 		authorized.GET("/", controllers.Index)
+		authorized.GET("/products/*category", controllers.ProductList)
 		authorized.GET("/productDetails/:id", controllers.ProductDetails)
 	}
-
-	// Public routes
-	r.GET("/login", controllers.Login_GET)
-	r.POST("/login", controllers.Login_POST)
-	r.POST("/register", controllers.Register_POST)
+	constansts.Routes = r.Routes()
 
 	return r
 }

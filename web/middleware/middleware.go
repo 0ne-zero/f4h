@@ -27,10 +27,16 @@ func Authentication() gin.HandlerFunc {
 		}
 	}
 }
-
+func NotFound() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		view_data := make(map[string]interface{})
+		view_data["Title"] = "Not Found"
+		view_data["Error"] = "This Page not Found"
+		c.HTML(http.StatusNotFound, "error.html", view_data)
+	}
+}
 func TooManyRequest() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
 		client_ip := c.ClientIP()
 		url := c.Request.URL.Path
 		method := c.Request.Method
@@ -48,5 +54,4 @@ func TooManyRequest() gin.HandlerFunc {
 			model_function.Add(&model.Request{IP: client_ip, Url: url, Method: method, Time: time.Now().UTC()})
 		}
 	}
-
 }

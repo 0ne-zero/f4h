@@ -73,6 +73,7 @@ func CreateEssentialData(db *gorm.DB) {
 		order_statuses []model.OrderStatus
 		categories     []model.Product_Category
 		roles          []model.Role
+		products       []model.Product
 	)
 	user = []model.User{
 		{Username: "Unknown", Email: "Unknown", PasswordHash: "Unknown", IsSeller: false},
@@ -87,13 +88,21 @@ func CreateEssentialData(db *gorm.DB) {
 	}
 
 	categories = []model.Product_Category{
-		{Name: "Art", Description: "Selling Arts"},
+		{Name: "Art", Description: "Selling Arts", SubCategories: []model.Product_Category{{Name: "Music", UserID: 1, Description: "msuics"}, {Name: "Theater", Description: "Theater"}}},
 		{Name: "Drugs", Description: "Selling Drugs"},
-		{Name: "Cannabis", Description: "Selling Cannabis", ParentCategoryID: 2},
+		{Name: "Cannabis", Description: "Selling Cannabis"},
 		{Name: "Dissociative", Description: "Selling Dissociative"},
 		{Name: "Ecstasy", Description: "Selling Ecstasy"},
 		{Name: "Opioid", Description: "Selling Opioids"},
 	}
+	products = []model.Product{
+		{Name: "xx", Price: 234, UserID: 1, Description: "ssdf", Inventory: 434324},
+		{Name: "xx11111", Price: 234, UserID: 1, Description: "ssdf", Inventory: 43},
+	}
+	products[1].Categories = append(products[1].Categories, &categories[0])
+	products[0].Categories = append(products[0].Categories, &categories[0])
+	products[0].Categories = append(products[0].Categories, &categories[2])
+	products[0].Categories = append(products[0].Categories, &categories[3])
 	roles = []model.Role{
 		{Name: "Member", Description: "Member users"},
 		{Name: "Maintainer", Description: "Maintainers users"},
@@ -102,12 +111,13 @@ func CreateEssentialData(db *gorm.DB) {
 	db.Create(&user)
 	db.Create(&order_statuses)
 	db.Create(&categories)
+	db.Create(&products)
 	db.Create(&roles)
 }
 func CreateTestData(db *gorm.DB) {
 	// user
 	// role
-	db.Create(&model.User{Username: "x", Email: "x", PasswordHash: "x", IsSeller: false, Roles: []*model.Role{{Name: "xxxxx", Description: "xssxx"}, {Name: "xxssssssssxxx", Description: "xssxssssssx"}}})
+	db.Create(&model.User{Username: "admin", Email: "admin@gmail.com", PasswordHash: "x", IsSeller: false, Roles: []*model.Role{{Name: "xxxx", Description: "xssxx"}, {Name: "xxssssssssxxx", Description: ""}}})
 	// activity
 	utc_now_time := time.Now().UTC()
 	db.Create(&model.Activity{LastLoginAt: &utc_now_time, LastBuyAt: nil, LastChatAt: nil, LastChangePasswordAt: nil, UserID: 1})
@@ -115,7 +125,7 @@ func CreateTestData(db *gorm.DB) {
 	// inventory
 	// tag
 	// image path
-	db.Create(&model.Product{Name: "product", Description: "xxx", Price: 1111, UserID: 1, Categories: []*model.Product_Category{{Name: "XXXX", Description: "xxxx"}, {Name: "XXxxxxXX", Description: "xxxxxxx"}}, Tags: []*model.Product_Tag{{Name: "sssssssssssss", Description: "ssssssssssss"}, {Name: "sssss", Description: "sssss"}}, Inventory: 21232223, Images: []*model.Product_Image{{Path: "xsfsdfsadfd"}}})
+	db.Create(&model.Product{Name: "drug", Description: "x", Price: 114325, UserID: 1, Categories: []*model.Product_Category{{Name: "XXXX", Description: "xxxx"}, {Name: "XXxxxxXX", Description: "xxxxxxx"}}, Tags: []*model.Product_Tag{{Name: "sssssssssssss", Description: "ssssssssssss"}, {Name: "sssss", Description: "sssss"}}, Inventory: 21232223, Images: []*model.Product_Image{{Path: "xsfsdfsadfd"}}})
 	// address
 	db.Create(&model.Address{Name: "ssasdgss", Country: "ssss", City: "sdfasdfd", Street: "sasdgs", BuildingNumber: "sdfasdf", PostalCode: "sfaffas", Description: "sadfsdds", UserID: 1})
 	db.Create(&model.Address{Name: "ssgsgsasss", Country: "ssdfsdfxcxcvbdfshsdfgsadfsss", City: "sasdfasdfasdfasdfd", Street: "sasdfsdsafasfdsafaasdgs", BuildingNumber: "sadsfsafsadfasdf", PostalCode: "ssadfasdffaffas", Description: "sadfsssadsadfasffdds", UserID: 1})

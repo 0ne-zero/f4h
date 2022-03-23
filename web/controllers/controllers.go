@@ -1,10 +1,13 @@
 package controllers
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
@@ -17,77 +20,6 @@ import (
 
 // Main Directory (direcotry of executable file)
 var MainDirectory = filepath.Dir(os.Args[0])
-
-func Index(c *gin.Context) {
-	// c.Abort()
-	// return
-	products := []model.Product{}
-	// Get products
-	err := model_function.Get(&products, 15, "created_at", "desc")
-	if err != nil {
-		log.Log(logrus.Error, err)
-		view_data := make(map[string]interface{})
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Something bad happened. Come back later"
-		c.HTML(http.StatusInternalServerError, "error.html", view_data)
-
-	}
-	categories := []model.Product_Category{}
-	// Get category
-	err = model_function.Get(&categories, -1, "created_at", "desc")
-	if err != nil {
-		log.Log(logrus.Error, err)
-		view_data := make(map[string]interface{})
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Something bad happened. Come back later"
-		c.HTML(http.StatusInternalServerError, "error.html", view_data)
-	}
-	// Everything is ok
-	view_data := make(map[string]interface{})
-	view_data["Title"] = "Index"
-	view_data["categories"] = categories
-	view_data["products"] = products
-	c.HTML(http.StatusOK, "index.html", view_data)
-}
-
-func ProductDetails(c *gin.Context) {
-	// String product id
-	str_id := c.Param("id")
-	// check str_id is Empty
-	if str_id == "" {
-		view_data := make(map[string]interface{})
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Go and select product again."
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
-		return
-	}
-	// Integer product id
-	int_id, err := strconv.ParseUint(str_id, 10, 64)
-	// Parse check
-	if err != nil {
-		view_data := make(map[string]interface{})
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Go and select product again."
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
-		return
-	}
-	var product model.Product
-	err = model_function.GetByID(&product, uint(int_id))
-	// Check get product error
-	if err != nil {
-		view_data := make(map[string]interface{})
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Go and select product again."
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
-		return
-	}
-	// Everything is ok
-	view_data := make(map[string]interface{})
-	view_data["Title"] = product.Name
-	view_data["Product"] = product
-	c.HTML(http.StatusOK, "productdatail.html", view_data)
-
-}
 
 func Login_GET(c *gin.Context) {
 	view_data := make(map[string]interface{})
@@ -183,7 +115,172 @@ func Register_POST(c *gin.Context) {
 	view_data := make(map[string]interface{})
 	view_data["Username"] = username
 	c.HTML(http.StatusOK, "index.html", view_data)
+}
+func Index(c *gin.Context) {
+	products := []model.Product{}
+	// Get products
+	err := model_function.Get(&products, 15, "created_at", "desc")
+	if err != nil {
+		log.Log(logrus.Error, err)
+		view_data := make(map[string]interface{})
+		view_data["Title"] = "Error"
+		view_data["Error"] = "Something bad happened. Come back later"
+		c.HTML(http.StatusInternalServerError, "error.html", view_data)
 
+	}
+	categories := []model.Product_Category{}
+	// Get category
+	err = model_function.Get(&categories, -1, "created_at", "desc", "SubCategories")
+	if err != nil {
+		log.Log(logrus.Error, err)
+		view_data := make(map[string]interface{})
+		view_data["Title"] = "Error"
+		view_data["Error"] = "Something bad happened. Come back later"
+		c.HTML(http.StatusInternalServerError, "error.html", view_data)
+		return
+	}
+	// Everything is ok
+	view_data := make(map[string]interface{})
+	view_data["Title"] = "Index"
+	if categories != nil {
+		view_data["Categories"] = categories
+	}
+	if products != nil {
+		view_data["Products"] = products
+	}
+	c.HTML(http.StatusOK, "index.html", view_data)
+}
+func ProductList(c *gin.Context) {
+	enteredCategory := c.Param("category")
+	// Specified category
+	if enteredCategory != "" && enteredCategory != "/" {
+		// Remove slashes and Make Title from input category
+		enteredCategory = utilities.RemoveSlashFromBeginAndEnd(enteredCategory)
+		enteredCategory = strings.Title(enteredCategory)
+
+		// Get all categories name
+		var categoriesName []string
+		err := model_function.GetCategoriesName(&categoriesName)
+		if err != nil {
+			log.Log(logrus.Error, err)
+			view_data := make(map[string]interface{})
+			view_data["Title"] = "Error"
+			view_data["Error"] = "Something bad happened. Come back later"
+			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			return
+		}
+		// Check entered category is exists in database
+		if !utilities.ValueExistsInSlice(&categoriesName, strings.Title(enteredCategory)) {
+			log.Log(logrus.Error, errors.New("Invalid Category"))
+			view_data := make(map[string]interface{})
+			view_data["Title"] = "Error"
+			view_data["Error"] = "Something bad happened. Come back later"
+			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			return
+		}
+		// Get Products by entered category
+		var products []model.Product
+		err = model_function.GetProductsByCategory(&products, strings.ToLower(enteredCategory))
+		if err != nil {
+			log.Log(logrus.Error, err)
+			view_data := make(map[string]interface{})
+			view_data["Title"] = "Error"
+			view_data["Error"] = "Something bad happened. Come back later"
+			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			return
+		} else if products == nil {
+
+		}
+		// Get all categories for sidebar
+		var categories []model.Product_Category
+		err = model_function.GetCategoryByOrderingProductsCount(&categories)
+		if err != nil {
+			log.Log(logrus.Error, err)
+			view_data := make(map[string]interface{})
+			view_data["Title"] = "Error"
+			view_data["Error"] = "Something bad happened. Come back later"
+			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			return
+		}
+		// Everything is ok
+		view_data := make(map[string]interface{})
+		view_data["Title"] = fmt.Sprintf("%s Products List", strings.ToTitle(enteredCategory))
+		if categories != nil {
+			view_data["Categories"] = categories
+		}
+		if products != nil {
+			view_data["Products"] = products
+		}
+		c.HTML(http.StatusOK, "product-list.html", view_data)
+	} else {
+		// Unspecified category
+
+		var products []model.Product
+		err := model_function.Get(&products, -1, "created_at", "desc", "Images")
+		if err != nil {
+			log.Log(logrus.Error, err)
+			view_data := make(map[string]interface{})
+			view_data["Title"] = "Error"
+			view_data["Error"] = "Something bad happened. Come back later"
+			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+		}
+		var categories []model.Product_Category
+		err = model_function.GetCategoryByOrderingProductsCount(&categories)
+		if err != nil {
+			log.Log(logrus.Error, err)
+			view_data := make(map[string]interface{})
+			view_data["Title"] = "Error"
+			view_data["Error"] = "Something bad happened. Come back later"
+			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+		}
+		// Everything is ok
+		view_data := make(map[string]interface{})
+		view_data["Title"] = "Products List"
+		if categories != nil {
+			view_data["Categories"] = categories
+		}
+		if products != nil {
+			view_data["Products"] = products
+		}
+		c.HTML(http.StatusOK, "product-list.html", view_data)
+	}
+}
+func ProductDetails(c *gin.Context) {
+	// String product id
+	str_id := c.Param("id")
+	// check str_id is Empty
+	if str_id == "" {
+		view_data := make(map[string]interface{})
+		view_data["Title"] = "Error"
+		view_data["Error"] = "Go and select product again."
+		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		return
+	}
+	// Integer product id
+	int_id, err := strconv.ParseInt(str_id, 10, 64)
+	// Parse check
+	if err != nil {
+		view_data := make(map[string]interface{})
+		view_data["Title"] = "Error"
+		view_data["Error"] = "Go and select product again."
+		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		return
+	}
+	var product model.Product
+	err = model_function.GetByID(&product, int(int_id))
+	// Check get product error
+	if err != nil {
+		view_data := make(map[string]interface{})
+		view_data["Title"] = "Error"
+		view_data["Error"] = "Go and select product again. If this page comes up again, there must be a problem, So come later ):"
+		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		return
+	}
+	// Everything is ok
+	view_data := make(map[string]interface{})
+	view_data["Title"] = product.Name
+	view_data["Product"] = product
+	c.HTML(http.StatusOK, "product-details.html", view_data)
 }
 
 // func About()

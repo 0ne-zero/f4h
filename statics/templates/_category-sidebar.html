@@ -1,0 +1,39 @@
+{{define "_category-sidebar"}}
+<!--category-productsr-->
+<div class="panel-group category-products" id="accordian">
+	{{if .}}
+		{{range $_,$category := .}}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordian" href="/products/{{$category.Name}}">
+						<span class="badge pull-right"><i ></i></span>
+						{{$category.Name}}
+					</a>
+					{{if $category.SubCategories}}
+						<ul>
+							{{range $subCategory := .SubCategories}}
+								<li><a href="/products/{{$subCategory.Name}}">{{$subCategory.Name}}</a></li>
+							{{end}}
+						</ul>
+					{{end}}
+				</h4>
+			</div>
+		</div>
+		{{end}}
+	{{else}}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordian">
+					<span class="badge pull-right"><i ></i></span>
+					There is no category
+				</a>
+			</h4>
+		</div>
+	</div>
+	{{end}}
+</div>
+
+{{end}}
+<!--/category-products-->
