@@ -122,9 +122,10 @@ type Product struct {
 }
 type Product_Category struct {
 	BasicModel
-	Name             string `gorm:"NOT NULL;"`
-	Description      string `gorm:"NOT NULL;"`
-	ParentCategoryID uint
+	Name          string `gorm:"NOT NULL;"`
+	Description   string `gorm:"NOT NULL;"`
+	ParentID      *uint
+	SubCategories []Product_Category `gorm:"foreignkey:ParentID"`
 	// Category has many Product and conversely (many to many)
 	Products []*Product `gorm:"many2many:product_category_m2m"`
 	// Product_Category has one User

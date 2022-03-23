@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "_head" .Title}}
+<body>
+	{{template "_header"}}
+	<!-- advertisement
+	<section id="advertisement">
+		<div class="container">
+			<img src="images/shop/advertisement.jpg" alt="" />
+		</div>
+	</section>
+	advertisement-->
+	<br>
+	<br>
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Category</h2>
+						{{template "_category-sidebar" .Categories}}
+					</div>
+				</div>
+				{{template "_product-list" .Products}}
+			</div>
+		</div>
+	</section>
+	
+	<!--Footer-->
+	<footer id="footer">
+		{{template "_footer"}}	
+	</footer>
+	<!--/Footer-->
+
+	<!--javascript-->
+	{{template "_js"}}
+	<!--/javascript-->
+</body>
+</html>

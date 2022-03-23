@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -46,4 +47,33 @@ func HashPassword(pass string) (string, error) {
 }
 func ComparePassword(hashed_pass string, pass string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashed_pass), []byte(pass))
+}
+
+// Remove slice element and keeping the order
+// Just shift
+func RemoveSliceElement[T any](slice []T, i int) []T {
+	// If index is out of range remove last element
+	if i >= len(slice) {
+		return slice[:len(slice)-1]
+
+	} else {
+		return append(slice[:i], slice[i+1:]...)
+	}
+}
+func RemoveSlashFromBeginAndEnd(s string) string {
+	if strings.HasPrefix(s, "/") {
+		s = s[1:]
+	}
+	if strings.HasSuffix(s, "/") {
+		s = s[:len(s)-1]
+	}
+	return s
+}
+func ValueExistsInSlice[T comparable](slice *[]T, value T) bool {
+	for _, e := range *slice {
+		if e == value {
+			return true
+		}
+	}
+	return false
 }
