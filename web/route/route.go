@@ -6,6 +6,7 @@ import (
 
 	"github.com/0ne-zero/f4h/config/constansts"
 	"github.com/0ne-zero/f4h/utilities/log"
+	templatefunction "github.com/0ne-zero/f4h/utilities/template_function"
 	"github.com/0ne-zero/f4h/web/controllers"
 	"github.com/0ne-zero/f4h/web/middleware"
 	"github.com/gin-contrib/sessions"
@@ -16,10 +17,12 @@ import (
 
 func MakeRoute() *gin.Engine {
 	r := gin.Default()
+	// Html template function
+	templatefunction.AddFunctionsToRoute(r)
 	// Statics
 	r.Static("statics", filepath.Join(constansts.ExecutableDirectory, "/statics/"))
 	// Htmls
-	r.LoadHTMLGlob("statics/templates/*.html")
+	r.LoadHTMLGlob("statics/templates/**/*.html")
 
 	// Too many request
 	r.Use(middleware.TooManyRequest())
@@ -50,6 +53,9 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/", controllers.Index)
 		authorized.GET("/products/*category", controllers.ProductList)
 		authorized.GET("/productDetails/:id", controllers.ProductDetails)
+		authorized.GET("/Discussions", controllers.Discussions)
+		authorized.GET("/DiscussionForums/:discussion", controllers.DiscussionForums)
+		authorized.GET("/ForumTopics/:forum", controllers.ForumTopics)
 	}
 	constansts.Routes = r.Routes()
 

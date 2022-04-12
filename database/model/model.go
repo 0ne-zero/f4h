@@ -40,12 +40,12 @@ type User struct {
 	Products []*Product
 	// User has many Forum
 	Forums []*Forum
-	// User has many Forum_Category
-	Forum_Categories []*Forum_Category
+	// User has many Discussion
+	Discussions []*Discussion
 	// User has many Topic
 	Topics []*Topic
-	// User has many Topic_Category
-	Topic_Categories []*Topic_Category
+	// User has many Discussion_Category
+	DiscussionCategories []*Discussion_Category
 	// User has many Topic_Comment
 	Topic_Comments []*Topic_Comment
 	// User has many Poll_Vote
@@ -242,14 +242,34 @@ type Topic_Vote struct {
 
 //region Forum
 
+type Discussion struct {
+	BasicModel
+	Name        string
+	Description string
+	// Discussion has many Forum
+	Forums []*Forum
+	// Forum has many Forum_Category
+	Categories []*Discussion_Category `gorm:"many2many:Discussion_category_m2m"`
+	// Forum has a User
+	UserID uint
+}
+type Discussion_Category struct {
+	BasicModel
+	Name        string `gorm:"NOT NULL;"`
+	Description string `gorm:"NOT NULL;"`
+	// Forum_Category has many Forum
+	Discussions []*Discussion `gorm:"many2many:Discussion_category_m2m"`
+	// Forum_Category has one User
+	UserID uint
+}
 type Forum struct {
 	BasicModel
 	Name        string
 	Description string
 	// Forum has many Topic
 	Topics []*Topic
-	// Forum has many Forum_Category
-	Categories []*Forum_Category `gorm:"many2many:forum_category_m2m"`
+	// Forum has one Discussion
+	DiscussionID uint
 	// Forum has a User
 	UserID uint
 }
@@ -257,14 +277,13 @@ type Topic struct {
 	BasicModel
 	Name        string
 	Description string
+	ViewCount   int
 	// Topic_Comment has one Topic_Comment_Vote
 	Votes Topic_Vote `gorm:"foreignkey:TopicID;references:ID"`
 	// Topic has one User
 	UserID uint
 	// Topic has one Forum
 	ForumID uint
-	// Topic has many Category
-	Categories []*Topic_Category `gorm:"many2many:topic_category_m2m"`
 	// Topic has many Topic_Comment
 	Comments []*Topic_Comment
 	// Topic has many Topic_Tag
@@ -276,16 +295,6 @@ type Topic_Tag struct {
 	Description string
 	// Topic_Tag has many Topic
 	Topics []*Topic `gorm:"many2many:topic_tag_m2m"`
-}
-type Forum_Category struct {
-	BasicModel
-	Name             string `gorm:"NOT NULL;"`
-	Description      string `gorm:"NOT NULL;"`
-	ParentCategoryID uint
-	// Forum_Category has many Forum
-	Forums []*Forum `gorm:"many2many:forum_category_m2m"`
-	// Forum_Category has one User
-	UserID uint
 }
 type Topic_Comment struct {
 	BasicModel
@@ -299,17 +308,7 @@ type Topic_Comment struct {
 	// Topic_Comment has one Topic_Comment
 	// ReplyID is a Topic_Comment ID
 	ReplyID uint
-}
-type Topic_Category struct {
-	BasicModel
-	Name             string `gorm:"NOT NULL;"`
-	Description      string `gorm:"NOT NULL;"`
-	ParentCategoryID uint
-
-	// Topic_Category has many Topic
-	Topics []*Topic `gorm:"many2many:topic_category_m2m"`
-	// Topic_Category has one User
-	UserID uint
+	Reply   []Topic_Comment `gorm:" foreignkey:ReplyID;references:ID"`
 }
 
 //endregion
