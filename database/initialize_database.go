@@ -60,9 +60,9 @@ func MigrateModels(db *gorm.DB) error {
 		&model.Forum{},
 		&model.Topic{},
 		&model.Topic_Tag{},
-		&model.Forum_Category{},
+		&model.Discussion_Category{},
 		&model.Topic_Comment{},
-		&model.Topic_Category{},
+		&model.Discussion{},
 		&model.Poll{},
 		&model.Request{},
 	)
@@ -133,6 +133,37 @@ func CreateTestData(db *gorm.DB) {
 	db.Create(&model.WalletInfo{Name: "xxx", Addr: "xxx", IsDefault: true, UserID: 1})
 	db.Create(&model.WalletInfo{Name: "xxxx", Addr: "xxxx", IsDefault: false, UserID: 1, OrderID: 1})
 	db.Create(&model.WalletInfo{Name: "xxxx", Addr: "xxxx", IsDefault: true, UserID: 1, OrderID: 1})
+
+	// Discussion category
+	db.Create(&model.Discussion_Category{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", UserID: 1})
+	db.Create(&model.Discussion_Category{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", UserID: 1})
+
+	db.Create(&model.Discussion{Name: "Drug", Description: "drugs things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
+	db.Create(&model.Discussion{Name: "Art", Description: "Art things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
+	db.Create(&model.Discussion{Name: "Other", Description: "Other things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
+
+	db.Create(&model.Forum{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 1, UserID: 1})
+	db.Create(&model.Forum{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 1, UserID: 1})
+
+	// forum
+	db.Create(&model.Forum{Name: "blockchain", Description: "some description for blockchain", UserID: 1, DiscussionID: 1})
+	db.Create(&model.Forum{Name: "bitcoin", Description: "some description", UserID: 1, DiscussionID: 1})
+	db.Create(&model.Forum{Name: "sub", Description: "sub description", DiscussionID: 2, UserID: 1})
+	db.Create(&model.Forum{Name: "sub", Description: "sub description", DiscussionID: 3, UserID: 1})
+	db.Create(&model.Forum{Name: "sub", Description: "sub description", DiscussionID: 3, UserID: 1})
+
+	// topics
+
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 1, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 1, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 2, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 2, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 2, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
+	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
+
 	// cart
 	db.Create(&model.Cart{TotalPrice: 2322, OrderItemQuantity: 3, IsOrdered: true, UserID: 1})
 	// order status
@@ -141,9 +172,6 @@ func CreateTestData(db *gorm.DB) {
 	db.Create(&model.OrderStatus{Status: "xxxxxxxxxxxx"})
 	// order
 	db.Create(&model.Order{SenderWalletInfoID: 1, UserID: 1, OrderStatusID: 1, CartID: 1})
-	// category
-	db.Create(&model.Forum_Category{Name: "xxxx", Description: "sssss"})
-	db.Create(&model.Topic_Category{Name: "xxxxsssss", Description: "sssssxxxxx"})
 	// order item
 	db.Create(&model.OrderItem{ProductID: 1, CartID: 1})
 	db.Create(&model.OrderItem{ProductID: 1, CartID: 1})
@@ -152,8 +180,16 @@ func CreateTestData(db *gorm.DB) {
 	db.Create(&model.Poll{Name: "xxxx", Description: "xxxx", UserID: 1})
 	// comment
 	db.Create(&model.Topic_Comment{Text: "xxxxxxxx", UserID: 1, TopicID: 1})
+	db.Create(&model.Topic_Comment{Text: "xxxxxxxx", UserID: 1, TopicID: 1})
+	db.Create(&model.Topic_Comment{Text: "xxxxxxxx", UserID: 1, TopicID: 1})
 	// vote
-	db.Create(&model.Poll_Vote{UserID: 1, PollID: 1})
+	db.Create(&model.Topic_Comment_Vote{UserID: 1, Positive: 12121, Negative: 121, Topic_CommentID: 1})
+	db.Create(&model.Topic_Comment_Vote{UserID: 1, Positive: 12121, Negative: 121, Topic_CommentID: 2})
+	db.Create(&model.Topic_Comment_Vote{UserID: 1, Positive: 12121, Negative: 121, Topic_CommentID: 3})
+	db.Create(&model.Poll_Vote{UserID: 1, PollID: 1, Positive: 20, Negative: 75})
+	db.Create(&model.Topic_Vote{UserID: 1, TopicID: 1, Positive: 20523, Negative: 7523})
+	db.Create(&model.Topic_Vote{UserID: 1, TopicID: 2, Positive: 2120, Negative: 7545})
+	db.Create(&model.Topic_Vote{UserID: 1, TopicID: 3, Positive: 205342, Negative: 7534})
 	db.Create(&model.Product_Comment_Vote{UserID: 1, Product_CommentID: 1})
 	// unknown user
 	db.Create(&model.User{Username: "Unknown", Email: "ss", PasswordHash: "sda", IsSeller: false})

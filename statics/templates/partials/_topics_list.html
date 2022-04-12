@@ -1,0 +1,172 @@
+{{define "_topics-list"}}
+{{$counter := 0}}
+{{$rootData := .}}
+
+<div class="forumbg">
+    <div class="inner">
+        <ul class="topiclist">
+            <li class="header">
+            <dl class="icon">
+                <dt>
+                <div class="list-inner">
+                {{if index $rootData "DiscussionName"}}
+                    {{index $rootData "DiscussionName"}} Discussion Topics
+                {{else}}
+                    {{index $rootData "ForumName"}} Topics
+                {{end}}
+                </div>
+                </dt>
+                <dd class="posts">Replies
+                </dd>
+                <dd class="views">Views
+                </dd>
+                <dd class="lastpost">
+                <span>Last post
+                </span>
+                </dd>
+            </dl>
+            </li>
+        </ul>
+        <ul class="topiclist topics">
+        {{if $rootData}}
+            {{range $topic := index $rootData "Topics"}}
+                {{$remaind := remainder $counter 2}}
+                {{if eq $remaind 0}}
+                    <li class="row bg1">
+                        <dl class="icon topic_read_hot">
+                        <dt>
+                        <div class="list-inner">
+                            <a href="https://forum.bitcoin.com/bitcoin-discussion/bitcoin-price-and-analysis-t142665.html" class="topictitle">
+                            {{$topic.Name}}
+                            </a>
+                            <br>
+                            By:
+                            <a href="https://forum.bitcoin.com/fxopentrader-u186161/" class="username">
+                            {{$topic.AuthorUsername}}
+                            </a>
+                            At:
+                            {{formatTime $topic.CreatedAt}}
+                            Time
+                            <div class="r-lastpost-container">
+                            <a href="https://forum.bitcoin.com/post352407.html#p352407" title="Go to last post" class="r-lastpost">
+                                <i class="fa fa-angle-right">
+                                </i>
+                            </a>
+                            </div>
+                            <div class="topic_preview_content" style="display:none;">
+                            <div class="topic_preview_avatar">
+                                <img class="avatar" src="https://forum.bitcoin.com/download/file.php?avatar=186161_1643411611.jpg" alt="User avatar" width="80" height="63">
+                            </div>
+                            <div class="topic_preview_first">Today price Bitcoin at $36K almost near to $37k based coinmarketcap prices, its rise 0.58% today, based price history the BTC price even drops to...
+                            </div>
+                            </div>
+                        </div>
+                        </dt>
+                        <dd class="posts">
+                        {{$topic.ReplyCount}}
+                            <dfn>
+                            Replies
+                            </dfn>
+                        </dd>
+                        <dd class="views">
+                        {{$topic.ViewCount}}
+                            <dfn>
+                            Views
+                            </dfn>
+                        </dd>
+                        <dd class="lastpost">
+                            <span>
+                                <dfn>
+                                Last post 
+                                </dfn>
+                                By 
+                                <a href="https://forum.bitcoin.com/fxopentrader-u186161/" class="username">
+                                {{$topic.LastPost.AuthorUsername}}
+                                </a>
+                                <a href="https://forum.bitcoin.com/post352407.html#p352407" title="Go to last post" class="lastpost-last">
+                                <i class="fa fa-arrow-right">
+                                </i>
+                                </a> 
+                                <br>
+                                {{if $topic.LastPost.CreatedAt}} 
+                                {{formatTime $topic.LastPost.CreatedAt}}
+                                {{end}}
+                            </span>
+                        </dd>
+                        </dl>
+                    </li>
+                    {{$counter = plus $counter 1}}
+                {{else}}
+                  <li class="row bg2">
+                        <dl class="icon topic_read_hot">
+                        <dt>
+                        <div class="list-inner">
+                            <a href="https://forum.bitcoin.com/bitcoin-discussion/bitcoin-price-and-analysis-t142665.html" class="topictitle">
+                            {{$topic.Name}}
+                            </a>
+                            <br>
+                            By:
+                            <a href="https://forum.bitcoin.com/fxopentrader-u186161/" class="username">
+                            {{$topic.AuthorUsername}}
+                            </a>
+                            At:
+                            {{formatTime $topic.CreatedAt}}
+                            Time
+                            <div class="r-lastpost-container">
+                            <a href="https://forum.bitcoin.com/post352407.html#p352407" title="Go to last post" class="r-lastpost">
+                                <i class="fa fa-angle-right">
+                                </i>
+                            </a>
+                            </div>
+                            <div class="topic_preview_content" style="display:none;">
+                            <div class="topic_preview_avatar">
+                                <img class="avatar" src="https://forum.bitcoin.com/download/file.php?avatar=186161_1643411611.jpg" alt="User avatar" width="80" height="63">
+                            </div>
+                            <div class="topic_preview_first">Today price Bitcoin at $36K almost near to $37k based coinmarketcap prices, its rise 0.58% today, based price history the BTC price even drops to...
+                            </div>
+                            </div>
+                        </div>
+                        </dt>
+                        <dd class="posts">
+                        {{$topic.ReplyCount}}
+                            <dfn>
+                            Replies
+                            </dfn>
+                        </dd>
+                        <dd class="views">
+                        {{$topic.ViewCount}}
+                            <dfn>
+                            Views
+                            </dfn>
+                        </dd>
+                        <dd class="lastpost">
+                            <span>
+                                <dfn>
+                                Last post 
+                                </dfn>
+                                By 
+                                <a href="https://forum.bitcoin.com/fxopentrader-u186161/" class="username">
+                                {{$topic.LastPost.AuthorUsername}}
+                                </a>
+                                <a href="https://forum.bitcoin.com/post352407.html#p352407" title="Go to last post" class="lastpost-last">
+                                <i class="fa fa-arrow-right">
+                                </i>
+                                </a> 
+                                <br>
+                                {{if $topic.LastPost.CreatedAt}} 
+                                {{formatTime $topic.LastPost.CreatedAt}}
+                                {{end}}
+                            </span>
+                        </dd>
+                        </dl>
+                    </li>
+                    {{$counter = plus $counter 1}}
+                {{end}}
+            {{end}}
+        {{else}}
+            {{$rootData.DiscussionName}} Discussion Has NO Topics
+        {{end}}
+        </ul>
+    </div>
+</div>
+{{end}}

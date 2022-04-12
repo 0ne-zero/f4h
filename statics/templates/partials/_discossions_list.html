@@ -1,0 +1,65 @@
+{{define "_discussions-list"}}
+{{if .}}
+    {{range $discussionCategory := .}}
+    <div class="forabg">
+        <div class="inner">
+            <ul class="topiclist">
+                <li class="header">
+                    <dl class="icon">
+                        <dt><div class="list-inner"><a href="https://forum.bitcoin.com/bitcoin/?sid=f8bd6b03ca6b5b43455199491bb29a07">{{$discussionCategory.Name}}</a></div></dt>
+                        <dd class="topics">Topics</dd>
+                        <dd class="posts">Posts</dd>
+                        <dd class="lastpost">Last post</dd>
+                    </dl>
+                </li>
+            </ul>
+            {{if $discussionCategory.Discussions}}
+                <ul class="topiclist forums">
+                {{range $discussioninfo := $discussionCategory.Discussions}}
+                    <li class="row">
+                        <dl class="icon forum_read_subforum">
+                            <dt title="No unread posts">
+                                <div class="list-inner">
+                                    <a href="https://forum.bitcoin.com/bitcoin-discussion/?sid=f8bd6b03ca6b5b43455199491bb29a07" class="forumtitle">{{$discussioninfo.Discussion.Name}}</a>
+                                    <br />
+                                    {{$discussioninfo.Discussion.Description}}
+                                    <br />
+                                    {{$forums_name_length := $discussioninfo.ForumsName | stringSliceLength}}
+                                    <!-- minus one to get last index not length -->
+                                    {{$forums_name_length = minus $forums_name_length 1}}
+                                    {{$counter := 0}}
+                                    <strong>Forums:</strong>
+                                    {{if $discussioninfo.ForumsName}}
+                                        {{range $forum_name := $discussioninfo.ForumsName}}
+                                            <a href="https://forum.bitcoin.com/{{$forum_name}}/" class="subforum read">{{$forum_name}}</a>
+                                            {{if eq $counter $forums_name_length}}
+                                            {{else}}
+                                            ,
+                                            {{end}}
+                                        {{$counter = plus $counter 1}}
+                                        {{end}}
+                                    {{else}}
+                                        <a href="/" class="subforum read">Empty</a>
+                                    {{end}}
+                                </div>
+                            </dt>
+                            <dd class="topics">{{$discussioninfo.TopicCount}}<dfn>Topics</dfn></dd>
+                            <dd class="posts">{{$discussioninfo.PostCount}}<dfn>Posts</dfn></dd>
+                            <dd class="lastpost">
+                                <dfn>Last post</dfn><a href="https://forum.bitcoin.com/post352394.html?sid=f8bd6b03ca6b5b43455199491bb29a07#p352394" title="Re: Don’t waste your time for exchange search" class="lastsubject">Re: Don’t waste your time for…</a> <br /> by <a href="https://forum.bitcoin.com/alexkaraev-u186534/?sid=f8bd6b03ca6b5b43455199491bb29a07" style="color: #FFBF00;" class="username-coloured">AlexKaraev</a> Wed Mar 23, 2022 11:59 am 
+                            </dd>
+                        </dl>
+                    </li>
+                {{end}}
+                </ul>
+
+            {{else}}
+                Currently there is no discussion
+            {{end}}
+        </div>
+    </div>
+    {{end}}
+{{else}}
+    Currently there is no discussion
+{{end}}
+{{end}}

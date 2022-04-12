@@ -1,6 +1,6 @@
 -- remove net/http (status codes)
 -- add wishlist (favorites)
--- add forume model
+-- add forum model
 -- add blog model
 -- encrypt data form user to client
 -- secure database (is a good thing that each table has time information???)
@@ -11,3 +11,7 @@
 -- check out session key in route file (middleware)
 -- remove constansts.Routes if is useless
 -- optimize model_function.GetCategoryByOrderingProductsCount function
+-- optimize view models
+-- make model.function generic
+-- extract product category in its viewmodel (its recursive thing)
+-- add web/config package 
