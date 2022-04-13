@@ -1,0 +1,371 @@
+
+/*
+	background-color: #EAECF0;
+*/
+
+
+/*#advertising-banner-wrapper {
+ background-color: #FFF;
+ border-radius: 7px;
+ margin-bottom: 4px;
+ padding: 5px 10px;
+}
+#advertising-banner-content {
+ color: #F00;
+ text-align: center;
+}
+
+body ._bsa_show ._bsa_fancybar{top:52px}
+
+#center {
+	align: center;
+}
+
+.social_login_wrapper {
+	background-color: #eaecf0;
+	box-shadow: none;
+	padding-bottom: 0;
+}
+
+#branding {
+	display: none;
+}
+
+@media (max-width: 550px) {
+div#twitter-block-sidebar {
+ display: none;
+ }
+}
+
+#abbc3_buttons {
+ width: 97.7%;
+}*/
+
+/* new ... */
+
+/*body .forabg, body .forumbg, body .site-nav,body .side-block {
+    background-color: #191919;
+}
+
+body li.header dt, li.header dd, body .forumbg .header a, body .forabg .header a, body th a {
+    color:#AAAAAA;
+}
+
+body #site-search input:hover + button, body #site-search button:hover {
+    background-color:#F8B832
+}
+
+body .site-nav input {
+    background: #fff;
+}
+
+body .site-nav > ul > li, body .site-nav > ul > li > a {
+    color: #fff;
+}
+
+body .site-nav > ul > li>a > i {
+    color: #fff;
+}
+
+body .social_login_wrapper {
+    background: #fff;
+    width: 600px;
+    max-width: 97%;
+    margin: 3em auto;
+    border-radius: 5px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
+}
+
+body .social_login_wrapper h2 {
+    color: #191919;
+    font-weight: 400;
+}
+
+body #wrap-head {
+    max-width: 100%;
+}
+
+body #wrap-head img {
+    max-width: 100%;
+}
+
+body .social_login_wrapper iframe {
+    margin-bottom: 1.5em;
+}
+
+body #site-search button:hover {
+    background-color: #444;
+}
+
+body .site-nav > ul > li > a:hover {
+    background-color: #191919;
+}
+
+body .wrap-subhead, .wrap-subhead-main {
+    background: #191919;
+}
+
+body .wrap-subhead a, .wrap-subhead-main a {
+    color: #aaa;
+}
+
+body .button {
+    background-color: #F7B742;
+    border-color: #F7B742;
+}
+
+body a.button1, body input.button1 {
+    background-color: #191919;
+    border-color: #191919;
+}
+
+body .plugin #providers.providers_unpaginated .providers_group .providers_block .button {
+    background-color: transparent;
+}
+
+body a.button1:hover,body input.button1:hover,body a.button1:focus,body input.button1:focus {
+    background-color: #F7B742;
+    border-color: #F7B742;
+}
+
+body #site-footer-nav, body #site-footer-area {
+    background: #191919;
+}
+
+body #site-footer-area h5 {
+    color: #F7B742;
+}
+
+body .cfooter-social a {
+    background-color: #F7B742;
+    color: #fff;
+}
+
+body .stat-block {
+    background: #191919;
+}
+
+body .pagination li a {
+    background-color: #777;
+    border-color: #777;
+}
+
+body .pagination li.active span {
+    background-color: #191919;
+    border-color: #191919;
+}*/
+
+
+
+
+
+/*******************************************************TESTING COLORS ****************************************************************************/
+
+
+
+/*
+    background-color: #EAECF0;
+*/
+
+a {
+    color:#0ac18e;
+}
+
+#advertising-banner-wrapper {
+ background-color: #FFF;
+ border-radius: 7px;
+ margin-bottom: 4px;
+ padding: 5px 10px;
+}
+#advertising-banner-content {
+ color: #F00;
+ text-align: center;
+}
+
+body ._bsa_show ._bsa_fancybar{
+    top:52px;
+    display: none !important;
+}
+
+#center {
+    align: center;
+}
+
+.social_login_wrapper {
+    background-color: #eaecf0;
+    box-shadow: none;
+    padding-bottom: 0;
+}
+
+#branding {
+    display: none;
+}
+
+@media (max-width: 550px) {
+div#twitter-block-sidebar {
+ display: none;
+ }
+}
+
+#abbc3_buttons {
+ width: 97.7%;
+}
+
+/* new ... */
+
+body .forabg, body .forumbg, body .site-nav,body .side-block {
+    background-color: rgb(17, 23, 36) !important;
+}
+
+body li.header dt, li.header dd, body .forumbg .header a, body .forabg .header a, body th a {
+    color:#AAAAAA;
+}
+
+body #site-search input:hover + button, body #site-search button:hover {
+    background-color:#0ac18e;
+}
+
+body .site-nav input {
+    background: #fff;
+}
+
+body .site-nav > ul > li, body .site-nav > ul > li > a {
+    color: #fff;
+}
+
+body .site-nav > ul > li>a > i {
+    color: #fff;
+}
+
+body .social_login_wrapper {
+    background: #fff;
+    width: 600px;
+    max-width: 97%;
+    margin: 3em auto;
+    border-radius: 5px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
+}
+
+body .social_login_wrapper h2 {
+    color: rgb(17, 23, 36) !important;
+    font-weight: 400;
+}
+
+body #wrap-head {
+    max-width: 100%;
+}
+
+body #wrap-head img {
+    max-width: 100%;
+}
+
+body .social_login_wrapper iframe {
+    margin-bottom: 1.5em;
+}
+
+body #site-search button:hover {
+    background-color: #07edad;
+}
+
+body .site-nav > ul > li > a:hover {
+    background-color: rgb(17, 23, 36) !important;
+}
+
+body .wrap-subhead, .wrap-subhead-main {
+    background: rgb(17, 23, 36) !important;
+}
+
+body .wrap-subhead a, .wrap-subhead-main a {
+    color: #aaa;
+}
+
+body .button {
+    background-color: #00c48a;
+    border-color: #00c48a;
+}
+
+body a.button1, body input.button1 {
+    background-color: rgb(17, 23, 36) !important;
+    border-color: rgb(17, 23, 36) !important;
+}
+
+body .plugin #providers.providers_unpaginated .providers_group .providers_block .button {
+    background-color: transparent;
+}
+
+body a.button1:hover,body input.button1:hover,body a.button1:focus,body input.button1:focus {
+    background-color: #00c48a;
+    border-color: #00c48a;
+}
+
+body #site-footer-nav, body #site-footer-area {
+    background: rgb(17, 23, 36) !important;
+}
+
+body #site-footer-area h5 {
+    color: #00c48a;
+}
+
+body .cfooter-social a {
+    background-color: #00c48a;
+    color: #fff !important;
+}
+
+body .stat-block {
+    background: rgb(17, 23, 36) !important;
+}
+
+body .pagination li a {
+    background-color: #777;
+    border-color: #777;
+}
+
+body .pagination li.active span {
+    background-color: rgb(17, 23, 36) !important;
+    border-color: rgb(17, 23, 36) !important;
+}
+
+.button:hover, .nojs .dropdown-container:hover .dropdown-select {
+    background-color: #20eeb4;
+    border-color: #20eeb4;
+    color: #ffffff;
+}
+
+
+.username-coloured, .username {
+    color:#09c08e !important;
+}
+
+dd.lastpost .lastpost-last i {
+    line-height: 1;
+    vertical-align: text-top;
+    color:rgb(17, 23, 36) !important;
+}
+
+a.forumtitle:hover, a.topictitle:hover {
+    color: rgb(17, 23, 36) !important;
+}
+
+.pagination li a:hover, .pagination .dropdown-visible a.dropdown-trigger, .nojs .pagination .dropdown-container:hover a.dropdown-trigger {
+    background-color: rgb(17, 23, 36) !important;
+    border-color: rgb(17, 23, 36);
+    color: #ffffff;
+}
+
+.wrap-subhead a:hover, .wrap-subhead-main a:hover {
+    background-color: #00c48a;
+    color:#fff
+}
+
+.breadcrumbs .crumb:before {
+    left:-10px !important;
+}
+
+#site-footer-area p, #site-footer-area a {color:#fff;}
+
+#ad-div-1 {
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+
