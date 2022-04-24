@@ -5,8 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os/exec"
 	"strings"
 
+	"github.com/0ne-zero/f4h/config/constansts"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -76,4 +78,9 @@ func ValueExistsInSlice[T comparable](slice *[]T, value T) bool {
 		}
 	}
 	return false
+}
+func MarkdownToHtml(markdown string) (string, error) {
+	command := fmt.Sprintf(`echo "%s" | %s`, markdown, constansts.MarkdownFilePath)
+	topic_markdown_html_bytes, err := exec.Command("bash", "-c", command).Output()
+	return string(topic_markdown_html_bytes), err
 }

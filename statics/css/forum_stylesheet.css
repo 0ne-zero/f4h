@@ -2299,7 +2299,6 @@ fieldset.submit-buttons input {
 /* Main message box */
 #message-box {
   width: auto;
-  margin: 0 250px 20px 0;
 }
 #message-box textarea {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;

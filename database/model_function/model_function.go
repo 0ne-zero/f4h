@@ -77,14 +77,6 @@ func GetUsernameByUserID(user_id int) (string, error) {
 	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("username").Scan(&username).Error
 	return username, err
 }
-func GetUserIDByUsername(username string) (uint, error) {
-	var u model.User
-	err := db.Select("id").Where("username = ?", username).First(&u).Error
-	if err != nil {
-		return 0, err
-	}
-	return u.ID, nil
-}
 func GetModelIDByFieldValue[m Model](model *m, field_name string, field_value string) (int, error) {
 	var id int
 	err := db.Model(model).Where(fmt.Sprintf("%s = ?", field_name), field_value).Select("id").Scan(&id).Error

@@ -3,10 +3,12 @@ package controllers
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
 	"strings"
 
+	"github.com/0ne-zero/f4h/config/constansts"
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
 	"github.com/0ne-zero/f4h/utilities"
@@ -423,7 +425,62 @@ func ForumTopics(c *gin.Context) {
 	view_data["Title"] = fmt.Sprintf("%s Topics", forum_name)
 	view_data["Topics"] = _topics_list_template_view_model
 	c.HTML(http.StatusBadRequest, "forum_topics.html", view_data)
+}
 
+func AddTopic_GET(c *gin.Context) {
+	c.HTML(200, "add_topic.html", nil)
+}
+func AddTopic_POST(c *gin.Context) {
+	// User topic Markdown
+	topic_markdown := c.Request.FormValue("topic-markdown")
+	if topic_markdown == "" {
+		// return error
+	}
+	topic_markdown = strings.TrimSpace(topic_markdown)
+
+	// Convert Markdown to Html
+	topic_html, err := utilities.MarkdownToHtml(topic_markdown)
+	if err != nil {
+		return
+	}
+	// Remove space from start and end of topic_html
+	topic_html = strings.TrimSpace(topic_html)
+	// Prevent XSS Attacks
+	topic_html = constansts.XSS_Preventor.Sanitize(topic_html)
+
+	var view_data = make(map[string]interface{})
+
+	// User wants preview of her/his topic markdown
+	if is_preview := c.Request.FormValue("preview"); is_preview != "" {
+		view_data["Preview"] = template.HTML(topic_html)
+		view_data["TopicMarkdown"] = topic_markdown
+		c.HTML(200, "add_topic.html", view_data)
+		return
+		// User wants save her/his topic markdown
+	} else if is_save := c.Request.FormValue("save"); is_save != "" {
+		// User wants submit her/his text
+	} else if is_submit := c.Request.FormValue("submit"); is_submit != "" {
+		forum_name := c.Param("forum")
+		if forum_name == "" {
+			return
+		}
+		forum_id, err := model_function.GetModelIDByFieldValue(&model.Forum{}, "name", forum_name)
+		if err != nil {
+			return
+		}
+		subject := c.Request.FormValue("subject")
+		if subject == "" {
+			return
+		}
+
+		var topic model.Topic
+		topic.Name = subject
+		topic.Description = topic_html
+		topic.ForumID = uint(forum_id)
+		//topic.Tags =
+		//topic.UserID =
+
+	}
 }
 
 //endregion

@@ -56,6 +56,8 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/Discussions", controllers.Discussions)
 		authorized.GET("/DiscussionForums/:discussion", controllers.DiscussionForums)
 		authorized.GET("/ForumTopics/:forum", controllers.ForumTopics)
+		authorized.GET("/AddTopic/:forum", controllers.AddTopic_GET)
+		authorized.POST("/AddTopic/:forum", controllers.AddTopic_POST)
 	}
 	constansts.Routes = r.Routes()
 
