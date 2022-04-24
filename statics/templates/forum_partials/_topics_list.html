@@ -28,7 +28,7 @@
             </li>
         </ul>
         <ul class="topiclist topics">
-        {{if $rootData}}
+        {{if index $rootData "Topics"}}
             {{range $topic := index $rootData "Topics"}}
                 {{$remaind := remainder $counter 2}}
                 {{if eq $remaind 0}}
