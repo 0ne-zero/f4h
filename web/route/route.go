@@ -10,7 +10,7 @@ import (
 	"github.com/0ne-zero/f4h/web/controllers"
 	"github.com/0ne-zero/f4h/web/middleware"
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -29,16 +29,16 @@ func MakeRoute() *gin.Engine {
 	// Not found
 	r.NoRoute(middleware.NotFound())
 
-	// // Use session
-	session_key := "secret"
+	// Use session
+	session_key := "s"
 	if gin.Mode() == "PRODUCTION" {
 		if sk := os.Getenv("F4H_SESSION_KEY"); sk == "" {
 			log.Log(logrus.Fatal, "F4H_SESSION_KEY isn't exists in environment variables")
 		}
 	}
-	store := cookie.NewStore([]byte(session_key))
+	store := memstore.NewStore([]byte(session_key))
 	store.Options(sessions.Options{MaxAge: 0})
-	r.Use(sessions.Sessions("authentication", store))
+	r.Use(sessions.Sessions("authsdafentication", store))
 
 	// Public routes
 	r.GET("/login", controllers.Login_GET)

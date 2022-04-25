@@ -17,3 +17,4 @@
 -- add web/config package
 -- fix display of add topic preview
 -- add add topic save draft (should done with cookie)
+-- secure session managment
