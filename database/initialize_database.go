@@ -5,7 +5,7 @@ import (
 
 	"github.com/0ne-zero/f4h/config/constansts"
 	"github.com/0ne-zero/f4h/database/model"
-	"github.com/0ne-zero/f4h/utilities"
+	"github.com/0ne-zero/f4h/utilities/function"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -14,7 +14,7 @@ func Initialize() (*gorm.DB, error) {
 
 	// Get DSN from setting file
 	// DSN = Data source name (like connection string for database)
-	dsn, err := utilities.ReadFieldInSettingFile(constansts.SettingFilePath, "DSN")
+	dsn, err := function.ReadFieldInSettingFile(constansts.SettingFilePath, "DSN")
 	if err != nil {
 		return nil, err
 	}
