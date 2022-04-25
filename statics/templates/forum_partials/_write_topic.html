@@ -1,5 +1,5 @@
 {{define "_write_topic"}}
-<form id="postform" method="post" action="/AddTopic/" enctype="multipart/form-data">
+<form id="postform" method="post" action="/AddTopic/{{.ForumName}}" enctype="multipart/form-data">
     <div class="panel" id="postingbox">
         <div class="inner">
             <h3>Post a new topic</h3>
