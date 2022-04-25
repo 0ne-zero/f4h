@@ -8,7 +8,7 @@ import (
 
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
-	"github.com/0ne-zero/f4h/utilities"
+	"github.com/0ne-zero/f4h/utilities/function"
 	"github.com/0ne-zero/f4h/utilities/log"
 	viewmodel "github.com/0ne-zero/f4h/web/view_model"
 	"github.com/sirupsen/logrus"
@@ -145,7 +145,7 @@ func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
 	for i, cat := range categories {
 		for _, subcat := range sub_categories {
 			if cat.IsEqual(&subcat) {
-				categories = utilities.RemoveSliceElement(categories, i)
+				categories = function.RemoveSliceElement(categories, i)
 			}
 		}
 	}

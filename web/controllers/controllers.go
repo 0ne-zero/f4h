@@ -11,7 +11,7 @@ import (
 	"github.com/0ne-zero/f4h/config/constansts"
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
-	"github.com/0ne-zero/f4h/utilities"
+	"github.com/0ne-zero/f4h/utilities/function"
 	"github.com/0ne-zero/f4h/utilities/log"
 	viewmodel "github.com/0ne-zero/f4h/web/view_model"
 	"github.com/gin-contrib/sessions"
@@ -48,7 +48,7 @@ func Login_POST(c *gin.Context) {
 		return
 	}
 	// Compare user password with entered password
-	if err := utilities.ComparePassword(user_fields.PasswordHash, password); err != nil {
+	if err := function.ComparePassword(user_fields.PasswordHash, password); err != nil {
 		data := gin.H{
 			"LoginError": "Username or Password is incorrect.",
 		}
@@ -108,7 +108,7 @@ func Register_POST(c *gin.Context) {
 	}
 	// So far user not exists, i should register client
 	// Create password hash
-	pass_hash, err := utilities.HashPassword(password)
+	pass_hash, err := function.HashPassword(password)
 	if err != nil {
 		//Log
 		view_data := gin.H{}
@@ -165,7 +165,7 @@ func ProductList(c *gin.Context) {
 	// Specified category
 	if enteredCategory != "" && enteredCategory != "/" {
 		// Remove slashes and Make Title from input category
-		enteredCategory = utilities.RemoveSlashFromBeginAndEnd(enteredCategory)
+		enteredCategory = function.RemoveSlashFromBeginAndEnd(enteredCategory)
 
 		// Get all categories name
 		categoriesName, err := model_function.GetCategoriesName()
@@ -178,7 +178,7 @@ func ProductList(c *gin.Context) {
 			return
 		}
 		// Check entered category is exists in database
-		if !utilities.ValueExistsInSlice(&categoriesName, enteredCategory) {
+		if !function.ValueExistsInSlice(&categoriesName, enteredCategory) {
 			log.Log(logrus.Error, errors.New("Invalid Category"))
 			view_data := gin.H{}
 			view_data["Title"] = "Error"
@@ -461,7 +461,7 @@ func AddTopic_POST(c *gin.Context) {
 	topic_markdown = strings.TrimSpace(topic_markdown)
 
 	// Convert Markdown to Html
-	topic_html, err := utilities.MarkdownToHtml(topic_markdown)
+	topic_html, err := function.MarkdownToHtml(topic_markdown)
 	if err != nil {
 		return
 	}
