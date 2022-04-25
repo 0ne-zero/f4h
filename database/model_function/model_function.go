@@ -77,10 +77,14 @@ func GetUsernameByUserID(user_id int) (string, error) {
 	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("username").Scan(&username).Error
 	return username, err
 }
-func GetModelIDByFieldValue[m Model](model *m, field_name string, field_value string) (int, error) {
-	var id int
-	err := db.Model(model).Where(fmt.Sprintf("%s = ?", field_name), field_value).Select("id").Scan(&id).Error
-	return id, err
+
+type x struct {
+	password_hash interface{}
+}
+
+func GetFieldsByAnotherFieldValue[m Model](model *m, out_fields_name []string, in_field_name string, in_field_value string) error {
+	err := db.Model(model).Where(fmt.Sprintf("%s = ?", in_field_name), in_field_value).Select(out_fields_name).Scan(model).Error
+	return err
 }
 func TooManyRequest(ip string, url string, method string) (bool, error) {
 	var req_count int64

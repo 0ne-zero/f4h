@@ -20,7 +20,9 @@ import (
 )
 
 func Login_GET(c *gin.Context) {
-	view_data := make(map[string]interface{})
+	view_data := gin.H{
+		"Title": "Login/Signup",
+	}
 	c.HTML(http.StatusOK, "login.html", view_data)
 }
 func Login_POST(c *gin.Context) {
@@ -36,7 +38,8 @@ func Login_POST(c *gin.Context) {
 		return
 	}
 	// Get user
-	user_pass_hash, err := model_function.GetUserPassHashByUsername(username)
+	var user_fields = model.User{}
+	err := model_function.GetFieldsByAnotherFieldValue(&user_fields, []string{"password_hash"}, "username", username)
 	if err != nil {
 		data := gin.H{
 			"LoginError": "Username or Password is incorrect.",
@@ -45,7 +48,7 @@ func Login_POST(c *gin.Context) {
 		return
 	}
 	// Compare user password with entered password
-	if err := utilities.ComparePassword(user_pass_hash, password); err != nil {
+	if err := utilities.ComparePassword(user_fields.PasswordHash, password); err != nil {
 		data := gin.H{
 			"LoginError": "Username or Password is incorrect.",
 		}
@@ -57,18 +60,14 @@ func Login_POST(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("Username", username)
 	// Get user ID by username
-	user_id, err := model_function.GetModelIDByFieldValue(&model.User{}, "username", username)
+	err = model_function.GetFieldsByAnotherFieldValue(&user_fields, []string{"id"}, "username", username)
 	if err != nil {
 		return
 	}
-	session.Set("UserID", user_id)
+	session.Set("UserID", user_fields.ID)
 	session.Save()
 
-	data := gin.H{
-		"Title":    "Index",
-		"Username": username,
-	}
-	c.HTML(http.StatusOK, "index.html", data)
+	c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 func Logout(c *gin.Context) {
 	// Get session
@@ -89,20 +88,20 @@ func Register_POST(c *gin.Context) {
 	email := c.PostForm("email")
 	// Validatae username & password
 	if username == "" || password == "" {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["RegisterError"] = "Fill all field"
 		c.HTML(http.StatusOK, "login.html", view_data)
 		return
 	}
 	exists, err := model_function.IsUserExistsByUsername(username)
 	if err != nil {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["RegisterError"] = "Unknown error"
 		c.HTML(http.StatusOK, "login.html", view_data)
 		return
 	}
 	if exists == true {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["RegisterError"] = "User is exists"
 		c.HTML(http.StatusOK, "login.html", view_data)
 		return
@@ -112,7 +111,7 @@ func Register_POST(c *gin.Context) {
 	pass_hash, err := utilities.HashPassword(password)
 	if err != nil {
 		//Log
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["RegisterError"] = "Unknown error"
 		c.HTML(http.StatusOK, "login.html", view_data)
 		return
@@ -120,16 +119,14 @@ func Register_POST(c *gin.Context) {
 	// Add User
 	model_function.Add(&model.User{Username: username, PasswordHash: pass_hash, Email: email})
 	// Response
-	view_data := make(map[string]interface{})
-	view_data["Username"] = username
-	c.HTML(http.StatusOK, "index.html", view_data)
+	c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 func Index(c *gin.Context) {
 	// Get products
 	products, err := model_function.GetProductInViewModel(15)
 	if err != nil {
 		log.Log(logrus.Error, err)
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Something bad happened. Come back later"
 		c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -138,15 +135,16 @@ func Index(c *gin.Context) {
 	categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
 	if err != nil {
 		log.Log(logrus.Error, err)
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Something bad happened. Come back later"
 		c.HTML(http.StatusInternalServerError, "error.html", view_data)
 		return
 	}
 	// Everything is ok
-	view_data := make(map[string]interface{})
+	view_data := gin.H{}
 	view_data["Title"] = "Index"
+	view_data["Username"] = sessions.Default(c).Get("Username").(string)
 	if categories != nil {
 		view_data["Categories"] = categories
 	}
@@ -166,7 +164,7 @@ func ProductList(c *gin.Context) {
 		categoriesName, err := model_function.GetCategoriesName()
 		if err != nil {
 			log.Log(logrus.Error, err)
-			view_data := make(map[string]interface{})
+			view_data := gin.H{}
 			view_data["Title"] = "Error"
 			view_data["Error"] = "Something bad happened. Come back later"
 			c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -175,7 +173,7 @@ func ProductList(c *gin.Context) {
 		// Check entered category is exists in database
 		if !utilities.ValueExistsInSlice(&categoriesName, enteredCategory) {
 			log.Log(logrus.Error, errors.New("Invalid Category"))
-			view_data := make(map[string]interface{})
+			view_data := gin.H{}
 			view_data["Title"] = "Error"
 			view_data["Error"] = "Something bad happened. Come back later"
 			c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -185,7 +183,7 @@ func ProductList(c *gin.Context) {
 		products, err := model_function.GetProductByCategoryInViewModel(strings.ToLower(enteredCategory), 15)
 		if err != nil {
 			log.Log(logrus.Error, err)
-			view_data := make(map[string]interface{})
+			view_data := gin.H{}
 			view_data["Title"] = "Error"
 			view_data["Error"] = "Something bad happened. Come back later"
 			c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -197,14 +195,14 @@ func ProductList(c *gin.Context) {
 		categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
 		if err != nil {
 			log.Log(logrus.Error, err)
-			view_data := make(map[string]interface{})
+			view_data := gin.H{}
 			view_data["Title"] = "Error"
 			view_data["Error"] = "Something bad happened. Come back later"
 			c.HTML(http.StatusInternalServerError, "error.html", view_data)
 			return
 		}
 		// Everything is ok
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = fmt.Sprintf("%s Products List", strings.ToTitle(enteredCategory))
 		if categories != nil {
 			view_data["Categories"] = categories
@@ -220,7 +218,7 @@ func ProductList(c *gin.Context) {
 		err := model_function.Get(&products, -1, "created_at", "desc", "Images")
 		if err != nil {
 			log.Log(logrus.Error, err)
-			view_data := make(map[string]interface{})
+			view_data := gin.H{}
 			view_data["Title"] = "Error"
 			view_data["Error"] = "Something bad happened. Come back later"
 			c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -229,13 +227,13 @@ func ProductList(c *gin.Context) {
 		err = model_function.GetCategoryByOrderingProductsCount(&categories)
 		if err != nil {
 			log.Log(logrus.Error, err)
-			view_data := make(map[string]interface{})
+			view_data := gin.H{}
 			view_data["Title"] = "Error"
 			view_data["Error"] = "Something bad happened. Come back later"
 			c.HTML(http.StatusInternalServerError, "error.html", view_data)
 		}
 		// Everything is ok
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Products List"
 		if categories != nil {
 			view_data["Categories"] = categories
@@ -251,7 +249,7 @@ func ProductDetails(c *gin.Context) {
 	str_id := c.Param("id")
 	// check str_id is Empty
 	if str_id == "" {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Go and select product again."
 		c.HTML(http.StatusBadRequest, "error.html", view_data)
@@ -261,7 +259,7 @@ func ProductDetails(c *gin.Context) {
 	int_id, err := strconv.ParseInt(str_id, 10, 64)
 	// Parse check
 	if err != nil {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Go and select product again."
 		c.HTML(http.StatusBadRequest, "error.html", view_data)
@@ -271,14 +269,14 @@ func ProductDetails(c *gin.Context) {
 	err = model_function.GetByID(&product, int(int_id))
 	// Check get product error
 	if err != nil {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Go and select product again. If this page comes up again, there must be a problem, So come later ):"
 		c.HTML(http.StatusBadRequest, "error.html", view_data)
 		return
 	}
 	// Everything is ok
-	view_data := make(map[string]interface{})
+	view_data := gin.H{}
 	view_data["Title"] = product.Name
 	view_data["Product"] = product
 	c.HTML(http.StatusOK, "product-details.html", view_data)
@@ -291,7 +289,7 @@ func Discussions(c *gin.Context) {
 	err := model_function.Get(&Discussion_categories, -1, "created_at", "ASC", "Discussions")
 	if err != nil {
 		log.Log(logrus.Error, err)
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Something bad happened. Come back later"
 		c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -317,7 +315,7 @@ func Discussions(c *gin.Context) {
 			post_count, err := model_function.GetDiscussionPostsCount(d)
 			if err != nil {
 				log.Log(logrus.Error, err)
-				view_data := make(map[string]interface{})
+				view_data := gin.H{}
 				view_data["Title"] = "Error"
 				view_data["Error"] = "Something bad happened. Come back later"
 				c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -326,7 +324,7 @@ func Discussions(c *gin.Context) {
 			topic_count, err := model_function.GetDiscussionTopicsCount(d)
 			if err != nil {
 				log.Log(logrus.Error, err)
-				view_data := make(map[string]interface{})
+				view_data := gin.H{}
 				view_data["Title"] = "Error"
 				view_data["Error"] = "Something bad happened. Come back later"
 				c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -336,7 +334,7 @@ func Discussions(c *gin.Context) {
 			forums_name, err := model_function.GetDiscussionForumsName(d)
 			if err != nil {
 				log.Log(logrus.Error, err)
-				view_data := make(map[string]interface{})
+				view_data := gin.H{}
 				view_data["Title"] = "Error"
 				view_data["Error"] = "Something bad happened. Come back later"
 				c.HTML(http.StatusInternalServerError, "error.html", view_data)
@@ -356,7 +354,7 @@ func Discussions(c *gin.Context) {
 		// Append discussion_category to main view model
 		discussion_categories_view_model = append(discussion_categories_view_model, discussion_category)
 	}
-	view_data := make(map[string]interface{})
+	view_data := gin.H{}
 	view_data["Title"] = "Discussions"
 	view_data["DiscussionsCategories"] = discussion_categories_view_model
 	c.HTML(http.StatusOK, "discussions.html", view_data)
@@ -365,40 +363,41 @@ func Discussions(c *gin.Context) {
 func DiscussionForums(c *gin.Context) {
 	discussion_name := c.Param("discussion")
 	if discussion_name == "" {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Enter a discussion name"
 		c.HTML(http.StatusBadRequest, "error.html", view_data)
 		return
 	}
-	discussion_id, err := model_function.GetModelIDByFieldValue(&model.Discussion{}, "name", discussion_name)
+	var discussion_fields = model.Discussion{}
+	err := model_function.GetFieldsByAnotherFieldValue(&discussion_fields, []string{"name"}, "name", discussion_name)
 	if err != nil {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = fmt.Sprintf("%s discussion doesn't exists. Please enter a valid discussion name", discussion_name)
 		c.HTML(http.StatusBadRequest, "error.html", view_data)
 		return
 	}
-	discussion_forums, err := model_function.GetDiscussionForumsInViewModel(discussion_id)
+	discussion_forums, err := model_function.GetDiscussionForumsInViewModel(int(discussion_fields.ID))
 	if err != nil {
 		log.Log(logrus.Error, err)
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Something bad happened. Come back later"
 		c.HTML(http.StatusInternalServerError, "error.html", view_data)
 		return
 	}
-	discussion_topics, err := model_function.GetDiscussionTopics(discussion_id)
+	discussion_topics, err := model_function.GetDiscussionTopics(int(discussion_fields.ID))
 	if err != nil {
 		log.Log(logrus.Error, err)
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Something bad happened. Come back later"
 		c.HTML(http.StatusInternalServerError, "error.html", view_data)
 		return
 	}
 
-	view_data := make(map[string]interface{})
+	view_data := gin.H{}
 	var _topics_list_template_view_model = map[string]interface{}{
 		"Topics":         discussion_topics,
 		"DiscussionName": discussion_name,
@@ -411,23 +410,24 @@ func DiscussionForums(c *gin.Context) {
 func ForumTopics(c *gin.Context) {
 	forum_name := c.Param("forum")
 	if forum_name == "" {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = "Enter a discussion name"
 		c.HTML(http.StatusBadRequest, "error.html", view_data)
 		return
 	}
-	forum_id, err := model_function.GetModelIDByFieldValue(&model.Forum{}, "name", forum_name)
+	var forum_fields = model.Forum{}
+	err := model_function.GetFieldsByAnotherFieldValue(&forum_fields, []string{"id"}, "name", forum_name)
 	if err != nil {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Error"
 		view_data["Error"] = fmt.Sprintf("%s forum doesn't exists. Please enter a valid discussion name", forum_name)
 		c.HTML(http.StatusBadRequest, "error.html", view_data)
 		return
 	}
-	forum_topics, err := model_function.GetForumTopicsInViewModel(forum_id)
+	forum_topics, err := model_function.GetForumTopicsInViewModel(int(forum_fields.ID))
 
-	view_data := make(map[string]interface{})
+	view_data := gin.H{}
 	var _topics_list_template_view_model = map[string]interface{}{
 		"Topics":    forum_topics,
 		"ForumName": forum_name,
@@ -438,7 +438,12 @@ func ForumTopics(c *gin.Context) {
 }
 
 func AddTopic_GET(c *gin.Context) {
-	c.HTML(200, "add_topic.html", nil)
+	view_data := gin.H{
+		"WriteTopicData": gin.H{
+			"ForumName": c.Param("forum"),
+		},
+	}
+	c.HTML(200, "add_topic.html", view_data)
 }
 func AddTopic_POST(c *gin.Context) {
 	// User topic Markdown
@@ -458,12 +463,19 @@ func AddTopic_POST(c *gin.Context) {
 	// Prevent XSS Attacks
 	topic_html = constansts.XSS_Preventor.Sanitize(topic_html)
 
-	var view_data = make(map[string]interface{})
+	var view_data = gin.H{}
 
 	// User wants preview of her/his topic markdown
 	if is_preview := c.Request.FormValue("preview"); is_preview != "" {
-		view_data["Preview"] = template.HTML(topic_html)
-		view_data["TopicMarkdown"] = topic_markdown
+		view_data = gin.H{
+			"WriteTopicData": gin.H{
+				"ForumName":     c.Param("forum"),
+				"Preview":       template.HTML(topic_html),
+				"TopicMarkdown": topic_markdown,
+			},
+			"Title": "Post new topic",
+		}
+
 		c.HTML(200, "add_topic.html", view_data)
 		return
 		// User wants save her/his topic markdown
@@ -474,7 +486,8 @@ func AddTopic_POST(c *gin.Context) {
 		if forum_name == "" {
 			return
 		}
-		forum_id, err := model_function.GetModelIDByFieldValue(&model.Forum{}, "name", forum_name)
+		var forum_fields = model.Forum{}
+		err := model_function.GetFieldsByAnotherFieldValue(&forum_fields, []string{"id"}, "name", forum_name)
 		if err != nil {
 			return
 		}
@@ -486,9 +499,19 @@ func AddTopic_POST(c *gin.Context) {
 		var topic model.Topic
 		topic.Name = subject
 		topic.Description = topic_html
-		topic.ForumID = uint(forum_id)
+		topic.ForumID = uint(forum_fields.ID)
 		//topic.Tags =
-		//topic.UserID =
+
+		untyped_user_id := sessions.Default(c).Get("UserID")
+		if untyped_user_id == nil {
+			return
+		}
+		user_id, ok := untyped_user_id.(uint)
+		if !ok {
+			return
+		}
+
+		topic.UserID = user_id
 
 	}
 }

@@ -29,7 +29,7 @@ func Authentication() gin.HandlerFunc {
 }
 func NotFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		view_data := make(map[string]interface{})
+		view_data := gin.H{}
 		view_data["Title"] = "Not Found"
 		view_data["Error"] = "This Page not Found"
 		c.HTML(http.StatusNotFound, "error.html", view_data)
@@ -45,7 +45,7 @@ func TooManyRequest() gin.HandlerFunc {
 		if err != nil {
 			log.Log(logrus.Error, err)
 		} else if yes == true {
-			view_data := make(map[string]interface{})
+			view_data := gin.H{}
 			view_data["Error"] = "Too many request error.Try later"
 			c.HTML(http.StatusTooManyRequests, "error.html", view_data)
 			c.Abort()
