@@ -67,7 +67,7 @@ func Login_POST(c *gin.Context) {
 	session.Set("UserID", user_fields.ID)
 	session.Save()
 
-	c.Redirect(http.StatusTemporaryRedirect, "/")
+	c.Redirect(http.StatusMovedPermanently, "/")
 }
 func Logout(c *gin.Context) {
 	// Get session
@@ -79,7 +79,7 @@ func Logout(c *gin.Context) {
 	// Remove
 	session.Save()
 	// Redirect to home page
-	c.Redirect(http.StatusTemporaryRedirect, "/")
+	c.Redirect(http.StatusMovedPermanently, "/")
 }
 func Register_POST(c *gin.Context) {
 	// Get username & password from form
@@ -119,7 +119,7 @@ func Register_POST(c *gin.Context) {
 	// Add User
 	model_function.Add(&model.User{Username: username, PasswordHash: pass_hash, Email: email})
 	// Response
-	c.Redirect(http.StatusTemporaryRedirect, "/")
+	c.Redirect(http.StatusMovedPermanently, "/")
 }
 func Index(c *gin.Context) {
 	// Get products
@@ -144,7 +144,14 @@ func Index(c *gin.Context) {
 	// Everything is ok
 	view_data := gin.H{}
 	view_data["Title"] = "Index"
-	view_data["Username"] = sessions.Default(c).Get("Username").(string)
+
+	// If user is login, show her/his username. get username from session
+	untyped_username := sessions.Default(c).Get("Username")
+	if untyped_username != nil {
+		view_data["HeaderData"] = gin.H{
+			"Username": untyped_username.(string),
+		}
+	}
 	if categories != nil {
 		view_data["Categories"] = categories
 	}
