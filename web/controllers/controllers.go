@@ -53,9 +53,15 @@ func Login_POST(c *gin.Context) {
 		return
 	}
 
-	// Set Cookie
+	// Create session for user
 	session := sessions.Default(c)
-	session.Set("authenticated", true)
+	session.Set("Username", username)
+	// Get user ID by username
+	user_id, err := model_function.GetModelIDByFieldValue(&model.User{}, "username", username)
+	if err != nil {
+		return
+	}
+	session.Set("UserID", user_id)
 	session.Save()
 
 	data := gin.H{
@@ -65,12 +71,16 @@ func Login_POST(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", data)
 }
 func Logout(c *gin.Context) {
+	// Get session
 	session := sessions.Default(c)
-	session.Set("authenticated", false)
-	data := gin.H{
-		"Title": "Index",
-	}
-	c.HTML(http.StatusOK, "index.html", data)
+	// Remove session in server-side
+	session.Clear()
+	// Remove session in client-side
+	session.Options(sessions.Options{Path: "/", MaxAge: -1})
+	// Remove
+	session.Save()
+	// Redirect to home page
+	c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 func Register_POST(c *gin.Context) {
 	// Get username & password from form
