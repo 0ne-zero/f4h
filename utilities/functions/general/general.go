@@ -16,7 +16,7 @@ import (
 func HashPassword(pass string) (string, error) {
 	// Generate bcrypt hash from password with 17 cost
 	// Get hash cost number from settings file
-	hash_cost_number_string, err := setting.ReadFieldInSettingFile("HASH_COST_NUMBER")
+	hash_cost_number_string, err := setting.ReadFieldInSettingData("HASH_COST_NUMBER")
 	if err != nil {
 		return "", err
 	}

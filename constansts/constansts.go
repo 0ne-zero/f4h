@@ -78,6 +78,7 @@ func validateSettingData(data map[string]string) error {
 		"LOG_FILE_PARENT_DIRECTORY",
 		"DSN",
 		"HASH_COST_NUMBER",
+		"CONTACT_EMAIL",
 	}
 
 	var exists bool

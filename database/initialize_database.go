@@ -13,7 +13,7 @@ func Initialize() (*gorm.DB, error) {
 
 	// Get DSN from setting file
 	// DSN = Data source name (like connection string for database)
-	dsn, err := setting.ReadFieldInSettingFile("DSN")
+	dsn, err := setting.ReadFieldInSettingData("DSN")
 	if err != nil {
 		return nil, err
 	}

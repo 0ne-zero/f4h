@@ -9,7 +9,7 @@ import (
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
-	"github.com/0ne-zero/f4h/utilities/log"
+	log "github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	viewmodel "github.com/0ne-zero/f4h/web/view_model"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"

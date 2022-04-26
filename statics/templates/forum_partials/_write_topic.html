@@ -3,7 +3,12 @@
     <div class="panel" id="postingbox">
         <div class="inner">
             <h3>Post a new topic</h3>
-
+            {{if .Error}}
+                <p class="error">
+                    {{.Error}}
+                </p>
+            {{end}}
+            
             <fieldset class="fields1">
                 <dl style="clear: left;">
                     <dt><label for="subject">Subject:</label></dt>

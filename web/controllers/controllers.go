@@ -11,12 +11,11 @@ import (
 	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
+	contoller_helper "github.com/0ne-zero/f4h/utilities/functions/controller_helper"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
-	"github.com/0ne-zero/f4h/utilities/log"
 	viewmodel "github.com/0ne-zero/f4h/web/view_model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 func Login_GET(c *gin.Context) {
@@ -32,6 +31,7 @@ func Login_POST(c *gin.Context) {
 	// Validatae username & password
 	if username == "" || password == "" {
 		data := gin.H{
+			"Title":      "Login/Signup",
 			"LoginError": "Fill all field",
 		}
 		c.HTML(http.StatusOK, "login.html", data)
@@ -42,6 +42,7 @@ func Login_POST(c *gin.Context) {
 	err := model_function.GetFieldsByAnotherFieldValue(&user_fields, []string{"password_hash"}, "username", username)
 	if err != nil {
 		data := gin.H{
+			"Title":      "Login/Signup",
 			"LoginError": "Username or Password is incorrect.",
 		}
 		c.HTML(http.StatusOK, "login.html", data)
@@ -50,6 +51,8 @@ func Login_POST(c *gin.Context) {
 	// Compare user password with entered password
 	if err := general_func.ComparePassword(user_fields.PasswordHash, password); err != nil {
 		data := gin.H{
+			"Title": "Login/Signup",
+
 			"LoginError": "Username or Password is incorrect.",
 		}
 		c.HTML(http.StatusOK, "login.html", data)
@@ -125,25 +128,19 @@ func Index(c *gin.Context) {
 	// Get products
 	products, err := model_function.GetProductInViewModel(15)
 	if err != nil {
-		log.Log(logrus.Error, err)
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Something bad happened. Come back later"
-		c.HTML(http.StatusInternalServerError, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, err, "")
+		return
 	}
 	// Get categories
 	categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
 	if err != nil {
-		log.Log(logrus.Error, err)
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Something bad happened. Come back later"
-		c.HTML(http.StatusInternalServerError, "error.html", view_data)
-		return
+		contoller_helper.SomethingBadHappened(c, err, "")
 	}
+
 	// Everything is ok
-	view_data := gin.H{}
-	view_data["Title"] = "Index"
+	view_data := gin.H{
+		"Title": "Index",
+	}
 
 	// If user is login, show her/his username. get username from session
 	untyped_username := sessions.Default(c).Get("Username")
@@ -170,42 +167,24 @@ func ProductList(c *gin.Context) {
 		// Get all categories name
 		categoriesName, err := model_function.GetCategoriesName()
 		if err != nil {
-			log.Log(logrus.Error, err)
-			view_data := gin.H{}
-			view_data["Title"] = "Error"
-			view_data["Error"] = "Something bad happened. Come back later"
-			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			contoller_helper.SomethingBadHappened(c, err, "")
 			return
 		}
 		// Check entered category is exists in database
 		if !general_func.ValueExistsInSlice(&categoriesName, enteredCategory) {
-			log.Log(logrus.Error, errors.New("Invalid Category"))
-			view_data := gin.H{}
-			view_data["Title"] = "Error"
-			view_data["Error"] = "Something bad happened. Come back later"
-			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			contoller_helper.SomethingBadHappened(c, errors.New("Invalid Category"), "")
 			return
 		}
 		// Get Products by entered category
 		products, err := model_function.GetProductByCategoryInViewModel(strings.ToLower(enteredCategory), 15)
 		if err != nil {
-			log.Log(logrus.Error, err)
-			view_data := gin.H{}
-			view_data["Title"] = "Error"
-			view_data["Error"] = "Something bad happened. Come back later"
-			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			contoller_helper.SomethingBadHappened(c, err, "")
 			return
-		} else if products == nil {
-
 		}
 		// Get all categories for sidebar
 		categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
 		if err != nil {
-			log.Log(logrus.Error, err)
-			view_data := gin.H{}
-			view_data["Title"] = "Error"
-			view_data["Error"] = "Something bad happened. Come back later"
-			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			contoller_helper.SomethingBadHappened(c, err, "")
 			return
 		}
 		// Everything is ok
@@ -220,24 +199,17 @@ func ProductList(c *gin.Context) {
 		c.HTML(http.StatusOK, "product-list.html", view_data)
 	} else {
 		// Unspecified category
-
 		var products []model.Product
 		err := model_function.Get(&products, -1, "created_at", "desc", "Images")
 		if err != nil {
-			log.Log(logrus.Error, err)
-			view_data := gin.H{}
-			view_data["Title"] = "Error"
-			view_data["Error"] = "Something bad happened. Come back later"
-			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			contoller_helper.SomethingBadHappened(c, err, "")
+			return
 		}
 		var categories []model.Product_Category
 		err = model_function.GetCategoryByOrderingProductsCount(&categories)
 		if err != nil {
-			log.Log(logrus.Error, err)
-			view_data := gin.H{}
-			view_data["Title"] = "Error"
-			view_data["Error"] = "Something bad happened. Come back later"
-			c.HTML(http.StatusInternalServerError, "error.html", view_data)
+			contoller_helper.SomethingBadHappened(c, err, "")
+			return
 		}
 		// Everything is ok
 		view_data := gin.H{}
@@ -256,30 +228,21 @@ func ProductDetails(c *gin.Context) {
 	str_id := c.Param("id")
 	// check str_id is Empty
 	if str_id == "" {
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Go and select product again."
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New("Non-Int product id sent to ProductDetails controller"), "")
 		return
 	}
 	// Integer product id
 	int_id, err := strconv.ParseInt(str_id, 10, 64)
 	// Parse check
 	if err != nil {
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Go and select product again."
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error during parse product id to Int in ProductDetails controller")), "")
 		return
 	}
 	var product model.Product
 	err = model_function.GetByID(&product, int(int_id))
 	// Check get product error
 	if err != nil {
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Go and select product again. If this page comes up again, there must be a problem, So come later ):"
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, err, "")
 		return
 	}
 	// Everything is ok
@@ -295,11 +258,7 @@ func Discussions(c *gin.Context) {
 	var Discussion_categories []model.Discussion_Category
 	err := model_function.Get(&Discussion_categories, -1, "created_at", "ASC", "Discussions")
 	if err != nil {
-		log.Log(logrus.Error, err)
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Something bad happened. Come back later"
-		c.HTML(http.StatusInternalServerError, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, err, "")
 		return
 	}
 
@@ -321,30 +280,18 @@ func Discussions(c *gin.Context) {
 			// Get discussion posts count
 			post_count, err := model_function.GetDiscussionPostsCount(d)
 			if err != nil {
-				log.Log(logrus.Error, err)
-				view_data := gin.H{}
-				view_data["Title"] = "Error"
-				view_data["Error"] = "Something bad happened. Come back later"
-				c.HTML(http.StatusInternalServerError, "error.html", view_data)
+				contoller_helper.SomethingBadHappened(c, err, "")
 				return
 			}
 			topic_count, err := model_function.GetDiscussionTopicsCount(d)
 			if err != nil {
-				log.Log(logrus.Error, err)
-				view_data := gin.H{}
-				view_data["Title"] = "Error"
-				view_data["Error"] = "Something bad happened. Come back later"
-				c.HTML(http.StatusInternalServerError, "error.html", view_data)
+				contoller_helper.SomethingBadHappened(c, err, "")
 				return
 			}
 			// Get discussion forums name
 			forums_name, err := model_function.GetDiscussionForumsName(d)
 			if err != nil {
-				log.Log(logrus.Error, err)
-				view_data := gin.H{}
-				view_data["Title"] = "Error"
-				view_data["Error"] = "Something bad happened. Come back later"
-				c.HTML(http.StatusInternalServerError, "error.html", view_data)
+				contoller_helper.SomethingBadHappened(c, err, "")
 				return
 			}
 			// Create discussion view model
@@ -370,37 +317,23 @@ func Discussions(c *gin.Context) {
 func DiscussionForums(c *gin.Context) {
 	discussion_name := c.Param("discussion")
 	if discussion_name == "" {
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Enter a discussion name"
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New("Empty discussion name in DiscussionForums controller"), "Discussion name is empty in url parameter")
 		return
 	}
 	var discussion_fields = model.Discussion{}
 	err := model_function.GetFieldsByAnotherFieldValue(&discussion_fields, []string{"name"}, "name", discussion_name)
 	if err != nil {
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = fmt.Sprintf("%s discussion doesn't exists. Please enter a valid discussion name", discussion_name)
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Invalid discussion in DiscussionForums controller (discussion doesn't exists)")), fmt.Sprintf("%s discussion doesn't exists.", discussion_name))
 		return
 	}
 	discussion_forums, err := model_function.GetDiscussionForumsInViewModel(int(discussion_fields.ID))
 	if err != nil {
-		log.Log(logrus.Error, err)
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Something bad happened. Come back later"
-		c.HTML(http.StatusInternalServerError, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error during get discussion forums in Discussion Forums controller")), "")
 		return
 	}
 	discussion_topics, err := model_function.GetDiscussionTopics(int(discussion_fields.ID))
 	if err != nil {
-		log.Log(logrus.Error, err)
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Something bad happened. Come back later"
-		c.HTML(http.StatusInternalServerError, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error during get discussion topics in Discussion Forums controller")), "")
 		return
 	}
 
@@ -417,19 +350,13 @@ func DiscussionForums(c *gin.Context) {
 func ForumTopics(c *gin.Context) {
 	forum_name := c.Param("forum")
 	if forum_name == "" {
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = "Enter a discussion name"
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New("Empty forum name sent to ForumTopics controller"), "Forum name is empty in url parameter")
 		return
 	}
 	var forum_fields = model.Forum{}
 	err := model_function.GetFieldsByAnotherFieldValue(&forum_fields, []string{"id"}, "name", forum_name)
 	if err != nil {
-		view_data := gin.H{}
-		view_data["Title"] = "Error"
-		view_data["Error"] = fmt.Sprintf("%s forum doesn't exists. Please enter a valid discussion name", forum_name)
-		c.HTML(http.StatusBadRequest, "error.html", view_data)
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err, "Invalid forum name in ForumTopics (forum name doesn't exists)")), "")
 		return
 	}
 	forum_topics, err := model_function.GetForumTopicsInViewModel(int(forum_fields.ID))
@@ -452,6 +379,7 @@ func AddTopic_GET(c *gin.Context) {
 	// Get topic data and convert it in map[string]string
 	topic_data, ok := s.Get("TopicData").(map[string]string)
 	if !ok {
+		contoller_helper.SomethingBadHappened(c, errors.New("Error during convert user's session topic data"), "")
 		return
 	}
 	if topic_data != nil {
@@ -464,6 +392,8 @@ func AddTopic_GET(c *gin.Context) {
 	c.HTML(200, "add_topic.html", view_data)
 }
 func AddTopic_POST(c *gin.Context) {
+	// do error handelling
+
 	// User topic Markdown
 	topic_markdown := c.Request.FormValue("topic-markdown")
 	if topic_markdown == "" {

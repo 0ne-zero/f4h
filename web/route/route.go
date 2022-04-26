@@ -6,7 +6,7 @@ import (
 
 	"github.com/0ne-zero/f4h/constansts"
 	template_func "github.com/0ne-zero/f4h/utilities/functions/template"
-	"github.com/0ne-zero/f4h/utilities/log"
+	log "github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"github.com/0ne-zero/f4h/web/controllers"
 	"github.com/0ne-zero/f4h/web/middleware"
 	"github.com/gin-contrib/sessions"
