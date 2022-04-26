@@ -1,47 +1,31 @@
 package function
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
-	"github.com/0ne-zero/f4h/config/constansts"
+	"github.com/0ne-zero/f4h/constansts"
+	"github.com/0ne-zero/f4h/utilities/functions/setting"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func ReadSettingFile(setting_path string) (map[string]interface{}, error) {
-	var data map[string]interface{}
-	file, err := ioutil.ReadFile(setting_path)
-	if err != nil {
-		return nil, errors.New("Error when opening setting file")
-	}
-	err = json.Unmarshal(file, &data)
-	if err != nil {
-		return nil, errors.New("Error during unmarshal setting file")
-	}
-	return data, nil
-}
-func ReadFieldInSettingFile(setting_path string, field_name string) (string, error) {
-	settings, err := ReadSettingFile(setting_path)
+func HashPassword(pass string) (string, error) {
+	// Generate bcrypt hash from password with 17 cost
+	// Get hash cost number from settings file
+	hash_cost_number_string, err := setting.ReadFieldInSettingFile("HASH_COST_NUMBER")
 	if err != nil {
 		return "", err
 	}
-
-	field_value, exists := settings[field_name]
-	if !exists {
-		return "", errors.New("Field not exists in setting file")
+	// convert hash_cost_number_string to int
+	hash_cost_number, err := strconv.ParseInt(hash_cost_number_string, 10, 64)
+	if err != nil {
+		return "", err
 	}
-
-	// Convert type interface to string and return value of field
-	return fmt.Sprint(field_value), nil
-
-}
-func HashPassword(pass string) (string, error) {
-	// Generate bcrypt hash from password with 17 cost
-	hash_bytes, err := bcrypt.GenerateFromPassword([]byte(pass), 17)
+	hash_bytes, err := bcrypt.GenerateFromPassword([]byte(pass), int(hash_cost_number))
 	if err != nil {
 		return "", err
 	}
@@ -80,6 +64,9 @@ func ValueExistsInSlice[T comparable](slice *[]T, value T) bool {
 	return false
 }
 func MarkdownToHtml(markdown string) (string, error) {
+	if _, err := os.Stat(constansts.MarkdownFilePath); err != nil {
+		return "", errors.New(fmt.Sprintf("Please put Markdown file in %s path", constansts.MarkdownFilePath))
+	}
 	command := fmt.Sprintf(`echo "%s" | %s`, markdown, constansts.MarkdownFilePath)
 	topic_markdown_html_bytes, err := exec.Command("bash", "-c", command).Output()
 	return string(topic_markdown_html_bytes), err

@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/0ne-zero/f4h/config/constansts"
+	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
-	"github.com/0ne-zero/f4h/utilities/function"
+	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
 	"github.com/0ne-zero/f4h/utilities/log"
 	viewmodel "github.com/0ne-zero/f4h/web/view_model"
 	"github.com/gin-contrib/sessions"
@@ -48,7 +48,7 @@ func Login_POST(c *gin.Context) {
 		return
 	}
 	// Compare user password with entered password
-	if err := function.ComparePassword(user_fields.PasswordHash, password); err != nil {
+	if err := general_func.ComparePassword(user_fields.PasswordHash, password); err != nil {
 		data := gin.H{
 			"LoginError": "Username or Password is incorrect.",
 		}
@@ -108,7 +108,7 @@ func Register_POST(c *gin.Context) {
 	}
 	// So far user not exists, i should register client
 	// Create password hash
-	pass_hash, err := function.HashPassword(password)
+	pass_hash, err := general_func.HashPassword(password)
 	if err != nil {
 		//Log
 		view_data := gin.H{}
@@ -165,7 +165,7 @@ func ProductList(c *gin.Context) {
 	// Specified category
 	if enteredCategory != "" && enteredCategory != "/" {
 		// Remove slashes and Make Title from input category
-		enteredCategory = function.RemoveSlashFromBeginAndEnd(enteredCategory)
+		enteredCategory = general_func.RemoveSlashFromBeginAndEnd(enteredCategory)
 
 		// Get all categories name
 		categoriesName, err := model_function.GetCategoriesName()
@@ -178,7 +178,7 @@ func ProductList(c *gin.Context) {
 			return
 		}
 		// Check entered category is exists in database
-		if !function.ValueExistsInSlice(&categoriesName, enteredCategory) {
+		if !general_func.ValueExistsInSlice(&categoriesName, enteredCategory) {
 			log.Log(logrus.Error, errors.New("Invalid Category"))
 			view_data := gin.H{}
 			view_data["Title"] = "Error"
@@ -445,30 +445,40 @@ func ForumTopics(c *gin.Context) {
 }
 
 func AddTopic_GET(c *gin.Context) {
-	view_data := gin.H{
-		"WriteTopicData": gin.H{
-			"ForumName": c.Param("forum"),
-		},
+	write_topic_data_view_data := gin.H{}
+	write_topic_data_view_data["ForumName"] = c.Param("forum")
+
+	s := sessions.Default(c)
+	// Get topic data and convert it in map[string]string
+	topic_data, ok := s.Get("TopicData").(map[string]string)
+	if !ok {
+		return
 	}
+	if topic_data != nil {
+		write_topic_data_view_data["TopicSubject"] = topic_data["Subject"]
+		write_topic_data_view_data["TopicMarkdown"] = topic_data["Markdown"]
+	}
+
+	view_data := gin.H{}
+	view_data["WriteTopicData"] = write_topic_data_view_data
 	c.HTML(200, "add_topic.html", view_data)
 }
 func AddTopic_POST(c *gin.Context) {
 	// User topic Markdown
 	topic_markdown := c.Request.FormValue("topic-markdown")
 	if topic_markdown == "" {
-		// return error
+		return
 	}
 	topic_markdown = strings.TrimSpace(topic_markdown)
-
 	// Convert Markdown to Html
-	topic_html, err := function.MarkdownToHtml(topic_markdown)
+	topic_html, err := general_func.MarkdownToHtml(topic_markdown)
 	if err != nil {
 		return
 	}
 	// Remove space from start and end of topic_html
 	topic_html = strings.TrimSpace(topic_html)
 	// Prevent XSS Attacks
-	topic_html = constansts.XSS_Preventor.Sanitize(topic_html)
+	topic_html = constansts.XSSPreventor.Sanitize(topic_html)
 
 	var view_data = gin.H{}
 
@@ -487,6 +497,13 @@ func AddTopic_POST(c *gin.Context) {
 		return
 		// User wants save her/his topic markdown
 	} else if is_save := c.Request.FormValue("save"); is_save != "" {
+		subject := c.Request.FormValue("subject")
+		var topic_data map[string]string
+		topic_data["Subject"] = subject
+		topic_data["Markdown"] = topic_markdown
+		s := sessions.Default(c)
+		s.Set("TopicData", topic_data)
+		s.Save()
 		// User wants submit her/his text
 	} else if is_submit := c.Request.FormValue("submit"); is_submit != "" {
 		forum_name := c.Param("forum")
@@ -511,6 +528,7 @@ func AddTopic_POST(c *gin.Context) {
 
 		untyped_user_id := sessions.Default(c).Get("UserID")
 		if untyped_user_id == nil {
+			// Login error
 			return
 		}
 		user_id, ok := untyped_user_id.(uint)
