@@ -17,7 +17,7 @@ func ReadFieldsInSettingFile(fields_name []string) (map[string]string, error) {
 	}
 	return fields_value, nil
 }
-func ReadFieldInSettingFile(field_name string) (string, error) {
+func ReadFieldInSettingData(field_name string) (string, error) {
 	value, exists := constansts.SettingData[field_name]
 	if !exists {
 		return "", errors.New("Key doesn't exists in setting data")

@@ -6,7 +6,7 @@ import (
 
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
-	"github.com/0ne-zero/f4h/utilities/log"
+	log "github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
