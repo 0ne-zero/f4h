@@ -4,9 +4,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/0ne-zero/f4h/config/constansts"
+	"github.com/0ne-zero/f4h/constansts"
+	template_func "github.com/0ne-zero/f4h/utilities/functions/template"
 	"github.com/0ne-zero/f4h/utilities/log"
-	templatefunction "github.com/0ne-zero/f4h/utilities/template_function"
 	"github.com/0ne-zero/f4h/web/controllers"
 	"github.com/0ne-zero/f4h/web/middleware"
 	"github.com/gin-contrib/sessions"
@@ -18,7 +18,7 @@ import (
 func MakeRoute() *gin.Engine {
 	r := gin.Default()
 	// Html template function
-	templatefunction.AddFunctionsToRoute(r)
+	template_func.AddFunctionsToRoute(r)
 	// Statics
 	r.Static("statics", filepath.Join(constansts.ExecutableDirectory, "/statics/"))
 	// Htmls
