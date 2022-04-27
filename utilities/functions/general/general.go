@@ -1,14 +1,16 @@
-package function
+package general
 
 import (
 	"errors"
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"strconv"
 	"strings"
 
 	"github.com/0ne-zero/f4h/constansts"
+	"github.com/0ne-zero/f4h/public_struct"
 	"github.com/0ne-zero/f4h/utilities/functions/setting"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -70,4 +72,35 @@ func MarkdownToHtml(markdown string) (string, error) {
 	command := fmt.Sprintf(`echo "%s" | %s`, markdown, constansts.MarkdownFilePath)
 	topic_markdown_html_bytes, err := exec.Command("bash", "-c", command).Output()
 	return string(topic_markdown_html_bytes), err
+}
+
+func AppendTextToFile(path string, text string) error {
+	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0775)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	_, err = file.Write([]byte(text))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetCallerInfo(skip int) (public_struct.ErroredFileInfo, error) {
+	if constansts.GetCallerInfoError >= 10 {
+		log_msg := fmt.Sprintf("%s file='%s:%d'", "More than 9 Errors occurred during get caller info ", "/utilities/functions/general/general.GetCallerInfo", 88)
+		AppendTextToFile(constansts.LogFilePath, log_msg)
+		os.Exit(1)
+	}
+	_, path, line, ok := runtime.Caller(skip)
+	if !ok {
+		constansts.GetCallerInfoError += 1
+		return public_struct.ErroredFileInfo{}, errors.New("Error occurred during get caller information")
+	}
+	if constansts.GetCallerInfoError > 0 {
+		constansts.GetCallerInfoError = 0
+	}
+
+	return public_struct.ErroredFileInfo{Path: path, Line: line}, nil
 }

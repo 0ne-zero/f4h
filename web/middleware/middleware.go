@@ -6,10 +6,10 @@ import (
 
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
-	log "github.com/0ne-zero/f4h/utilities/wrapper_logger"
+	"github.com/0ne-zero/f4h/utilities/functions/general"
+	wrapper_logger "github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 func Authentication() gin.HandlerFunc {
@@ -43,7 +43,12 @@ func TooManyRequest() gin.HandlerFunc {
 
 		yes, err := model_function.TooManyRequest(client_ip, url, method)
 		if err != nil {
-			log.Log(logrus.Error, err)
+			err_file_info, err := general.GetCallerInfo(1)
+			if err != nil {
+				err_file_info, err = general.GetCallerInfo(0)
+				wrapper_logger.Log(&wrapper_logger.FatalLevel{}, "Error occurred during get caller info", &err_file_info)
+			}
+			wrapper_logger.Log(&wrapper_logger.ErrorLevel{}, err, &err_file_info)
 		} else if yes == true {
 			view_data := gin.H{}
 			view_data["Error"] = "Too many request error.Try later"

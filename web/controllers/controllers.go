@@ -235,7 +235,7 @@ func ProductDetails(c *gin.Context) {
 	int_id, err := strconv.ParseInt(str_id, 10, 64)
 	// Parse check
 	if err != nil {
-		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error during parse product id to Int in ProductDetails controller")), "")
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error occurred during parse product id to Int in ProductDetails controller")), "")
 		return
 	}
 	var product model.Product
@@ -328,12 +328,12 @@ func DiscussionForums(c *gin.Context) {
 	}
 	discussion_forums, err := model_function.GetDiscussionForumsInViewModel(int(discussion_fields.ID))
 	if err != nil {
-		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error during get discussion forums in Discussion Forums controller")), "")
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error occurred during get discussion forums in Discussion Forums controller")), "")
 		return
 	}
 	discussion_topics, err := model_function.GetDiscussionTopics(int(discussion_fields.ID))
 	if err != nil {
-		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error during get discussion topics in Discussion Forums controller")), "")
+		contoller_helper.SomethingBadHappened(c, errors.New(fmt.Sprintf("%s (%s)", err.Error(), "Error occurred during get discussion topics in Discussion Forums controller")), "")
 		return
 	}
 
@@ -379,7 +379,7 @@ func AddTopic_GET(c *gin.Context) {
 	// Get topic data and convert it in map[string]string
 	topic_data, ok := s.Get("TopicData").(map[string]string)
 	if !ok {
-		contoller_helper.SomethingBadHappened(c, errors.New("Error during convert user's session topic data"), "")
+		contoller_helper.SomethingBadHappened(c, errors.New("Error occurred during convert user's session topic data"), "")
 		return
 	}
 	if topic_data != nil {

@@ -32,6 +32,9 @@ var Routes gin.RoutesInfo
 // Setting file data
 var SettingData map[string]string
 
+// Number of get caller info (/utilities/functions/general.GetCallerInfo) error
+var GetCallerInfoError int
+
 func init() {
 	// Paths
 	ExecutableDirectory = filepath.Dir(os.Args[0])
@@ -63,7 +66,7 @@ func readSettingFile(setting_path string) (map[string]string, error) {
 	var data map[string]string
 	err = json.Unmarshal(file_bytes, &data)
 	if err != nil {
-		return nil, errors.New("Error during unmarshal setting file")
+		return nil, errors.New("Error occurred during unmarshal setting file")
 	}
 	err = validateSettingData(data)
 	if err != nil {
