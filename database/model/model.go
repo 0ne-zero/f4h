@@ -321,6 +321,13 @@ type Request struct {
 	Method string    `gorm:"NOT NULL"`
 	Time   time.Time `gorm:"NOT NULL"`
 }
+type BadRequest struct {
+	ID     uint      `gorm:"primarykey"`
+	IP     string    `gorm:"NOT NULL"`
+	Url    string    `gorm:"NOT NULL"`
+	Method string    `gorm:"NOT NULL"`
+	Time   time.Time `gorm:"NOT NULL"`
+}
 
 //endregion
 

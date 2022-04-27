@@ -1,0 +1,5 @@
+[2022-04-26T23:14:48Z]-[ERROR]-[f4h]: msg='sdfadf;k'
+[2022-04-26T23:21:30Z]-[ERROR]-[f4h]: msg='sdfadf;kaksdljf;as;dklfaklasdjfas;dkl'
+[2022-04-26T23:48:23Z]-[ERROR]-[f4h]: log_msg='sdfadf;kaksdljf;as;dklfaklasdjfas;dkl'[2022-04-27T00:02:37Z]-[ERROR]-[f4h]: log_msg='sdf;klj
+'[2022-04-27T00:06:28Z]-[FATAL]-[f4h]: log_msg='Error occurred during convert interface{} to string in Log function
+'

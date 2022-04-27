@@ -6,26 +6,27 @@ import (
 	"sort"
 	"time"
 
+	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
+	"github.com/0ne-zero/f4h/public_struct"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
-	log "github.com/0ne-zero/f4h/utilities/wrapper_logger"
+	wrapper_logger "github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	viewmodel "github.com/0ne-zero/f4h/web/view_model"
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
 
 type Model interface {
-	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product | model.Request | model.Discussion_Category
+	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product | model.Request | model.Discussion_Category | model.BadRequest
 }
 
 func init() {
 	var err error
 	db, err = database.Initialize()
 	if err != nil {
-		log.Log(logrus.Fatal, err)
+		wrapper_logger.Log(&wrapper_logger.FatalLevel{}, "Error when initializing database", &public_struct.ErroredFileInfo{Path: constansts.ExecutableDirectory, Line: 28})
 	}
 }
 
