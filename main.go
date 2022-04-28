@@ -19,7 +19,6 @@ func main() {
 	// db.Debug().Preload("Votes").Preload("Comments").Preload("Activity").Preload("Addresses").Preload("Polls").Preload("Products").Preload("Carts").Preload("WalletInfos").Preload("WalletInfos").Preload("Orders").Preload("Roles").First(&user)
 	// s, _ := models.IsExists(db, &user)
 	// time level msg func file
-
 	route := route.MakeRoute()
 	route.Run(":8080")
 }
