@@ -11,9 +11,9 @@ import (
 	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
+	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	contoller_helper "github.com/0ne-zero/f4h/utilities/functions/controller_helper"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
-	viewmodel "github.com/0ne-zero/f4h/web/view_model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )

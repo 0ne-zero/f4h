@@ -10,9 +10,9 @@ import (
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/public_struct"
+	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
 	wrapper_logger "github.com/0ne-zero/f4h/utilities/wrapper_logger"
-	viewmodel "github.com/0ne-zero/f4h/web/view_model"
 	"gorm.io/gorm"
 )
 
