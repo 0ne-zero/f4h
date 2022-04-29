@@ -1404,7 +1404,7 @@ exports.Test = require('./test');
  */
 
 function image(name) {
-  return __dirname + '/../../statics/images/admin_panel/' + name + '.png';
+  return __dirname + '/../../images/admin_panel/' + name + '.png';
 }
 
 /**

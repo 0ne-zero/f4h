@@ -24,7 +24,7 @@ saveAs(content, "example.zip");
 /*
 Results in a zip containing
 Hello.txt
-../statics/images/admin_panel/
+../images/admin_panel/
     smile.gif
 */
 ```

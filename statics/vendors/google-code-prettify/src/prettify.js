@@ -215,7 +215,7 @@ var prettyPrint;
   /**
    * A set of tokens that can precede a regular expression literal in
    * javascript
-   * http://web.archive.org/web/20070717142515/http://www.mozilla.org/statics/js/language/js20/rationale/syntax.html
+   * http://web.archive.org/web/20070717142515/http://www.mozilla.org/js/language/js20/rationale/syntax.html
    * has the full list, but I've removed ones that might be problematic when
    * seen in languages that don't support regular expression literals.
    *

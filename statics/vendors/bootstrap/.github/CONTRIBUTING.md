@@ -140,7 +140,7 @@ project (indentation, accurate comments, etc.) and any other requirements
 **Do not edit `bootstrap.css`, or `bootstrap.js`
 directly!** Those files are automatically generated. You should edit the
 source files in [`/bootstrap/scss/`](https://github.com/twbs/bootstrap/tree/master/scss)
-and/or [`/bootstrap/statics/js/`](https://github.com/twbs/bootstrap/tree/master/js) instead.
+and/or [`/bootstrap/js/`](https://github.com/twbs/bootstrap/tree/master/js) instead.
 
 Similarly, when contributing to Bootstrap's documentation, you should edit the
 documentation source files in

@@ -1,7 +1,7 @@
 # DateJS: Evolved
 The JavaScript Date Library  
 [![Build Status](https://travis-ci.org/abritinthebay/datejs.svg?branch=master)](https://travis-ci.org/abritinthebay/datejs)
-[![NPM version](https://badge.fury.io/statics/js/datejs.svg)](http://badge.fury.io/statics/js/datejs)
+[![NPM version](https://badge.fury.io/js/datejs.svg)](http://badge.fury.io/js/datejs)
 [![Code Climate](https://codeclimate.com/github/abritinthebay/datejs.svg)](https://codeclimate.com/github/abritinthebay/datejs)
 [![Test Coverage](https://codeclimate.com/github/abritinthebay/datejs/badges/coverage.svg)](https://codeclimate.com/github/abritinthebay/datejs)
 

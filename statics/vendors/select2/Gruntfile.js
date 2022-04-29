@@ -69,23 +69,23 @@ module.exports = function (grunt) {
     concat: {
       'dist': {
         options: {
-          banner: grunt.file.read('src/statics/js/wrapper.start.js'),
+          banner: grunt.file.read('src/js/wrapper.start.js'),
         },
         src: [
-          'dist/statics/js/select2.js',
-          'src/statics/js/wrapper.end.js'
+          'dist/js/select2.js',
+          'src/js/wrapper.end.js'
         ],
-        dest: 'dist/statics/js/select2.js'
+        dest: 'dist/js/select2.js'
       },
       'dist.full': {
         options: {
-          banner: grunt.file.read('src/statics/js/wrapper.start.js'),
+          banner: grunt.file.read('src/js/wrapper.start.js'),
         },
         src: [
-          'dist/statics/js/select2.full.js',
-          'src/statics/js/wrapper.end.js'
+          'dist/js/select2.full.js',
+          'src/js/wrapper.end.js'
         ],
-        dest: 'dist/statics/js/select2.full.js'
+        dest: 'dist/js/select2.full.js'
       }
     },
 
@@ -101,15 +101,15 @@ module.exports = function (grunt) {
 
     uglify: {
       'dist': {
-        src: 'dist/statics/js/select2.js',
-        dest: 'dist/statics/js/select2.min.js',
+        src: 'dist/js/select2.js',
+        dest: 'dist/js/select2.min.js',
         options: {
           banner: minifiedBanner
         }
       },
       'dist.full': {
-        src: 'dist/statics/js/select2.full.js',
-        dest: 'dist/statics/js/select2.full.min.js',
+        src: 'dist/js/select2.full.js',
+        dest: 'dist/js/select2.full.min.js',
         options: {
           banner: minifiedBanner
         }
@@ -201,7 +201,7 @@ module.exports = function (grunt) {
         jshintrc: true
       },
       code: {
-        src: ['src/statics/js/**/*.js']
+        src: ['src/js/**/*.js']
       },
       tests: {
         src: ['tests/**/*.js']
@@ -214,7 +214,7 @@ module.exports = function (grunt) {
           outputStyle: 'compressed'
         },
         files: {
-          'dist/statics/css/select2.min.css': [
+          'dist/css/select2.min.css': [
             'src/scss/core.scss',
             'src/scss/theme/default/layout.css'
           ]
@@ -225,7 +225,7 @@ module.exports = function (grunt) {
           outputStyle: 'nested'
         },
         files: {
-          'dist/statics/css/select2.css': [
+          'dist/css/select2.css': [
             'src/scss/core.scss',
             'src/scss/theme/default/layout.css'
           ]
@@ -252,7 +252,7 @@ module.exports = function (grunt) {
           baseUrl: 'src/js',
           optimize: 'none',
           name: 'select2/core',
-          out: 'dist/statics/js/select2.js',
+          out: 'dist/js/select2.js',
           include: includes,
           namespace: 'S2',
           paths: {
@@ -261,8 +261,8 @@ module.exports = function (grunt) {
             'jquery-mousewheel': 'jquery.mousewheel.shim'
           },
           wrap: {
-            startFile: 'src/statics/js/banner.start.js',
-            endFile: 'src/statics/js/banner.end.js'
+            startFile: 'src/js/banner.start.js',
+            endFile: 'src/js/banner.end.js'
           }
         }
       },
@@ -271,7 +271,7 @@ module.exports = function (grunt) {
           baseUrl: 'src/js',
           optimize: 'none',
           name: 'select2/core',
-          out: 'dist/statics/js/select2.full.js',
+          out: 'dist/js/select2.full.js',
           include: fullIncludes,
           namespace: 'S2',
           paths: {
@@ -280,21 +280,21 @@ module.exports = function (grunt) {
             'jquery-mousewheel': require.resolve('jquery-mousewheel').slice(0, -3)
           },
           wrap: {
-            startFile: 'src/statics/js/banner.start.js',
-            endFile: 'src/statics/js/banner.end.js'
+            startFile: 'src/js/banner.start.js',
+            endFile: 'src/js/banner.end.js'
           }
         }
       },
       'i18n': {
         options: {
-          baseUrl: 'src/statics/js/select2/i18n',
-          dir: 'dist/statics/js/i18n',
+          baseUrl: 'src/js/select2/i18n',
+          dir: 'dist/js/i18n',
           paths: i18nPaths,
           modules: i18nModules,
           namespace: 'S2',
           wrap: {
-            start: minifiedBanner + grunt.file.read('src/statics/js/banner.start.js'),
-            end: grunt.file.read('src/statics/js/banner.end.js')
+            start: minifiedBanner + grunt.file.read('src/js/banner.start.js'),
+            end: grunt.file.read('src/js/banner.end.js')
           }
         }
       }
@@ -303,7 +303,7 @@ module.exports = function (grunt) {
     watch: {
       js: {
         files: [
-          'src/statics/js/select2/**/*.js',
+          'src/js/select2/**/*.js',
           'tests/**/*.js'
         ],
         tasks: [

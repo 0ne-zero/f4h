@@ -336,7 +336,7 @@ Zone America/North_Dakota/Center -6:45:12 - LMT	1883 Nov 18 12:14:48
 			-6:00	US	C%sT
 # Morton County, ND, switched from mountain to central time on
 # 2003-10-26, except for the area around Mandan which was already central time.
-# See <http://dmses.dot.gov/doc../statics/images/admin_panel/p63/135818.pdf>.
+# See <http://dmses.dot.gov/doc../images/admin_panel/p63/135818.pdf>.
 # Officially this switch also included part of Sioux County, and
 # Jones, Mellette, and Todd Counties in South Dakota;
 # but in practice these other counties were already observing central time.
@@ -691,7 +691,7 @@ Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:15:11
 # From Nathan Stratton Treadway (2006-03-30):
 # http://www.dot.gov/affairs/dot0406.htm [3705 B]
 # From Deborah Goldsmith (2006-01-18):
-# http://dmses.dot.gov/doc../statics/images/admin_panel/pdf95/382329_web.pdf [2.9 MB]
+# http://dmses.dot.gov/doc../images/admin_panel/pdf95/382329_web.pdf [2.9 MB]
 # From Paul Eggert (2006-01-20):
 # It says "DOT is relocating the time zone boundary in Indiana to move Starke,
 # Pulaski, Knox, Daviess, Martin, Pike, Dubois, and Perry Counties from the
@@ -2003,8 +2003,8 @@ Zone America/Creston	-7:46:04 -	LMT	1884
 
 # From Gwillim Law (2005-05-21):
 # According to maps at
-# http://inms-ienm.nrc-cnrc.gc.ca/../statics/images/admin_panel/time_services/TZ01SWE.jpg
-# http://inms-ienm.nrc-cnrc.gc.ca/../statics/images/admin_panel/time_services/TZ01SSE.jpg
+# http://inms-ienm.nrc-cnrc.gc.ca/../images/admin_panel/time_services/TZ01SWE.jpg
+# http://inms-ienm.nrc-cnrc.gc.ca/../images/admin_panel/time_services/TZ01SSE.jpg
 # (both dated 2003), and
 # http://www.canadiangeographic.ca/Magazine/SO98/geomap.asp
 # (from a 1998 Canadian Geographic article), the de facto and de jure time

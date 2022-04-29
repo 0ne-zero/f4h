@@ -2,5 +2,5 @@
 **/dist/
 **/vendor/
 /_gh_pages/
-/statics/js/coverage/
+/js/coverage/
 /package.js

@@ -29,7 +29,7 @@
     "tagging"
   ],
   "license": "MIT",
-  "main": "dist/statics/js/select2.js",
+  "main": "dist/js/select2.js",
   "files": [
     "src",
     "dist"

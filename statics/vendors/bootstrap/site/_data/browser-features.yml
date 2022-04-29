@@ -12,7 +12,7 @@
   browser: >
     Edge
   summary: >
-    Implement the [`:dir()` pseudo-class](https://developer.mozilla.org/en-US/docs/Web/statics/css/:dir) from Selectors Level 4
+    Implement the [`:dir()` pseudo-class](https://developer.mozilla.org/en-US/docs/Web/:dir) from Selectors Level 4
   upstream_bug: >
     UserVoice#12299532
   origin: >
@@ -102,7 +102,7 @@
   browser: >
     Chrome
   summary: >
-    Implement the [`:dir()` pseudo-class](https://developer.mozilla.org/en-US/docs/Web/statics/css/:dir) from Selectors Level 4
+    Implement the [`:dir()` pseudo-class](https://developer.mozilla.org/en-US/docs/Web/:dir) from Selectors Level 4
   upstream_bug: >
     Chromium#576815
   origin: >
@@ -122,7 +122,7 @@
   browser: >
     Safari
   summary: >
-    Implement the [`:dir()` pseudo-class](https://developer.mozilla.org/en-US/docs/Web/statics/css/:dir) from Selectors Level 4
+    Implement the [`:dir()` pseudo-class](https://developer.mozilla.org/en-US/docs/Web/:dir) from Selectors Level 4
   upstream_bug: >
     WebKit#64861
   origin: >

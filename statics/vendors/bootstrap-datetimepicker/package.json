@@ -41,7 +41,7 @@
     "moment"
   ],
   "license": "MIT",
-  "main": "src/statics/js/bootstrap-datetimepicker.js",
+  "main": "src/js/bootstrap-datetimepicker.js",
   "name": "eonasdan-bootstrap-datetimepicker",
   "repository": {
     "type": "git",

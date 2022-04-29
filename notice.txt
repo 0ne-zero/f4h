@@ -19,3 +19,4 @@
 -- add add topic save draft (should done with cookie)
 -- secure session managment
 -- time format in setting file
+-- create admin partials
