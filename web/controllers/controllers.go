@@ -470,6 +470,13 @@ func AddTopic_POST(c *gin.Context) {
 
 	}
 }
+func ShowTopic(c *gin.Context) {
+
+}
+func Admin_Index(c *gin.Context) {
+
+	c.HTML(200, "admin_index.html", nil)
+}
 
 //endregion
 

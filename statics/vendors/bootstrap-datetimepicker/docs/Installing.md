@@ -29,10 +29,10 @@ Include necessary scripts and styles:
   <!-- ... -->
   <script type="text/javascript" src="/bower_components/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
-  <script type="text/javascript" src="/bower_components/bootstrap/dist/statics/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/statics/js/bootstrap-datetimepicker.min.js"></script>
-  <link rel="stylesheet" href="/bower_components/bootstrap/dist/statics/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/statics/css/bootstrap-datetimepicker.min.css" />
+  <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/bootstrap-datetimepicker.min.css" />
 </head>
 ```
 ## Nuget
@@ -95,8 +95,8 @@ Alternatively you could include the whole bundle of bootstrap plugins from [boot
 ```html
 <script type="text/javascript" src="/path/to/jquery.js"></script>
 <script type="text/javascript" src="/path/to/moment.js"></script>
-<script type="text/javascript" src="/path/to/bootstrap/statics/js/transition.js"></script>
-<script type="text/javascript" src="/path/to/bootstrap/statics/js/collapse.js"></script>
+<script type="text/javascript" src="/path/to/bootstrap/js/transition.js"></script>
+<script type="text/javascript" src="/path/to/bootstrap/js/collapse.js"></script>
 <script type="text/javascript" src="/path/to/bootstrap/dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="/path/to/bootstrap-datetimepicker.min.js"></script>
 ```
@@ -157,5 +157,5 @@ ko.bindingHandlers.dateTimePicker = {
 
 Using CSS (default color palette)
 ```html
-<link rel="stylesheet" href="/path/to/bootstrap-datetimepicker/build/statics/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="/path/to/bootstrap-datetimepicker/build/bootstrap-datetimepicker.min.css" />
 ```

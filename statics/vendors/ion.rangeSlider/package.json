@@ -23,7 +23,7 @@
         "noui",
         "skins"
     ],
-    "main": "./statics/js/ion.rangeSlider.js",
+    "main": "./js/ion.rangeSlider.js",
     "directories": {
         "lib": "js"
     },

@@ -51,7 +51,7 @@ func MakeRoute() *gin.Engine {
 	r.GET("/login", controllers.Login_GET)
 	r.POST("/login", controllers.Login_POST)
 	r.POST("/register", controllers.Register_POST)
-
+	r.GET("/admin", controllers.Admin_Index)
 	// Public authorized
 	authorized := r.Group("/")
 	authorized.Use(middleware.Authentication())
@@ -65,6 +65,7 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/ForumTopics/:forum", controllers.ForumTopics)
 		authorized.GET("/AddTopic/:forum", controllers.AddTopic_GET)
 		authorized.POST("/AddTopic/:forum", controllers.AddTopic_POST)
+
 	}
 	constansts.Routes = r.Routes()
 

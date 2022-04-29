@@ -1,8 +1,8 @@
 {
   "name": "mjolnic-bootstrap-colorpicker",
   "main": [
-    "dist/statics/css/bootstrap-colorpicker.css",
-    "dist/statics/js/bootstrap-colorpicker.js"
+    "dist/css/bootstrap-colorpicker.css",
+    "dist/js/bootstrap-colorpicker.js"
   ],
   "dependencies": {
     "jquery": ">=1.10",

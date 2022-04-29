@@ -1,7 +1,7 @@
 flot-orderBars
 ==============
 
-Fork of the Flot OrderBars plugin found here: http://www.benjaminbuffet.com/public/statics/js/jquery.flot.orderBars.js
+Fork of the Flot OrderBars plugin found here: http://www.benjaminbuffet.com/public/js/jquery.flot.orderBars.js
 
 Improvements
 ============

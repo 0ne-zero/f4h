@@ -5,7 +5,7 @@ module.exports = function (grunt) {
         }
 
         grunt.config('string-replace.bootstrap-datetimepicker-js', {
-            files: {'src/statics/js/bootstrap-datetimepicker.js': 'src/statics/js/bootstrap-datetimepicker.js'},
+            files: {'src/js/bootstrap-datetimepicker.js': 'src/js/bootstrap-datetimepicker.js'},
             options: {
                 replacements: [
                     {

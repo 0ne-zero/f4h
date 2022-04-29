@@ -8,7 +8,7 @@ toc: true
 
 ## How it works
 
-Change the value of the [`display` property](https://developer.mozilla.org/en-US/docs/Web/statics/css/display) with our responsive display utility classes. We purposely support only a subset of all possible values for `display`. Classes can be combined for various effects as you need.
+Change the value of the [`display` property](https://developer.mozilla.org/en-US/docs/Web/display) with our responsive display utility classes. We purposely support only a subset of all possible values for `display`. Classes can be combined for various effects as you need.
 
 ## Notation
 

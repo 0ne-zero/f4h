@@ -76,7 +76,7 @@ if (bundle) {
   conf.detectBrowsers = detectBrowsers
   files = files.concat([
     jqueryFile,
-    'dist/statics/js/bootstrap.js'
+    'dist/js/bootstrap.js'
   ])
 } else if (browserStack) {
   conf.hostname = ip.address()

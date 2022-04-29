@@ -26,20 +26,20 @@ const plugins = [
   })
 ]
 const bsPlugins = {
-  Alert: path.resolve(__dirname, '../statics/js/src/alert.js'),
-  Button: path.resolve(__dirname, '../statics/js/src/button.js'),
-  Carousel: path.resolve(__dirname, '../statics/js/src/carousel.js'),
-  Collapse: path.resolve(__dirname, '../statics/js/src/collapse.js'),
-  Dropdown: path.resolve(__dirname, '../statics/js/src/dropdown.js'),
-  Modal: path.resolve(__dirname, '../statics/js/src/modal.js'),
-  Popover: path.resolve(__dirname, '../statics/js/src/popover.js'),
-  ScrollSpy: path.resolve(__dirname, '../statics/js/src/scrollspy.js'),
-  Tab: path.resolve(__dirname, '../statics/js/src/tab.js'),
-  Toast: path.resolve(__dirname, '../statics/js/src/toast.js'),
-  Tooltip: path.resolve(__dirname, '../statics/js/src/tooltip.js'),
-  Util: path.resolve(__dirname, '../statics/js/src/util.js')
+  Alert: path.resolve(__dirname, '../js/src/alert.js'),
+  Button: path.resolve(__dirname, '../js/src/button.js'),
+  Carousel: path.resolve(__dirname, '../js/src/carousel.js'),
+  Collapse: path.resolve(__dirname, '../js/src/collapse.js'),
+  Dropdown: path.resolve(__dirname, '../js/src/dropdown.js'),
+  Modal: path.resolve(__dirname, '../js/src/modal.js'),
+  Popover: path.resolve(__dirname, '../js/src/popover.js'),
+  ScrollSpy: path.resolve(__dirname, '../js/src/scrollspy.js'),
+  Tab: path.resolve(__dirname, '../js/src/tab.js'),
+  Toast: path.resolve(__dirname, '../js/src/toast.js'),
+  Tooltip: path.resolve(__dirname, '../js/src/tooltip.js'),
+  Util: path.resolve(__dirname, '../js/src/util.js')
 }
-const rootPath = TEST ? '../statics/js/coverage/dist/' : '../statics/js/dist/'
+const rootPath = TEST ? '../js/coverage/dist/' : '../js/dist/'
 
 function build(plugin) {
   console.log(`Building ${plugin} plugin...`)

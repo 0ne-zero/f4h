@@ -16,7 +16,7 @@ define( [
 	"./manipulation/_evalUrl",
 	"./wrap",
 	"./css",
-	"./statics/css/hiddenVisibleSelectors",
+	"./hiddenVisibleSelectors",
 	"./serialize",
 	"./ajax",
 	"./ajax/xhr",

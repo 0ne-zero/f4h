@@ -5,7 +5,7 @@ module.exports = function (grunt) {
         uglify: {
             target: {
                 files: {
-                    'build/statics/js/bootstrap-datetimepicker.min.js': 'src/statics/js/bootstrap-datetimepicker.js'
+                    'build/js/bootstrap-datetimepicker.min.js': 'src/js/bootstrap-datetimepicker.js'
                 }
             },
             options: {
@@ -22,7 +22,7 @@ module.exports = function (grunt) {
         },
         jshint: {
             all: [
-                'Gruntfile.js', 'src/statics/js/*.js', 'test/*.js'
+                'Gruntfile.js', 'src/js/*.js', 'test/*.js'
             ],
             options: {
                 'browser': true,
@@ -72,7 +72,7 @@ module.exports = function (grunt) {
         },
         jscs: {
             all: [
-                'Gruntfile.js', 'src/statics/js/*.js', 'test/*.js'
+                'Gruntfile.js', 'src/js/*.js', 'test/*.js'
             ],
             options: {
                 config: '.jscs.json'
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
                     paths: 'node_modules'
                 },
                 files: {
-                    'build/statics/css/bootstrap-datetimepicker.min.css': 'src/less/bootstrap-datetimepicker-build.less'
+                    'build/bootstrap-datetimepicker.min.css': 'src/less/bootstrap-datetimepicker-build.less'
                 }
             },
             development: {
@@ -94,7 +94,7 @@ module.exports = function (grunt) {
                     paths: 'node_modules'
                 },
                 files: {
-                    'build/statics/css/bootstrap-datetimepicker.css': 'src/less/bootstrap-datetimepicker-build.less'
+                    'build/bootstrap-datetimepicker.css': 'src/less/bootstrap-datetimepicker-build.less'
                 }
             }
         },
@@ -112,20 +112,20 @@ module.exports = function (grunt) {
         },
         jasmine: {
             customTemplate: {
-                src: 'src/statics/js/*.js',
+                src: 'src/js/*.js',
                 options: {
                     specs: 'test/*Spec.js',
                     helpers: 'test/*Helper.js',
                     host: 'http://127.0.0.1:8099',
                     styles: [
-                        'node_modules/bootstrap/dist/statics/css/bootstrap.min.css',
-                        'build/statics/css/bootstrap-datetimepicker.min.css'
+                        'node_modules/bootstrap/dist/css/bootstrap.min.css',
+                        'build/bootstrap-datetimepicker.min.css'
                     ],
                     vendor: [
                         'node_modules/jquery/dist/jquery.min.js',
                         'node_modules/moment/min/moment-with-locales.min.js',
                         'node_modules/moment-timezone/moment-timezone.js',
-                        'node_modules/bootstrap/dist/statics/js/bootstrap.min.js'
+                        'node_modules/bootstrap/dist/js/bootstrap.min.js'
                     ],
                     display: 'none',
                     summary: 'true'

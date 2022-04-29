@@ -66,10 +66,10 @@ Missing an integration? Modify this `README` and make a pull request back here t
 Internationalization (i18n)
 ---------------------------
 Select2 supports multiple languages by simply including the right language JS
-file (`dist/statics/js/i18n/it.js`, `dist/statics/js/i18n/nl.js`, etc.) after
-`dist/statics/js/select2.js`.
+file (`dist/js/i18n/it.js`, `dist/js/i18n/nl.js`, etc.) after
+`dist/js/select2.js`.
 
-Missing a language? Just copy `src/statics/js/select2/i18n/en.js`, translate it, and
+Missing a language? Just copy `src/js/select2/i18n/en.js`, translate it, and
 make a pull request back to Select2 here on GitHub.
 
 Documentation

@@ -28,19 +28,19 @@ const configFile = path.join(__dirname, '../_config.yml')
 // `configPropertyName` is the _config.yml variable's name of the file
 const files = [
   {
-    file: 'dist/statics/css/bootstrap.min.css',
+    file: 'dist/css/bootstrap.min.css',
     configPropertyName: 'css_hash'
   },
   {
-    file: 'dist/statics/js/bootstrap.min.js',
+    file: 'dist/js/bootstrap.min.js',
     configPropertyName: 'js_hash'
   },
   {
-    file: 'dist/statics/js/bootstrap.bundle.min.js',
+    file: 'dist/js/bootstrap.bundle.min.js',
     configPropertyName: 'js_bundle_hash'
   },
   {
-    file: `site/docs/${pkg.version_short}/assets/statics/js/vendor/jquery-slim.min.js`,
+    file: `site/docs/${pkg.version_short}/assets/js/vendor/jquery-slim.min.js`,
     configPropertyName: 'jquery_hash'
   },
   {

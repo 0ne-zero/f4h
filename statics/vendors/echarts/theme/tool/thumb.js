@@ -4,7 +4,7 @@ var echarts = require('echarts');
 var fs = require('fs');
 var path = require('path');
 
-require('echarts/map/statics/js/china');
+require('echarts/map/js/china');
 
 var options = {
     bar: require('./option/bar'),

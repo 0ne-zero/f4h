@@ -10,15 +10,15 @@
   "extra": {
     "component": {
       "scripts": [
-        "dist/statics/js/select2.js"
+        "dist/js/select2.js"
       ],
       "styles": [
-        "dist/statics/css/select2.css"
+        "dist/css/select2.css"
       ],
       "files": [
-        "dist/statics/js/select2.js",
-        "dist/statics/js/i18n/*.js",
-        "dist/statics/css/select2.css"
+        "dist/js/select2.js",
+        "dist/js/i18n/*.js",
+        "dist/css/select2.css"
       ]
     }
   }
