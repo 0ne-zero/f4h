@@ -1,0 +1,67 @@
+{{define "_topic_partial"}}
+<div class="post has-profile bg1">
+  <div class="inner">
+	<dl class="postprofile">
+	  <dt class="no-profile-rank no-avatar">
+		<div class="avatar-container">
+		</div>
+		<a href="https://forum.bitcoin.com/tokenwoman-u186520/" style="color: #FFBF00;" class="username-coloured">
+        <strong>User:
+        </strong>
+        {{.UserInfo.Username}}
+		</a>
+	  </dt>
+	  <dd class="profile-posts">
+		<strong>Posts:
+		</strong>
+		<a href="https://forum.bitcoin.com/tokenwoman-u186520/posts/">
+        {{.UserInfo.PostCount}}
+		</a>
+	  </dd>
+	  <dd class="profile-joined">
+		<strong>Joined At:
+		</strong>
+        {{.UserInfo.JoinedAt}}
+	  </dd>
+	</dl>
+	<div class="postbody">
+	  <div>
+		<h3 class="first">
+		  <img src="https://forum.bitcoin.com/images/icons/smile/question.gif" alt="" width="16" height="16">
+		  <a href="#p352360">
+          {{.Title}}
+		  </a>
+		</h3>
+		<ul class="posts-buttons">
+		  <li>
+			<a href="/post/352360/report" title="Report this post">
+			  <i class="fa fa-flag">
+			  </i>
+			  <span>
+              Report this post
+			  </span>
+			</a>
+		  </li>
+		  <li>
+			<a href="https://forum.bitcoin.com/posting.php?mode=quote&amp;f=6&amp;p=352360" title="Reply with quote">
+			  <i class="fa fa-quote-left">
+			  </i>
+			  <span>
+              Quote
+			  </span>
+			</a>
+		  </li>
+		</ul>
+		<p class="author">
+		  <a href="https://forum.bitcoin.com/post352360.html#p352360">
+          {{.CreatedAt}}
+		  </a>
+		</p>
+		<div class="content">
+		  {{.Description}}
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+{{end}}
