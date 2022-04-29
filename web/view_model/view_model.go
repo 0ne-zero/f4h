@@ -36,7 +36,7 @@ type ForumViewModel struct {
 	PostCount   int
 	LastPost    LastPost `gorm:"-"`
 }
-type TopicViewModel struct {
+type TopicBriefViewModel struct {
 	ID             uint
 	Name           string
 	ReplyCount     int
@@ -52,4 +52,29 @@ type SidebarCategoryViewModel struct {
 type LastPost struct {
 	AuthorUsername string
 	CreatedAt      time.Time
+}
+
+type TopicUserViewModel struct {
+	Username  string
+	PostCount uint
+	JoinedAt  *time.Time
+}
+
+type TopicViewModel struct {
+	Title       string
+	Description string
+	CreatedAt   string
+	UserInfo    *TopicUserViewModel
+}
+
+type TopicCommentViewModel struct {
+	Title       string
+	Description string
+	CreatedAt   string
+	UserInfo    *TopicUserViewModel
+}
+
+type ShowTopicViewModel struct {
+	Topic    TopicViewModel
+	Comments []TopicCommentViewModel
 }

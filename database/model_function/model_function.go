@@ -330,8 +330,8 @@ func GetDiscussionForumsInViewModel(discussion_id int) ([]viewmodel.ForumViewMod
 	}
 	return forums, err
 }
-func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicViewModel, error) {
-	var topics []viewmodel.TopicViewModel
+func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
+	var topics []viewmodel.TopicBriefViewModel
 	discussion_forums_ids, err := getDiscussionForumsIDs(discussion_id)
 	if err != nil {
 		return nil, err
@@ -359,8 +359,8 @@ func GetDiscussionForumsByField(discussion_id int, fields []string) ([]model.For
 	}
 	return forums, err
 }
-func GetDiscussionTopicsBasedForums(discussion_id int) ([]viewmodel.TopicViewModel, error) {
-	var topics []viewmodel.TopicViewModel
+func GetDiscussionTopicsBasedForums(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
+	var topics []viewmodel.TopicBriefViewModel
 	err := db.Where("discussion_id = ?", discussion_id).Select("name", "id", "view_count", "created_at").Find(&topics).Error
 	for _, t := range topics {
 		commentCount, err := getTopicCommentsCount(int(t.ID))
@@ -377,11 +377,11 @@ func getDiscussionForumsIDs(discussion_id int) ([]int, error) {
 	return IDs, err
 }
 
-func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicViewModel, error) {
+func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicBriefViewModel, error) {
 	// Temp struct for send just one request and get all data i need
 	type topic_view_model_with_user_id struct {
 		UserID int
-		viewmodel.TopicViewModel
+		viewmodel.TopicBriefViewModel
 	}
 	// Temp topic view model
 	var temp_topics_view []topic_view_model_with_user_id
@@ -391,10 +391,10 @@ func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicViewModel, error)
 		return nil, err
 	}
 	// Topics view model
-	var topics_view []viewmodel.TopicViewModel
+	var topics_view []viewmodel.TopicBriefViewModel
 	// Fill topics_view variable
 	for i := range temp_topics_view {
-		var topic viewmodel.TopicViewModel
+		var topic viewmodel.TopicBriefViewModel
 		topic.ID = temp_topics_view[i].ID
 		topic.Name = temp_topics_view[i].Name
 		topic.CreatedAt = temp_topics_view[i].CreatedAt
