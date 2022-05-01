@@ -52,6 +52,7 @@ func MakeRoute() *gin.Engine {
 	r.POST("/login", controller.Login_POST)
 	r.POST("/register", controller.Register_POST)
 	r.GET("/admin", controller.Admin_Index)
+	r.Use(middleware.SetSession())
 	// Public authorized
 	authorized := r.Group("/")
 	authorized.Use(middleware.Authentication())

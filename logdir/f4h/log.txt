@@ -6,4 +6,7 @@
 '[2022-05-01T02:04:22Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist request_url='/Topic/1' request_method='GET' ip='127.0.0.1' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
 '[2022-05-01T02:04:27Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist ip='127.0.0.1' request_url='/Topic/1' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
 '[2022-05-01T02:04:27Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist ip='127.0.0.1' request_url='/Topic/1' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
+'[2022-05-01T02:08:51Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist ip='127.0.0.1' request_url='/Topic/1' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
+'[2022-05-01T02:13:51Z]-[WARNING]-[f4h]: log_msg='Error occurred during convert user's session topic data ip='127.0.0.1' request_url='/AddTopic/bitcoin' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
+'[2022-05-01T04:13:07Z]-[WARNING]-[f4h]: log_msg='Error occurred during convert topic_preview to string, in AddTopic_GET controller ip='127.0.0.1' request_url='/AddTopic/bitcoin' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
 '

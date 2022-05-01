@@ -60,3 +60,11 @@ func TooManyRequest() gin.HandlerFunc {
 		}
 	}
 }
+func SetSession() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		s := sessions.Default(c)
+		s.Set("UserID", 1)
+		s.Set("Username", "admin")
+		s.Save()
+	}
+}

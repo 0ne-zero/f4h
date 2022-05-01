@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
@@ -135,6 +136,7 @@ func Index(c *gin.Context) {
 	categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
 	if err != nil {
 		controller_helper.ErrorPage(c, err, constansts.SomethingBadHappenedError)
+		return
 	}
 
 	// Everything is ok
@@ -373,79 +375,94 @@ func ForumTopics(c *gin.Context) {
 
 func AddTopic_GET(c *gin.Context) {
 	write_topic_data_view_data := gin.H{}
+	// Get forum name
 	write_topic_data_view_data["ForumName"] = c.Param("forum")
 
+	// Get topic data if they are exists in the session
 	s := sessions.Default(c)
-	// Get topic data and convert it in map[string]string
-	topic_data, ok := s.Get("TopicData").(map[string]string)
-	if !ok {
-		controller_helper.ErrorPage(c, errors.New("Error occurred during convert user's session topic data"), constansts.SomethingBadHappenedError)
+	write_topic_data_view_data["TopicSubject"] = s.Get("TopicSubject")
+	write_topic_data_view_data["TopicMarkdown"] = s.Get("TopicMarkdown")
+	write_topic_data_view_data["TopicTags"] = s.Get("TopicTags")
+	// If referer is "/addtopic/" so check is topic preview requested
+	parsed_referer, err := url.Parse(c.Request.Referer())
+	if err != nil {
+		controller_helper.ErrorPage(c, err, constansts.SomethingBadHappenedError)
 		return
 	}
-	if topic_data != nil {
-		write_topic_data_view_data["TopicSubject"] = topic_data["Subject"]
-		write_topic_data_view_data["TopicMarkdown"] = topic_data["Markdown"]
+	if general_func.ContainsI(parsed_referer.Path, "/addtopic/") {
+		untypeda_topic_preview := s.Get("TopicPreview")
+		if untypeda_topic_preview != nil {
+			string_topic_preview, ok := untypeda_topic_preview.(string)
+			if !ok {
+				controller_helper.ErrorPage(c, errors.New("Error occurred during convert topic_preview to string, in AddTopic_GET controller"), constansts.SomethingBadHappenedError)
+				return
+			}
+			html_topic_preview := template.HTML(string_topic_preview)
+			write_topic_data_view_data["TopicPreview"] = html_topic_preview
+		}
 	}
-
 	view_data := gin.H{}
 	view_data["WriteTopicData"] = write_topic_data_view_data
 	c.HTML(200, "add_topic.html", view_data)
 }
 func AddTopic_POST(c *gin.Context) {
+	// Get forum name from the url
+	forum_name := c.Param("forum")
+	if forum_name == "" {
+		controller_helper.ErrorPage(c, errors.New("Empty forum name sent to ForumTopics controller"), "Forum name entered in the url is empty.")
+		return
+	}
 	// User topic Markdown
 	topic_markdown := c.Request.FormValue("topic-markdown")
 	if topic_markdown == "" {
 		controller_helper.ErrorPage(c, errors.New("Empty topic markdown sent to ForumTopics controller"), "Topic markdown entered in the url is empty.")
+		return
 	}
 	topic_markdown = strings.TrimSpace(topic_markdown)
 	// Convert Markdown to Html
 	topic_html, err := general_func.MarkdownToHtml(topic_markdown)
 	if err != nil {
 		controller_helper.ErrorPage(c, errors.New("Invalid topic markdown sent to ForumTopics controller"), "Your sent markdown is invalid.")
+		return
 	}
 	// Remove space from start and end of topic_html
 	topic_html = strings.TrimSpace(topic_html)
 	// Prevent XSS Attacks
 	topic_html = constansts.XSSPreventor.Sanitize(topic_html)
 
-	var view_data = gin.H{}
+	// For the convenience of the user, information is saved in both of preview and save mode. (except preview in save mode, because that isn't really information, that is just convert markdown to html)
 
 	// User wants preview of her/his topic markdown
 	if is_preview := c.Request.FormValue("preview"); is_preview != "" {
-		view_data = gin.H{
-			"WriteTopicData": gin.H{
-				"ForumName":     c.Param("forum"),
-				"Preview":       template.HTML(topic_html),
-				"TopicMarkdown": topic_markdown,
-			},
-			"Title": "Post new topic",
-		}
-
-		c.HTML(200, "add_topic.html", view_data)
+		s := sessions.Default(c)
+		// s.Set("TopicSubject", c.Request.FormValue("subject"))
+		// s.Set("TopicMarkdown", topic_markdown)
+		// s.Set("TopicTags", c.Request.FormValue("tags"))
+		s.Set("TopicPreview", topic_html)
+		s.Save()
+		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/AddTopic/%s", forum_name))
 		return
 		// User wants save her/his topic markdown
 	} else if is_save := c.Request.FormValue("save"); is_save != "" {
-		subject := c.Request.FormValue("subject")
-		var topic_data map[string]string
-		topic_data["Subject"] = subject
-		topic_data["Markdown"] = topic_markdown
 		s := sessions.Default(c)
-		s.Set("TopicData", topic_data)
+		s.Set("TopicSubject", c.Request.FormValue("subject"))
+		s.Set("TopicMarkdown", topic_markdown)
+		s.Set("TopicTags", c.Request.FormValue("tags"))
+		s.Delete("TopicPreview")
 		s.Save()
+		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/AddTopic/%s", forum_name))
 		// User wants submit her/his text
 	} else if is_submit := c.Request.FormValue("submit"); is_submit != "" {
-		forum_name := c.Param("forum")
-		if forum_name == "" {
-			controller_helper.ErrorPage(c, errors.New("Empty forum name sent to ForumTopics controller"), "Forum name entered in the url is empty.")
-		}
 		var forum_fields = model.Forum{}
 		err := model_function.GetFieldsByAnotherFieldValue(&forum_fields, []string{"id"}, "name", forum_name)
 		if err != nil {
 			controller_helper.ErrorPage(c, errors.New(fmt.Sprintf("%s (%s)", err, "Invalid forum name in ForumTopics (forum name doesn't exists)")), "Forum name entered in the url is invalid.")
+			return
 		}
 		subject := c.Request.FormValue("subject")
 		if subject == "" {
 			controller_helper.ErrorPage(c, errors.New("Empty subject sent to ForumTopics controller"), "Subject entered in the form is empty.")
+			return
 		}
 
 		// GET TAGS AND SAVE TOPIC IN THE DATABASE
@@ -458,10 +475,12 @@ func AddTopic_POST(c *gin.Context) {
 		untyped_user_id := sessions.Default(c).Get("UserID")
 		if untyped_user_id == nil {
 			controller_helper.ErrorPage(c, errors.New("User hasn't user_id in her/his session values, in AddTopic_POST controller"), "You are not logged in")
+			return
 		}
 		user_id, ok := untyped_user_id.(uint)
 		if !ok {
 			controller_helper.ErrorPage(c, errors.New("Invalid user_id in user's session,in AddTopic_POST controller"), "Your user_id in your session is invalid.")
+			return
 		}
 
 		topic.UserID = user_id
@@ -472,19 +491,23 @@ func ShowTopic(c *gin.Context) {
 	topic_id_string := c.Param("topic_id")
 	if topic_id_string == "" {
 		controller_helper.ErrorPage(c, errors.New("Empty topic_id entered,in ShowToic controller"), "Topic id entered in the url is empty.")
+		return
 	}
 	topic_id, err := strconv.ParseInt(topic_id_string, 10, 64)
 	if err != nil {
 		controller_helper.ErrorPage(c, errors.New("Invalid topic_id entered,in ShowToic controller"), "Topic id entered in the url is invalid.")
+		return
 	}
 	// Get Topic and topic comments
 	topic, err := model_function.GetTopicByIDForShowTopicInViewModel(int(topic_id))
 	if err != nil {
 		controller_helper.ErrorPage(c, err, constansts.SomethingBadHappenedError)
+		return
 	}
 	topic_comments, err := model_function.GetTopicCommentsByIDForShowTopicInViewModel(int(topic_id))
 	if err != nil {
 		controller_helper.ErrorPage(c, err, constansts.SomethingBadHappenedError)
+		return
 	}
 
 	// Add topic title to each topic comment
