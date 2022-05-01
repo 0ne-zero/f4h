@@ -1,26 +1,20 @@
-[2022-04-26T23:14:48Z]-[ERROR]-[f4h]: msg='sdfadf;k'
-[2022-04-26T23:21:30Z]-[ERROR]-[f4h]: msg='sdfadf;kaksdljf;as;dklfaklasdjfas;dkl'
-[2022-04-26T23:48:23Z]-[ERROR]-[f4h]: log_msg='sdfadf;kaksdljf;as;dklfaklasdjfas;dkl'[2022-04-27T00:02:37Z]-[ERROR]-[f4h]: log_msg='sdf;klj
-'[2022-04-27T00:06:28Z]-[FATAL]-[f4h]: log_msg='Error occurred during convert interface{} to string in Log function
-'[2022-05-01T02:04:22Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist ip='127.0.0.1' request_url='/Topic/1' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
-'[2022-05-01T02:04:22Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist request_url='/Topic/1' request_method='GET' ip='127.0.0.1' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
-'[2022-05-01T02:04:27Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist ip='127.0.0.1' request_url='/Topic/1' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
-'[2022-05-01T02:04:27Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist ip='127.0.0.1' request_url='/Topic/1' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
-'[2022-05-01T02:08:51Z]-[WARNING]-[f4h]: log_msg='Error 1146: Table 'test.topic' doesn't exist ip='127.0.0.1' request_url='/Topic/1' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
-'[2022-05-01T02:13:51Z]-[WARNING]-[f4h]: log_msg='Error occurred during convert user's session topic data ip='127.0.0.1' request_url='/AddTopic/bitcoin' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
-'[2022-05-01T04:13:07Z]-[WARNING]-[f4h]: log_msg='Error occurred during convert topic_preview to string, in AddTopic_GET controller ip='127.0.0.1' request_url='/AddTopic/bitcoin' request_method='GET' file='/home/me/go/src/f4h/web/controller/controller_helper/helper.go:26'
-[2022-05-01T06:53:18Z]-[WARNING]-[f4h]:
-msg= 'Empty topic markdown sent to ForumTopics controller'
-fields = IP: '127.0.0.1' request_method= '/AddTopic/bitcoi' | KLJDS:JFSD:= 'POST' 
-file= '/home/me/go/src/f4h/web/controller/controllers.go:418'
-------------------------------------------------------------------
-[2022-05-01T06:53:18Z]-[WARNING]-[f4h]:
-msg= 'Empty topic markdown sent to ForumTopics controller'
-fields = IP: '127.0.0.1' | REQUESTED_URL='/AddTopic/bitcoi' | KLJDS:JFSD:= 'POST'
-file= '/home/me/go/src/f4h/web/controller/controllers.go:418'
-------------------------------------------------------------------
-[2022-05-01T06:53:18Z]-[WARNING]-[f4h]:
-MSG= 'Empty topic markdown sent to ForumTopics controller'
-FIELDS = IP: '127.0.0.1' REQUESTED_URL= '/AddTopic/bitcoi' | KLJDS:JFSD:= 'POST' 
-LOCATION= '/home/me/go/src/f4h/web/controller/controllers.go:418 main '
+[2022-05-01T12:05:30Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddTopic/' | METHOD='POST' | 
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T12:05:38Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1' | 
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T12:06:36Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='POST' | IP='127.0.0.1' | URL='/AddTopic/'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T12:06:37Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------

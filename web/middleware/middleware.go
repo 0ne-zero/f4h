@@ -30,10 +30,13 @@ func Authentication() gin.HandlerFunc {
 }
 func NotFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// Log
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Not Found", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
 		view_data := gin.H{}
 		view_data["Title"] = "Not Found"
 		view_data["Error"] = "This Page not Found"
 		c.HTML(http.StatusNotFound, "error.html", view_data)
+		c.Abort()
 	}
 }
 func TooManyRequest() gin.HandlerFunc {
