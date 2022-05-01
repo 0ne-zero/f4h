@@ -14,16 +14,18 @@
                     <dt><label for="subject">Subject:</label></dt>
                     <dd><input type="text" name="subject" id="subject" value="{{.TopicSubject}}" class="inputbox autowidth" /></dd>
                 </dl>
-
+                <dl style="clear: left;">
+                    <dt><label for="subject">Tags:</label></dt>
+                    <dd><input placeholder="Split them by '|'" type="text" name="tags" id="subject" value="{{.TopicTags}}" class="inputbox autowidth" /></dd>
+                </dl>
                 <div id="message-box">
                     <textarea
+                        placeholder="Enter your markdown here..."
                         name="topic-markdown"
                         id="message"
                         class="inputbox"
                         style="position: relative; height: 258px;"
-                    >
-                    {{.TopicMarkdown}}
-                    </textarea>
+                        >{{if .TopicMarkdown}}{{.TopicMarkdown}}{{end}}</textarea>
                 </div>
             </fieldset>
         </div>
@@ -31,8 +33,8 @@
     
 
     <!-- Preview -->
-    {{if .Preview}}
-        {{template "_topic_preview" .Preview}}
+    {{if .TopicPreview}}
+        {{template "_topic_preview" .TopicPreview}}
     {{end}}
 
     <div class="panel bg2">

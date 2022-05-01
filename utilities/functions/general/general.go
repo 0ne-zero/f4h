@@ -104,3 +104,11 @@ func GetCallerInfo(skip int) (public_struct.ErroredFileInfo, error) {
 
 	return public_struct.ErroredFileInfo{Path: path, Line: line}, nil
 }
+
+// Case-insensitive strings.Contains
+func ContainsI(a string, b string) bool {
+	return strings.Contains(
+		strings.ToLower(a),
+		strings.ToLower(b),
+	)
+}
