@@ -60,21 +60,17 @@ type TopicUserViewModel struct {
 	JoinedAt  *time.Time
 }
 
-type TopicViewModel struct {
+type TopicForShowTopicViewModel struct {
 	Title       string
 	Description string
-	CreatedAt   string
+	CreatedAt   time.Time
 	UserInfo    *TopicUserViewModel
 }
 
 type TopicCommentViewModel struct {
-	Title       string
-	Description string
-	CreatedAt   string
-	UserInfo    *TopicUserViewModel
-}
-
-type ShowTopicViewModel struct {
-	Topic    TopicViewModel
-	Comments []TopicCommentViewModel
+	Title     string
+	Text      string
+	CreatedAt time.Time
+	UserInfo  *TopicUserViewModel
+	Reply     *TopicCommentViewModel
 }

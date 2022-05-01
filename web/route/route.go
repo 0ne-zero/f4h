@@ -9,7 +9,7 @@ import (
 	"github.com/0ne-zero/f4h/utilities/functions/general"
 	template_func "github.com/0ne-zero/f4h/utilities/functions/template"
 	wrapper_logger "github.com/0ne-zero/f4h/utilities/wrapper_logger"
-	"github.com/0ne-zero/f4h/web/controllers"
+	"github.com/0ne-zero/f4h/web/controller"
 	"github.com/0ne-zero/f4h/web/middleware"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
@@ -48,23 +48,24 @@ func MakeRoute() *gin.Engine {
 	r.Use(sessions.Sessions("authsdafentication", store))
 
 	// Public routes
-	r.GET("/login", controllers.Login_GET)
-	r.POST("/login", controllers.Login_POST)
-	r.POST("/register", controllers.Register_POST)
-	r.GET("/admin", controllers.Admin_Index)
+	r.GET("/login", controller.Login_GET)
+	r.POST("/login", controller.Login_POST)
+	r.POST("/register", controller.Register_POST)
+	r.GET("/admin", controller.Admin_Index)
 	// Public authorized
 	authorized := r.Group("/")
 	authorized.Use(middleware.Authentication())
 	{
 		// Public authorized routes
-		authorized.GET("/", controllers.Index)
-		authorized.GET("/products/*category", controllers.ProductList)
-		authorized.GET("/productDetails/:id", controllers.ProductDetails)
-		authorized.GET("/Discussions", controllers.Discussions)
-		authorized.GET("/DiscussionForums/:discussion", controllers.DiscussionForums)
-		authorized.GET("/ForumTopics/:forum", controllers.ForumTopics)
-		authorized.GET("/AddTopic/:forum", controllers.AddTopic_GET)
-		authorized.POST("/AddTopic/:forum", controllers.AddTopic_POST)
+		authorized.GET("/", controller.Index)
+		authorized.GET("/Products/*category", controller.ProductList)
+		authorized.GET("/ProductDetails/:id", controller.ProductDetails)
+		authorized.GET("/Discussions", controller.Discussions)
+		authorized.GET("/DiscussionForums/:discussion", controller.DiscussionForums)
+		authorized.GET("/ForumTopics/:forum", controller.ForumTopics)
+		authorized.GET("/AddTopic/:forum", controller.AddTopic_GET)
+		authorized.POST("/AddTopic/:forum", controller.AddTopic_POST)
+		authorized.GET("/Topic/:topic_id", controller.ShowTopic)
 
 	}
 	constansts.Routes = r.Routes()
