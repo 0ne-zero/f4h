@@ -1,7 +1,6 @@
 package route
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -34,13 +33,7 @@ func MakeRoute() *gin.Engine {
 	session_key := "s"
 	if gin.Mode() == "PRODUCTION" {
 		if sk := os.Getenv("F4H_SESSION_KEY"); sk == "" {
-			err_file_info, err := general.GetCallerInfo(0)
-			if err != nil {
-				log_msg := fmt.Sprintf("%s file='%s:%d'", "Error occurred during get caller info ", "/web/route/route.go", 38)
-				general.AppendTextToFile(constansts.LogFilePath, log_msg)
-				os.Exit(1)
-			}
-			wrapper_logger.Log(&wrapper_logger.FatalLevel{}, "F4H_SESSION_KEY isn't exists in environment variables", &err_file_info)
+			wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "F4H_SESSION_KEY isn't exists in environment variables", Fields: nil, ErrorLocation: general.GetCallerInfo(0)})
 		}
 	}
 	store := memstore.NewStore([]byte(session_key))

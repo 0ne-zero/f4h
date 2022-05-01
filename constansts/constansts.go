@@ -33,7 +33,7 @@ var Routes gin.RoutesInfo
 var SettingData map[string]string
 
 // Number of get caller info (/utilities/functions/general.GetCallerInfo) error
-var GetCallerInfoError int
+var GetCallerInfoErrorCount int
 
 // Errors
 var SomethingBadHappenedError string

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -12,6 +13,8 @@ import (
 	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/public_struct"
 	"github.com/0ne-zero/f4h/utilities/functions/setting"
+	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -87,26 +90,33 @@ func AppendTextToFile(path string, text string) error {
 	return nil
 }
 
-func GetCallerInfo(skip int) (public_struct.ErroredFileInfo, error) {
-	// fix file infos
-	if constansts.GetCallerInfoError >= 10 {
-		log_msg := fmt.Sprintf("%s file='%s:%d'", "More than 9 Errors occurred during get caller info ", "/utilities/functions/general/general.GetCallerInfo", 88)
-		AppendTextToFile(constansts.LogFilePath, log_msg)
-		os.Exit(1)
-	}
+func GetCallerInfo(skip int) wrapper_logger.ErrorLocation {
+
 	// Remove this function from stack
 	skip += 1
 
-	_, path, line, ok := runtime.Caller(skip)
+	pc, path, line, ok := runtime.Caller(skip)
 	if !ok {
-		constansts.GetCallerInfoError += 1
-		return public_struct.ErroredFileInfo{}, errors.New("Error occurred during get caller information")
+		log_msg := "Error occurred during get caller info"
+		// Get this function info, if possible
+		pc, path, line, ok = runtime.Caller(skip)
+		// Log location of error and exit
+		if !ok {
+			// Fill this function info manually
+			err_file_info := wrapper_logger.ErrorLocation{
+				FilePath: filepath.Join(constansts.ExecutableDirectory, "utilities/functions/general/general.go"),
+				FuncName: "GetCallerInfo",
+				Line:     0,
+			}
+			AppendTextToFile(constansts.LogFilePath, AddFieldsToString(log_msg, err_file_info.ToStringMap()))
+			os.Exit(1)
+		}
+		// Fill this function info with call Caller again
+		err_file_info := wrapper_logger.ErrorLocation{FilePath: path, Line: line, FuncName: runtime.FuncForPC(pc).Name()}
+		AppendTextToFile(constansts.LogFilePath, AddFieldsToString(log_msg, err_file_info.ToStringMap()))
+		os.Exit(1)
 	}
-	if constansts.GetCallerInfoError > 0 {
-		constansts.GetCallerInfoError = 0
-	}
-
-	return public_struct.ErroredFileInfo{Path: path, Line: line}, nil
+	return wrapper_logger.ErrorLocation{FilePath: path, Line: line, FuncName: runtime.FuncForPC(pc).Name()}
 }
 
 // Case-insensitive strings.Contains
@@ -115,4 +125,18 @@ func ContainsI(a string, b string) bool {
 		strings.ToLower(a),
 		strings.ToLower(b),
 	)
+}
+func AddFieldsToString(s string, fields map[string]string) string {
+	s += " | "
+	for k, v := range fields {
+		s = fmt.Sprintf("%s %s='%s'", s, k, v)
+	}
+	return s
+}
+func GetRequestBasicInfo(c *gin.Context) public_struct.RequestBasicInformation {
+	return public_struct.RequestBasicInformation{
+		IP:     c.ClientIP(),
+		Path:   c.Request.URL.Path,
+		Method: c.Request.Method,
+	}
 }

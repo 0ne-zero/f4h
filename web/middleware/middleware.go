@@ -8,6 +8,7 @@ import (
 	"github.com/0ne-zero/f4h/database/model_function"
 	"github.com/0ne-zero/f4h/utilities/functions/general"
 	wrapper_logger "github.com/0ne-zero/f4h/utilities/wrapper_logger"
+	"github.com/0ne-zero/f4h/web/controller/controller_helper"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -43,12 +44,8 @@ func TooManyRequest() gin.HandlerFunc {
 
 		yes, err := model_function.TooManyRequest(client_ip, url, method)
 		if err != nil {
-			err_file_info, err := general.GetCallerInfo(1)
-			if err != nil {
-				err_file_info, err = general.GetCallerInfo(0)
-				wrapper_logger.Log(&wrapper_logger.FatalLevel{}, "Error occurred during get caller info", &err_file_info)
-			}
-			wrapper_logger.Log(&wrapper_logger.ErrorLevel{}, err, &err_file_info)
+			// Log
+			wrapper_logger.Error(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
 		} else if yes == true {
 			view_data := gin.H{}
 			view_data["Error"] = "Too many request error.Try later"

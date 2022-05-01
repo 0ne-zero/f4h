@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 
@@ -14,6 +13,7 @@ import (
 	"github.com/0ne-zero/f4h/database/model_function"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
+	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	controller_helper "github.com/0ne-zero/f4h/web/controller/controller_helper"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -376,6 +376,7 @@ func ForumTopics(c *gin.Context) {
 func AddTopic_GET(c *gin.Context) {
 	write_topic_data_view_data := gin.H{}
 	// Get forum name
+	write_topic_data_view_data["Title"] = "Post new topic"
 	write_topic_data_view_data["ForumName"] = c.Param("forum")
 
 	// Get topic data if they are exists in the session
@@ -383,24 +384,6 @@ func AddTopic_GET(c *gin.Context) {
 	write_topic_data_view_data["TopicSubject"] = s.Get("TopicSubject")
 	write_topic_data_view_data["TopicMarkdown"] = s.Get("TopicMarkdown")
 	write_topic_data_view_data["TopicTags"] = s.Get("TopicTags")
-	// If referer is "/addtopic/" so check is topic preview requested
-	parsed_referer, err := url.Parse(c.Request.Referer())
-	if err != nil {
-		controller_helper.ErrorPage(c, err, constansts.SomethingBadHappenedError)
-		return
-	}
-	if general_func.ContainsI(parsed_referer.Path, "/addtopic/") {
-		untypeda_topic_preview := s.Get("TopicPreview")
-		if untypeda_topic_preview != nil {
-			string_topic_preview, ok := untypeda_topic_preview.(string)
-			if !ok {
-				controller_helper.ErrorPage(c, errors.New("Error occurred during convert topic_preview to string, in AddTopic_GET controller"), constansts.SomethingBadHappenedError)
-				return
-			}
-			html_topic_preview := template.HTML(string_topic_preview)
-			write_topic_data_view_data["TopicPreview"] = html_topic_preview
-		}
-	}
 	view_data := gin.H{}
 	view_data["WriteTopicData"] = write_topic_data_view_data
 	c.HTML(200, "add_topic.html", view_data)
@@ -415,14 +398,28 @@ func AddTopic_POST(c *gin.Context) {
 	// User topic Markdown
 	topic_markdown := c.Request.FormValue("topic-markdown")
 	if topic_markdown == "" {
-		controller_helper.ErrorPage(c, errors.New("Empty topic markdown sent to ForumTopics controller"), "Topic markdown entered in the url is empty.")
+		// Log
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Empty topic markdown sent", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+
+		// Send error in add topic page for user
+		view_data := gin.H{
+			"Title": "Post new topic",
+			"WriteTopicData": gin.H{
+				"TopicSubject":  c.Request.FormValue("subject"),
+				"TopicMarkdown": topic_markdown,
+				"TopicTags":     c.Request.FormValue("tags"),
+				"Error":         "Topic Markdown field must be filled",
+			},
+		}
+		// 442 = Unprocessable
+		c.HTML(442, "add_topic.html", view_data)
 		return
 	}
 	topic_markdown = strings.TrimSpace(topic_markdown)
 	// Convert Markdown to Html
 	topic_html, err := general_func.MarkdownToHtml(topic_markdown)
 	if err != nil {
-		controller_helper.ErrorPage(c, errors.New("Invalid topic markdown sent to ForumTopics controller"), "Your sent markdown is invalid.")
+		controller_helper.ErrorPage(c, err, "Topic markdown entered in form is invalid.")
 		return
 	}
 	// Remove space from start and end of topic_html
@@ -430,17 +427,18 @@ func AddTopic_POST(c *gin.Context) {
 	// Prevent XSS Attacks
 	topic_html = constansts.XSSPreventor.Sanitize(topic_html)
 
-	// For the convenience of the user, information is saved in both of preview and save mode. (except preview in save mode, because that isn't really information, that is just convert markdown to html)
-
 	// User wants preview of her/his topic markdown
 	if is_preview := c.Request.FormValue("preview"); is_preview != "" {
-		s := sessions.Default(c)
-		// s.Set("TopicSubject", c.Request.FormValue("subject"))
-		// s.Set("TopicMarkdown", topic_markdown)
-		// s.Set("TopicTags", c.Request.FormValue("tags"))
-		s.Set("TopicPreview", topic_html)
-		s.Save()
-		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/AddTopic/%s", forum_name))
+		view_data := gin.H{
+			"Title": "Post new topic",
+			"WriteTopicData": gin.H{
+				"TopicPreview":  template.HTML(topic_html),
+				"TopicSubject":  c.Request.FormValue("subject"),
+				"TopicMarkdown": topic_markdown,
+				"TopicTags":     c.Request.FormValue("tags"),
+			},
+		}
+		c.HTML(200, "add_topic.html", view_data)
 		return
 		// User wants save her/his topic markdown
 	} else if is_save := c.Request.FormValue("save"); is_save != "" {
@@ -448,7 +446,6 @@ func AddTopic_POST(c *gin.Context) {
 		s.Set("TopicSubject", c.Request.FormValue("subject"))
 		s.Set("TopicMarkdown", topic_markdown)
 		s.Set("TopicTags", c.Request.FormValue("tags"))
-		s.Delete("TopicPreview")
 		s.Save()
 		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/AddTopic/%s", forum_name))
 		// User wants submit her/his text
@@ -461,7 +458,21 @@ func AddTopic_POST(c *gin.Context) {
 		}
 		subject := c.Request.FormValue("subject")
 		if subject == "" {
-			controller_helper.ErrorPage(c, errors.New("Empty subject sent to ForumTopics controller"), "Subject entered in the form is empty.")
+			// Log
+			wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Empty topic subject sent", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+
+			// Send error in add topic page for user
+			view_data := gin.H{
+				"Title": "Post new topic",
+				"WriteTopicData": gin.H{
+					"TopicSubject":  c.Request.FormValue("subject"),
+					"TopicMarkdown": topic_markdown,
+					"TopicTags":     c.Request.FormValue("tags"),
+					"Error":         "Topic subject field must be filled",
+				},
+			}
+			// 442 = Unprocessable
+			c.HTML(442, "add_topic.html", view_data)
 			return
 		}
 
