@@ -367,11 +367,19 @@ func getDiscussionForumsIDs(discussion_id int) ([]int, error) {
 	err := db.Model(&model.Forum{}).Where("discussion_id = ?", discussion_id).Select("id").Find(&IDs).Error
 	return IDs, err
 }
-func getUserPostCount(user_id int) int64 {
-	var p_count int64
-	p_count = db.Model(&model.User{}).Where("id = ?", user_id).Association("Topics").Count()
-	p_count += db.Model(&model.User{}).Where("id = ?", user_id).Association("Comments").Count()
-	return p_count
+func getUserPostCount(user_id int) (int, error) {
+	var tc_count int
+	err := db.Raw("SELECT COUNT(*) FROM topic_comments WHERE user_id = ?", user_id).Scan(&tc_count).Error
+	if err != nil {
+		return 0, err
+	}
+	var t_count int
+	err = db.Raw("SELECT COUNT(*) FROM topic WHERE user_id = ?", user_id).Scan(&t_count).Error
+	if err != nil {
+		return 0, err
+	}
+
+	return (tc_count + t_count), err
 }
 func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicBriefViewModel, error) {
 	// Temp topic view model
@@ -420,10 +428,14 @@ func getUserInformationByIDForShowTopicInViewModel(user_id int) (*viewmodel.Topi
 	if err != nil {
 		return nil, err
 	}
+	u_posts_count, err := getUserPostCount(user_id)
+	if err != nil {
+		return nil, err
+	}
 	var u_vm = viewmodel.TopicUserViewModel{
 		Username:  u.Username,
 		JoinedAt:  &u.CreatedAt,
-		PostCount: uint(getUserPostCount(user_id)),
+		PostCount: uint(u_posts_count),
 	}
 	return &u_vm, nil
 }
@@ -505,21 +517,3 @@ func getTopicCommentByIDInViewModel(comment_id int) (*viewmodel.TopicCommentView
 	}
 	return &tc_vm, nil
 }
-
-// func GetTopicAndCommentsAndUserByIDInViewModel(topic_id int) (viewmodel.TopicInformationForShowTopicViewModel, error) {
-// 	var err error
-
-// 	// Get topic in view model
-// 	var t viewmodel.TopicForShowTopicViewModel
-// 	t, err = GetTopicByIDForShowTopicInViewModel(topic_id)
-// 	if err != nil {
-// 		return viewmodel.TopicInformationForShowTopicViewModel{}, err
-// 	}
-
-// 	// Get topic comments in view model
-// 	var tc []viewmodel.TopicCommentViewModel
-// 	tc, err = GetTopicCommentsByIDForShowTopicInViewModel(topic_id)
-
-// 	// Return topic information
-// 	return viewmodel.TopicInformationForShowTopicViewModel{Topic: t, Comments: tc}, nil
-// }
