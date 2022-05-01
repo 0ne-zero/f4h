@@ -374,7 +374,7 @@ func getUserPostCount(user_id int) (int, error) {
 		return 0, err
 	}
 	var t_count int
-	err = db.Raw("SELECT COUNT(*) FROM topic WHERE user_id = ?", user_id).Scan(&t_count).Error
+	err = db.Raw("SELECT COUNT(*) FROM topics WHERE user_id = ?", user_id).Scan(&t_count).Error
 	if err != nil {
 		return 0, err
 	}
