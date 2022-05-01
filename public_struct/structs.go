@@ -6,10 +6,6 @@ import (
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 )
 
-type ErroredFileInfo struct {
-	Path string
-	Line int
-}
 type TopicForShowTopicViewModelWithUserID struct {
 	UserID int
 	viewmodel.TopicBriefViewModel
@@ -33,4 +29,10 @@ type TopicCommentBasicInformation struct {
 	CreatedAt time.Time
 	UserID    int
 	ReplyID   int
+}
+
+type RequestBasicInformation struct {
+	IP     string
+	Path   string
+	Method string
 }

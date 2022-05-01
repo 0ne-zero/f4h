@@ -6,7 +6,6 @@ import (
 	"sort"
 	"time"
 
-	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/public_struct"
@@ -26,7 +25,7 @@ func init() {
 	var err error
 	db, err = database.Initialize()
 	if err != nil {
-		wrapper_logger.Log(&wrapper_logger.FatalLevel{}, "Error when initializing database", &public_struct.ErroredFileInfo{Path: constansts.ExecutableDirectory, Line: 28})
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: err.Error(), Fields: nil, ErrorLocation: general_func.GetCallerInfo(0)})
 	}
 }
 

@@ -15,21 +15,8 @@ func ErrorPage(c *gin.Context, log_err error, user_msg string) {
 
 	// Add bad request to database
 	AddBadRequest(c)
-
 	// Log Error
-	log_fields := map[string]string{
-		"ip":             c.ClientIP(),
-		"request_url":    c.Request.URL.Path,
-		"request_method": c.Request.Method,
-	}
-	log_msg := wrapper_logger.AddFieldsToString(log_err.Error()+" | ", log_fields)
-	err_file_info, err := general.GetCallerInfo(1)
-	if err != nil {
-		// Log and exit
-		err_file_info, err = general.GetCallerInfo(0)
-		wrapper_logger.Log(&wrapper_logger.FatalLevel{}, "Error occurred during get caller info", &err_file_info)
-	}
-	wrapper_logger.Log(&wrapper_logger.WarningLevel{}, log_msg, &err_file_info)
+	wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: log_err.Error(), Fields: ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(1)})
 
 	// Return response
 	var view_data = gin.H{
@@ -50,5 +37,11 @@ func AddBadRequest(c *gin.Context) error {
 		Time:   time.Now().UTC(),
 	}
 	return model_function.Add(&bad_request)
-
+}
+func ClientInfoInMap(c *gin.Context) map[string]string {
+	return map[string]string{
+		"IP":     c.ClientIP(),
+		"URL":    c.Request.URL.Path,
+		"METHOD": c.Request.Method,
+	}
 }
