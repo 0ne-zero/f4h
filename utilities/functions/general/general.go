@@ -88,11 +88,15 @@ func AppendTextToFile(path string, text string) error {
 }
 
 func GetCallerInfo(skip int) (public_struct.ErroredFileInfo, error) {
+	// fix file infos
 	if constansts.GetCallerInfoError >= 10 {
 		log_msg := fmt.Sprintf("%s file='%s:%d'", "More than 9 Errors occurred during get caller info ", "/utilities/functions/general/general.GetCallerInfo", 88)
 		AppendTextToFile(constansts.LogFilePath, log_msg)
 		os.Exit(1)
 	}
+	// Remove this function from stack
+	skip += 1
+
 	_, path, line, ok := runtime.Caller(skip)
 	if !ok {
 		constansts.GetCallerInfoError += 1

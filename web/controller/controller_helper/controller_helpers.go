@@ -22,7 +22,7 @@ func ErrorPage(c *gin.Context, log_err error, user_msg string) {
 		"request_url":    c.Request.URL.Path,
 		"request_method": c.Request.Method,
 	}
-	log_msg := wrapper_logger.AddFieldsToString(log_err.Error(), log_fields)
+	log_msg := wrapper_logger.AddFieldsToString(log_err.Error()+" | ", log_fields)
 	err_file_info, err := general.GetCallerInfo(1)
 	if err != nil {
 		// Log and exit
