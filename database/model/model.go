@@ -308,7 +308,7 @@ type Topic_Comment struct {
 	// Topic_Comment has one Topic_Comment
 	// ReplyID is a Topic_Comment ID
 	ReplyID uint
-	Reply   []Topic_Comment `gorm:" foreignkey:ReplyID;references:ID"`
+	Replies []Topic_Comment `gorm:" foreignkey:ReplyID;references:ID"`
 }
 
 //endregion

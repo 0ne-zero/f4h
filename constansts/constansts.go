@@ -35,7 +35,12 @@ var SettingData map[string]string
 // Number of get caller info (/utilities/functions/general.GetCallerInfo) error
 var GetCallerInfoError int
 
+// Errors
+var SomethingBadHappenedError string
+
 func init() {
+	// Errors
+	SomethingBadHappenedError = "Something Bad Happened, Please back later."
 	// Paths
 	ExecutableDirectory = filepath.Dir(os.Args[0])
 	if setting_path := os.Getenv("F4H_SETTING_PATH"); setting_path != "" {
