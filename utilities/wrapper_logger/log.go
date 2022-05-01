@@ -68,7 +68,7 @@ func (f *customLogrusFormatter) Format(e *logrus.Entry) ([]byte, error) {
 	time := e.Time.UTC().Format(time.RFC3339)
 	level := strings.ToUpper(e.Level.String())
 	log_msg := e.Message
-	log_text := fmt.Sprintf(`[%s]-[%s]-[%s]:\nMsg= %s\n%s\n`, time, level, app_name, log_msg, strings.Repeat("-", 70))
+	log_text := fmt.Sprintf("[%s]-[%s]-[%s]:\nMsg= %s\n%s\n", time, level, app_name, log_msg, strings.Repeat("-", 70))
 	return []byte(log_text), nil
 }
 func openLogFile() *os.File {
@@ -82,23 +82,31 @@ func openLogFile() *os.File {
 
 // log_things must be error or string type
 func (log_info *LogInfo) log(level string) {
-	file := OpenLogFile()
+	file := openLogFile()
 	// Close file
 	defer file.Close()
-	var fields string
-	var counter int
-	fields_len := len(log_info.Fields)
-	for k, v := range log_info.Fields {
-		if counter == fields_len {
-			fields += fmt.Sprintf("%s='%s'", k, v)
-		} else {
-			fields += fmt.Sprintf("%s='%s' | ", k, v)
-		}
-		counter += 1
-	}
-	error_location := fmt.Sprintf("%s:%d %s", log_info.ErrorLocation.FilePath, log_info.ErrorLocation.Line, log_info.ErrorLocation.FuncName)
 
-	log_msg := fmt.Sprintf("'%s'\nFields= %s\nLocation= %s", log_info.Message, fields, error_location)
+	// Create log_msg for log
+	var fields string
+	var log_msg string
+	var error_location string
+	error_location = fmt.Sprintf("%s:%d %s", log_info.ErrorLocation.FilePath, log_info.ErrorLocation.Line, log_info.ErrorLocation.FuncName)
+	if log_info.Fields != nil {
+		var counter int
+		fields_len := len(log_info.Fields) - 1
+		for k, v := range log_info.Fields {
+			if counter == fields_len {
+				fields += fmt.Sprintf("%s='%s'", k, v)
+			} else {
+				fields += fmt.Sprintf("%s='%s' | ", k, v)
+			}
+			counter += 1
+		}
+		log_msg = fmt.Sprintf("'%s'\nFields= %s\nLocation= %s", log_info.Message, fields, error_location)
+	} else {
+		log_msg = fmt.Sprintf("'%s'\nLocation= %s", log_info.Message, error_location)
+	}
+
 	// Set logrus output
 	logger.SetOutput(file)
 
