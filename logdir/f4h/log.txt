@@ -18,3 +18,38 @@ Msg= 'Not Found'
 Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
 Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------
+[2022-05-01T14:43:38Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddTopic/' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T14:43:39Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T14:43:39Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T14:43:39Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T14:44:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-01T14:49:14Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/Topic/10'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:597 github.com/0ne-zero/f4h/web/controller.ShowTopic
+----------------------------------------------------------------------
+[2022-05-01T14:49:15Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------

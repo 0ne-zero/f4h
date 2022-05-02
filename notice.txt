@@ -21,3 +21,5 @@
 -- time format in setting file
 -- create admin partials
 -- ban user if she/he wanted inject something fucking bad
+-- show toipc tags
+-- fix each session per path

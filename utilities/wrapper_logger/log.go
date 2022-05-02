@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/0ne-zero/f4h/constansts"
-	"github.com/0ne-zero/f4h/utilities/functions/setting"
 	"github.com/sirupsen/logrus"
 )
 
@@ -60,15 +59,10 @@ func init() {
 }
 
 func (f *customLogrusFormatter) Format(e *logrus.Entry) ([]byte, error) {
-
-	app_name, err := setting.ReadFieldInSettingData("APP_NAME")
-	if err != nil {
-		return nil, err
-	}
 	time := e.Time.UTC().Format(time.RFC3339)
 	level := strings.ToUpper(e.Level.String())
 	log_msg := e.Message
-	log_text := fmt.Sprintf("[%s]-[%s]-[%s]:\nMsg= %s\n%s\n", time, level, app_name, log_msg, strings.Repeat("-", 70))
+	log_text := fmt.Sprintf("[%s]-[%s]-[%s]:\nMsg= %s\n%s\n", time, level, constansts.AppName, log_msg, strings.Repeat("-", 70))
 	return []byte(log_text), nil
 }
 func openLogFile() *os.File {
