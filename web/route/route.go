@@ -38,7 +38,7 @@ func MakeRoute() *gin.Engine {
 	}
 	store := memstore.NewStore([]byte(session_key))
 	store.Options(sessions.Options{MaxAge: 0})
-	r.Use(sessions.Sessions("authsdafentication", store))
+	r.Use(sessions.Sessions(constansts.AppName+"_Session_KEY", store))
 
 	// Public routes
 	r.GET("/login", controller.Login_GET)

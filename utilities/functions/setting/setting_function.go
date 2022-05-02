@@ -2,6 +2,7 @@ package setting
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/0ne-zero/f4h/constansts"
 )
@@ -20,7 +21,7 @@ func ReadFieldsInSettingFile(fields_name []string) (map[string]string, error) {
 func ReadFieldInSettingData(field_name string) (string, error) {
 	value, exists := constansts.SettingData[field_name]
 	if !exists {
-		return "", errors.New("Key doesn't exists in setting data")
+		return "", errors.New(fmt.Sprintf("'%s' Key doesn't exists in setting data", field_name))
 	}
 	return value, nil
 }

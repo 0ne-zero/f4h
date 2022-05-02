@@ -12,6 +12,9 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
+// App name
+var AppName string
+
 // Paths
 var ExecutableDirectory string
 var SettingFilePath string
@@ -57,6 +60,7 @@ func init() {
 	if err != nil {
 		os.Exit(1)
 	}
+	AppName = SettingData["APP_NAME"]
 	LogFilePath = filepath.Join(SettingData["LOG_FILE_PARENT_DIRECTORY"], SettingData["APP_NAME"], "log.txt")
 
 	// Initial XSS preventation

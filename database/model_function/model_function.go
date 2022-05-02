@@ -18,7 +18,7 @@ import (
 var db *gorm.DB
 
 type Model interface {
-	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product | model.Request | model.Discussion_Category | model.BadRequest
+	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
 }
 
 func init() {
@@ -515,4 +515,25 @@ func getTopicCommentByIDInViewModel(comment_id int) (*viewmodel.TopicCommentView
 		Reply:     tc_reply,
 	}
 	return &tc_vm, nil
+}
+func FirstOrCreate[m Model](model *m) error {
+	err := db.FirstOrCreate(&model).Error
+	return err
+}
+func FirstOrCreateTopicTagByName(name string) (*model.Topic_Tag, error) {
+	var err error
+	var t model.Topic_Tag
+	err = GetFieldsByAnotherFieldValue(&t, []string{"id"}, "name", name)
+	if err != nil {
+		return nil, err
+	}
+	// Topic tag is exists
+	if t.ID != 0 {
+		err = db.Model(&t).Where("id = ?", t.ID).First(&t).Error
+		return &t, err
+	} else {
+		t.Name = name
+		err = db.Create(&t).Error
+		return &t, err
+	}
 }
