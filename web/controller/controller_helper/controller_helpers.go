@@ -6,6 +6,7 @@ import (
 
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -34,4 +35,16 @@ func ClientInfoInMap(c *gin.Context) map[string]string {
 		"URL":    c.Request.URL.Path,
 		"METHOD": c.Request.Method,
 	}
+}
+func DeleteUserSession(c *gin.Context) {
+	s := sessions.Default(c)
+	s.Clear()
+	s.Save()
+}
+func DeleteUserTopicDraftFromSession(c *gin.Context) {
+	s := sessions.Default(c)
+	s.Delete("TopicSubject")
+	s.Delete("TopicMarkdown")
+	s.Delete("TopicTags")
+	s.Save()
 }

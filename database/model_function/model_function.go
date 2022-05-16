@@ -3,38 +3,52 @@ package model_function
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"sort"
 	"time"
 
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
-	"github.com/0ne-zero/f4h/public_struct"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
-	wrapper_logger "github.com/0ne-zero/f4h/utilities/wrapper_logger"
-	"gorm.io/gorm"
 )
-
-var db *gorm.DB
 
 type Model interface {
 	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
 }
 
-func init() {
-	var err error
-	db, err = database.Initialize()
-	if err != nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: err.Error(), Fields: nil, ErrorLocation: general_func.GetCallerInfo(0)})
-	}
-}
-
 func Add[m Model](model *m) error {
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return err
+	}
 	return db.Create(model).Error
 }
+
+// Input:
+// consider_model = model with its id
+// update_model = the model with some change, you wish to apply the consider model
+// Returns Changed model (result)
+func Update[m Model](consider_model *m, updated_model *m) (*m, error) {
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
+	err = db.Model(consider_model).Updates(updated_model).Error
+	if err != nil {
+		return nil, err
+	}
+	//err = db.Save(consider_model).Error
+
+	return consider_model, err
+
+}
 func Get[m Model](model *[]m, limit int, orderBy string, orderType string, preloads ...string) error {
-	var err error
-	var context *gorm.DB = db
+
+	context, err := database.InitializeOrGetDB()
+	if err != nil {
+		return err
+	}
 	if preloads != nil {
 		for _, p := range preloads {
 			// Include Preload command in db commands chain
@@ -50,43 +64,83 @@ func Get[m Model](model *[]m, limit int, orderBy string, orderType string, prelo
 	return err
 }
 func IsExistsByID[m Model](model *m, id uint) (bool, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return false, err
+	}
 	var exists bool
-	err := db.Model(model).Select("count(*) >0").Where("ID = ?", id).Find(&exists).Error
+	err = db.Model(model).Select("count(*) >0").Where("ID = ?", id).Find(&exists).Error
 	return exists, err
 }
 func GetByID[m Model](model *m, id int) error {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return err
+	}
 	return db.Where("id = ?", id).First(model).Error
 }
 func GetUserPassHashByUsername(username string) (string, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return "", err
+	}
 	var pass_hash string
-	err := db.Where("username = ?", username).Select("password_hash").First(&pass_hash).Error
+	err = db.Where("username = ?", username).Select("password_hash").First(&pass_hash).Error
 	return pass_hash, err
 }
 func IsUserExistsByUsername(username string) (bool, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return false, err
+	}
 	var exists bool
-	err := db.Model(&model.User{}).Select("count(*) >0").Where("username = ?", username).Find(&exists).Error
+	err = db.Model(&model.User{}).Select("count(*) >0").Where("username = ?", username).Find(&exists).Error
 	return exists, err
 }
 func GetUserByUsername(username string) (model.User, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return model.User{}, err
+	}
 	var u model.User
-	err := db.Where("username = ?", username).First(&u).Error
+	err = db.Where("username = ?", username).First(&u).Error
 	return u, err
 }
 func GetUsernameByUserID(user_id int) (string, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return "", err
+	}
 	var username string
-	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("username").Scan(&username).Error
+	err = db.Model(&model.User{}).Where("id = ?", user_id).Select("username").Scan(&username).Error
 	return username, err
 }
 
 func GetFieldsByAnotherFieldValue[m Model](model *m, out_fields_name []string, in_field_name string, in_field_value string) error {
-	err := db.Model(model).Where(fmt.Sprintf("%s = ?", in_field_name), in_field_value).Select(out_fields_name).Scan(model).Error
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return err
+	}
+	err = db.Model(model).Where(fmt.Sprintf("%s = ?", in_field_name), in_field_value).Select(out_fields_name).Scan(model).Error
 	return err
 }
 func TooManyRequest(ip string, url string, method string) (bool, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return false, err
+	}
 	var req_count int64
 	now := time.Now().UTC()
 	one_hour_ago := now.Add(time.Duration(-1) * time.Hour)
-	err := db.Model(&model.Request{}).Where("ip = ? AND url = ? AND method = ? AND time <= ? ", ip, url, method, one_hour_ago).Count(&req_count).Error
+	err = db.Model(&model.Request{}).Where("ip = ? AND url = ? AND method = ? AND time <= ? ", ip, url, method, one_hour_ago).Count(&req_count).Error
 	if err != nil {
 		return false, err
 	}
@@ -96,8 +150,12 @@ func TooManyRequest(ip string, url string, method string) (bool, error) {
 	return false, nil
 }
 func GetProductInViewModel(limit int) ([]viewmodel.ProductViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var products []viewmodel.ProductViewModel
-	var err error
 	if limit > 0 {
 		err = db.Model(&model.Product{}).Limit(limit).Select("id", "name", "price").Scan(&products).Error
 	} else {
@@ -106,10 +164,15 @@ func GetProductInViewModel(limit int) ([]viewmodel.ProductViewModel, error) {
 	return products, err
 }
 func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmodel.ProductViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var products []viewmodel.ProductViewModel
 	var c model.Product_Category
 
-	err := db.Preload("Products").Where("name = ?", category_name).Find(&c).Error
+	err = db.Preload("Products").Where("name = ?", category_name).Find(&c).Error
 	if err != nil {
 		return nil, err
 	} else if c.Products == nil {
@@ -121,9 +184,14 @@ func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmod
 	return products, nil
 }
 func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return err
+	}
 	// Get categories
 	var categories []model.Product_Category
-	err := db.Preload("Products").Preload("SubCategories").Find(&categories).Error
+	err = db.Preload("Products").Preload("SubCategories").Find(&categories).Error
 	if err != nil {
 		return err
 	}
@@ -150,8 +218,13 @@ func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
 	return nil
 }
 func GetCategoriesWithRelationsInViewModel(ordering bool) ([]viewmodel.SidebarCategoryViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var categories []model.Product_Category
-	var err error
+
 	if !ordering {
 		err = db.Preload("SubCategories").Find(&categories).Error
 	} else {
@@ -183,12 +256,22 @@ func GetCategoriesWithRelationsInViewModel(ordering bool) ([]viewmodel.SidebarCa
 	return result, err
 }
 func GetCategoriesName() ([]string, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var s []string
-	err := db.Model(&model.Product_Category{}).Select("name").Scan(&s).Error
+	err = db.Model(&model.Product_Category{}).Select("name").Scan(&s).Error
 	return s, err
 }
 
 func getForumTopicsCount(forum_id int) int {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return 0
+	}
 	return int(db.Model(&model.Forum{BasicModel: model.BasicModel{ID: uint(forum_id)}}).Association("Topics").Count())
 }
 
@@ -204,8 +287,13 @@ func GetForumPostsCount(forum_id int) (int, error) {
 	return forum_posts_count, nil
 }
 func getForumTopicsCommentsCount(forum_id int) (int, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return -1, err
+	}
 	var forums_topics []model.Topic
-	err := db.Where("forum_id = ?", forum_id).Find(&forums_topics).Error
+	err = db.Where("forum_id = ?", forum_id).Find(&forums_topics).Error
 	if err != nil {
 		return -1, err
 	}
@@ -220,19 +308,34 @@ func getForumTopicsCommentsCount(forum_id int) (int, error) {
 	return forums_topics_comments_count, nil
 }
 func getTopicCommentsCount(topic_id int) (int, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return 0, err
+	}
 	// Doesn't works
 	//count := db.Model(&model.Topic{}).Where("id = ?", topic_id).Association("Comments").Count()
 	var count int
-	err := db.Raw("SELECT COUNT(*) FROM topic_comments WHERE topic_id = ?", topic_id).Scan(&count).Error
+	err = db.Raw("SELECT COUNT(*) FROM topic_comments WHERE topic_id = ?", topic_id).Scan(&count).Error
 	return count, err
 }
 func GetDiscussionForumsName(d *model.Discussion) ([]string, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var forums_name []string
-	err := db.Model(&model.Forum{}).Where("discussion_id = ?", d.ID).Select("name").Find(&forums_name).Error
+	err = db.Model(&model.Forum{}).Where("discussion_id = ?", d.ID).Select("name").Find(&forums_name).Error
 	return forums_name, err
 }
 
 func GetTopicLastPostInViewModel(topic_id int) (viewmodel.LastPost, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return viewmodel.LastPost{}, err
+	}
 	// Topic comment count
 	comment_count, err := getTopicCommentsCount(topic_id)
 	if err != nil {
@@ -241,7 +344,7 @@ func GetTopicLastPostInViewModel(topic_id int) (viewmodel.LastPost, error) {
 	// Return variable
 	var lp viewmodel.LastPost
 
-	var temp_lp public_struct.LastPostViewModelWithUserID
+	var temp_lp viewmodel.LastPostViewModelWithUserID
 	// Does topic have any comment
 	if comment_count > 0 {
 		err := db.Model(&model.Topic_Comment{}).Where("topic_id = ?", topic_id).Select("created_at", "user_id").Order("created_at DESC").Limit(1).Scan(&temp_lp).Error
@@ -271,8 +374,13 @@ func GetTopicLastPostInViewModel(topic_id int) (viewmodel.LastPost, error) {
 }
 
 func GetDiscussionTopicsCount(d *model.Discussion) (int, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return 0, err
+	}
 	var discussion_forums []model.Forum
-	err := db.Select("id").Where("discussion_id = ?", d.BasicModel.ID).Find(&discussion_forums).Error
+	err = db.Select("id").Where("discussion_id = ?", d.BasicModel.ID).Find(&discussion_forums).Error
 	if err != nil {
 		return 0, err
 	}
@@ -288,8 +396,13 @@ func GetDiscussionTopicsCount(d *model.Discussion) (int, error) {
 	return int(discussion_topics_count), nil
 }
 func GetDiscussionPostsCount(d *model.Discussion) (int, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return 0, err
+	}
 	var discussion_forums []model.Forum
-	err := db.Select("id").Where("discussion_id = ?", d.ID).Find(&discussion_forums).Error
+	err = db.Select("id").Where("discussion_id = ?", d.ID).Find(&discussion_forums).Error
 	if err != nil {
 		return 0, err
 	}
@@ -305,8 +418,13 @@ func GetDiscussionPostsCount(d *model.Discussion) (int, error) {
 }
 
 func GetDiscussionForumsInViewModel(discussion_id int) ([]viewmodel.ForumViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var forums []viewmodel.ForumViewModel
-	err := db.Model(&model.Forum{}).Where("discussion_id = ?", discussion_id).Select("name", "description", "id").Scan(&forums).Error
+	err = db.Model(&model.Forum{}).Where("discussion_id = ?", discussion_id).Select("name", "description", "id").Scan(&forums).Error
 	if err != nil {
 		return nil, err
 	}
@@ -321,6 +439,11 @@ func GetDiscussionForumsInViewModel(discussion_id int) ([]viewmodel.ForumViewMod
 	return forums, err
 }
 func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var topics []viewmodel.TopicBriefViewModel
 	discussion_forums_ids, err := getDiscussionForumsIDs(discussion_id)
 	if err != nil {
@@ -340,8 +463,12 @@ func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicBriefViewModel, er
 	return topics, err
 }
 func GetDiscussionForumsByField(discussion_id int, fields []string) ([]model.Forum, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var forums []model.Forum
-	var err error
 	if fields != nil {
 		err = db.Where("discussion_id = ?", discussion_id).Select(fields).Find(&forums).Error
 	} else {
@@ -350,8 +477,13 @@ func GetDiscussionForumsByField(discussion_id int, fields []string) ([]model.For
 	return forums, err
 }
 func GetDiscussionTopicsBasedForums(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var topics []viewmodel.TopicBriefViewModel
-	err := db.Where("discussion_id = ?", discussion_id).Select("name", "id", "view_count", "created_at").Find(&topics).Error
+	err = db.Where("discussion_id = ?", discussion_id).Select("name", "id", "view_count", "created_at").Find(&topics).Error
 	for _, t := range topics {
 		commentCount, err := getTopicCommentsCount(int(t.ID))
 		if err != nil {
@@ -362,13 +494,23 @@ func GetDiscussionTopicsBasedForums(discussion_id int) ([]viewmodel.TopicBriefVi
 	return topics, err
 }
 func getDiscussionForumsIDs(discussion_id int) ([]int, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var IDs []int
-	err := db.Model(&model.Forum{}).Where("discussion_id = ?", discussion_id).Select("id").Find(&IDs).Error
+	err = db.Model(&model.Forum{}).Where("discussion_id = ?", discussion_id).Select("id").Find(&IDs).Error
 	return IDs, err
 }
 func getUserPostCount(user_id int) (int, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return 0, err
+	}
 	var tc_count int
-	err := db.Raw("SELECT COUNT(*) FROM topic_comments WHERE user_id = ?", user_id).Scan(&tc_count).Error
+	err = db.Raw("SELECT COUNT(*) FROM topic_comments WHERE user_id = ?", user_id).Scan(&tc_count).Error
 	if err != nil {
 		return 0, err
 	}
@@ -381,10 +523,15 @@ func getUserPostCount(user_id int) (int, error) {
 	return (tc_count + t_count), err
 }
 func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicBriefViewModel, error) {
-	// Temp topic view model
-	var temp_topics_view []public_struct.TopicForShowTopicViewModelWithUserID
 
-	err := db.Model(&model.Topic{}).Where("forum_id = ?", forum_id).Select("id", "name", "view_count", "created_at", "user_id").Scan(&temp_topics_view).Error
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
+	// Temp topic view model
+	var temp_topics_view []viewmodel.TopicForShowTopicViewModelWithUserID
+
+	err = db.Model(&model.Topic{}).Where("forum_id = ?", forum_id).Select("id", "name", "view_count", "created_at", "user_id").Scan(&temp_topics_view).Error
 	if err != nil {
 		return nil, err
 	}
@@ -422,8 +569,13 @@ func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicBriefViewModel, e
 	return topics_view, nil
 }
 func getUserInformationByIDForShowTopicInViewModel(user_id int) (*viewmodel.TopicUserViewModel, error) {
-	var u public_struct.UserBasicInformation
-	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("username", "created_at").First(&u).Error
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
+	var u viewmodel.UserBasicInformation
+	err = db.Model(&model.User{}).Where("id = ?", user_id).Select("username", "created_at").First(&u).Error
 	if err != nil {
 		return nil, err
 	}
@@ -439,9 +591,14 @@ func getUserInformationByIDForShowTopicInViewModel(user_id int) (*viewmodel.Topi
 	return &u_vm, nil
 }
 func GetTopicByIDForShowTopicInViewModel(topic_id int) (viewmodel.TopicForShowTopicViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return viewmodel.TopicForShowTopicViewModel{}, err
+	}
 	// Get topic basic information
-	var t public_struct.TopicBasicInformation
-	err := db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("user_id", "name", "description", "created_at").Scan(&t).Error
+	var t viewmodel.TopicBasicInformation
+	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("user_id", "name", "description", "created_at").Scan(&t).Error
 	if err != nil {
 		return viewmodel.TopicForShowTopicViewModel{}, err
 	}
@@ -450,20 +607,47 @@ func GetTopicByIDForShowTopicInViewModel(topic_id int) (viewmodel.TopicForShowTo
 	if err != nil {
 		return viewmodel.TopicForShowTopicViewModel{}, err
 	}
+	// Get topic tags
+	tags_vm, err := getTopicTagsByTopicIDInViewModel(topic_id)
 
 	// Fill view model and return it
 	var topic_vm = viewmodel.TopicForShowTopicViewModel{
 		Title:       t.Name,
-		Description: t.Description,
+		Description: template.HTML(t.Description),
 		CreatedAt:   t.CreatedAt,
 		UserInfo:    u,
+		Tags:        tags_vm,
 	}
 	return topic_vm, nil
 }
+func getTopicTagsByTopicIDInViewModel(topic_id int) ([]viewmodel.TopicTagBasicInformation, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
+	var tags_id []int
+	err = db.Table("topic_tag_m2m").Where("topic_id = ?", topic_id).Select("topic_tag_id").Scan(&tags_id).Error
+	if err != nil {
+		return nil, err
+	}
+	var tags []viewmodel.TopicTagBasicInformation
+	err = db.Model(&model.Topic_Tag{}).Where("id IN ?", tags_id).Select("name").Scan(&tags).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return tags, nil
+}
 func GetTopicCommentsByIDForShowTopicInViewModel(topic_id int) ([]viewmodel.TopicCommentViewModel, error) {
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	// Get Topic comments
-	var tc []public_struct.TopicCommentBasicInformation
-	err := db.Model(&model.Topic_Comment{}).Where("topic_id = ?", topic_id).Select("text", "created_at", "user_id", "reply_id").Scan(&tc).Error
+	var tc []viewmodel.TopicCommentBasicInformation
+	err = db.Model(&model.Topic_Comment{}).Where("topic_id = ?", topic_id).Select("text", "created_at", "user_id", "reply_id").Scan(&tc).Error
 	if err != nil {
 		return nil, err
 	}
@@ -491,9 +675,14 @@ func GetTopicCommentsByIDForShowTopicInViewModel(topic_id int) ([]viewmodel.Topi
 	return tc_vm, nil
 }
 func getTopicCommentByIDInViewModel(comment_id int) (*viewmodel.TopicCommentViewModel, error) {
-	var tc public_struct.TopicCommentBasicInformation
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
+	var tc viewmodel.TopicCommentBasicInformation
 	// Get Topic Basic information
-	err := db.Model(&model.Topic_Comment{}).Where("id = ?", comment_id).Select("text", "created_at", "user_id", "reply_id").Scan(&tc).Error
+	err = db.Model(&model.Topic_Comment{}).Where("id = ?", comment_id).Select("text", "created_at", "user_id", "reply_id").Scan(&tc).Error
 
 	// If topic comment is a reply to another topic comment get that topic comment
 	var tc_reply *viewmodel.TopicCommentViewModel
@@ -517,11 +706,20 @@ func getTopicCommentByIDInViewModel(comment_id int) (*viewmodel.TopicCommentView
 	return &tc_vm, nil
 }
 func FirstOrCreate[m Model](model *m) error {
-	err := db.FirstOrCreate(&model).Error
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return err
+	}
+	err = db.FirstOrCreate(&model).Error
 	return err
 }
 func FirstOrCreateTopicTagByName(name string) (*model.Topic_Tag, error) {
-	var err error
+
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
 	var t model.Topic_Tag
 	err = GetFieldsByAnotherFieldValue(&t, []string{"id"}, "name", name)
 	if err != nil {
@@ -536,4 +734,63 @@ func FirstOrCreateTopicTagByName(name string) (*model.Topic_Tag, error) {
 		err = db.Create(&t).Error
 		return &t, err
 	}
+}
+func GetTopicByIDForEdit(topic_id int) (*viewmodel.TopicForEditViewModel, error) {
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return nil, err
+	}
+	// Result
+	var t viewmodel.TopicForEditViewModel
+
+	// Get topic name,description
+	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("name", "description").Scan(&t).Error
+	if err != nil {
+		return nil, err
+	}
+	// Get topic tags
+	t.Tags, err = getTopicTagsByTopicIDInViewModel(topic_id)
+	if err != nil {
+		return nil, err
+	}
+	// Get topic forum name
+	forum_name, err := getTopicForumNameByTopicID(topic_id)
+	if err != nil {
+		return nil, err
+	}
+	t.ForumName = forum_name
+	return &t, err
+}
+func getTopicForumNameByTopicID(topic_id int) (string, error) {
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return "", err
+	}
+	var forum_id string
+	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("forum_id").Scan(&forum_id).Error
+	if err != nil {
+		return "", err
+	}
+	var forum_name string
+	err = db.Model(&model.Forum{}).Where("id = ?", forum_id).Select("name").Scan(&forum_name).Error
+	return forum_name, err
+}
+
+func GetTopicForumIDByTopicID(topic_id int) (int, error) {
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return -1, err
+	}
+	var f_id int
+	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("forum_id").Scan(&f_id).Error
+	return f_id, err
+}
+func GetTopicNameByTopicID(topic_id int) (string, error) {
+	db, err := database.InitializeOrGetDB()
+	if err != nil {
+		return "", err
+	}
+	var topic_name string
+	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("name").Scan(&topic_name).Error
+	return topic_name, err
 }

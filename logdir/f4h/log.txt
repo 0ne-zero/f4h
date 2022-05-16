@@ -53,3 +53,171 @@ Msg= 'Not Found'
 Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
 Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------
+[2022-05-02T11:19:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-02T11:19:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-02T11:19:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-02T11:52:57Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= IP='127.0.0.1' | URL='/Topic/17' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:604 github.com/0ne-zero/f4h/web/controller.ShowTopic
+----------------------------------------------------------------------
+[2022-05-02T11:52:58Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-02T12:11:51Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-15T22:30:36Z]-[FATAL]-[f4h]:
+Msg= 'dial tcp 127.0.0.1:3306: connect: connection refused'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-05-15T22:32:37Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database(maybe you should start database service(deamon))dial tcp 127.0.0.1:3306: connect: connection refused'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-05-15T22:34:53Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database dial tcp 127.0.0.1:3306: connect: connection refused'
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-05-15T22:35:53Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/favicon.ico' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T12:44:21Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database dial tcp 127.0.0.1:3306: connect: connection refused'
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-05-16T12:45:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T12:45:19Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/edittopic/1' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T12:45:19Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T12:45:30Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T12:52:28Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T12:52:59Z]-[WARNING]-[f4h]:
+Msg= 'Error occurred during get topic for edit invalid field found for struct github.com/0ne-zero/f4h/public_struct/view_model.TopicForEditViewModel's field Tags: define a valid foreign key for relations or implement the Valuer/Scanner interface'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/EditTopic/13'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:626 github.com/0ne-zero/f4h/web/controller.EditTopic_Get
+----------------------------------------------------------------------
+[2022-05-16T12:52:59Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T12:53:32Z]-[WARNING]-[f4h]:
+Msg= 'Error occurred during get topic for edit invalid field found for struct github.com/0ne-zero/f4h/public_struct/view_model.TopicForEditViewModel's field Tags: define a valid foreign key for relations or implement the Valuer/Scanner interface'
+Fields= IP='127.0.0.1' | URL='/EditTopic/13' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:626 github.com/0ne-zero/f4h/web/controller.EditTopic_Get
+----------------------------------------------------------------------
+[2022-05-16T12:53:33Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/css/font-awesome.min.css'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T13:00:08Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T15:35:24Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddTopic/' | METHOD='POST'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T15:35:24Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T15:36:12Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddTopic/' | METHOD='POST'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T15:36:13Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T15:37:52Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/AddTopic/' | METHOD='POST' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T15:37:52Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T15:40:34Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/favicon.ico' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T16:19:01Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T16:23:13Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='POST' | IP='127.0.0.1' | URL='/EditTopic/'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T16:23:14Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T23:08:51Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-16T23:27:32Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= URL='/Topic/0' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:938 github.com/0ne-zero/f4h/web/controller.ShowTopic
+----------------------------------------------------------------------
+[2022-05-16T23:27:33Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------

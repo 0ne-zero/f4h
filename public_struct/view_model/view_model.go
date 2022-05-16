@@ -1,6 +1,7 @@
 package viewmodel
 
 import (
+	"html/template"
 	"time"
 
 	"github.com/0ne-zero/f4h/database/model"
@@ -62,9 +63,10 @@ type TopicUserViewModel struct {
 
 type TopicForShowTopicViewModel struct {
 	Title       string
-	Description string
+	Description template.HTML
 	CreatedAt   time.Time
 	UserInfo    *TopicUserViewModel
+	Tags        []TopicTagBasicInformation
 }
 
 type TopicCommentViewModel struct {
@@ -72,5 +74,42 @@ type TopicCommentViewModel struct {
 	Text      string
 	CreatedAt time.Time
 	UserInfo  *TopicUserViewModel
+	Tags      []TopicTagBasicInformation
 	Reply     *TopicCommentViewModel
+}
+
+// Basics
+type TopicForShowTopicViewModelWithUserID struct {
+	UserID int
+	TopicBriefViewModel
+}
+type LastPostViewModelWithUserID struct {
+	UserID int
+	LastPost
+}
+type UserBasicInformation struct {
+	Username  string
+	CreatedAt time.Time
+}
+type TopicTagBasicInformation struct {
+	Name string
+}
+type TopicBasicInformation struct {
+	Name        string
+	Description string
+	CreatedAt   time.Time
+	UserID      int
+}
+type TopicCommentBasicInformation struct {
+	Text      string
+	CreatedAt time.Time
+	UserID    int
+	ReplyID   int
+}
+
+type TopicForEditViewModel struct {
+	Name        string
+	Description string
+	Tags        []TopicTagBasicInformation `gorm:"-"`
+	ForumName   string                     `gorm:"-"`
 }
