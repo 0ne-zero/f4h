@@ -21,5 +21,7 @@
 -- time format in setting file
 -- create admin partials
 -- ban user if she/he wanted inject something fucking bad
--- show toipc tags
 -- fix each session per path
+-- check user authority for edit topic
+-- complete edit route
+-- user must not edit her/his cookies

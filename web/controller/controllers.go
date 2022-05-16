@@ -11,7 +11,6 @@ import (
 	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
-	"github.com/0ne-zero/f4h/utilities/functions/general"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
 	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	controller_helper "github.com/0ne-zero/f4h/web/controller/controller_helper"
@@ -70,7 +69,7 @@ func Login_POST(c *gin.Context) {
 	// Get user ID by username for save it in session
 	err = model_function.GetFieldsByAnotherFieldValue(&user_fields, []string{"id"}, "username", username)
 	if err != nil {
-		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error during get user id by username", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error during get user id by username", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 	}
 	session.Set("UserID", user_fields.ID)
@@ -98,7 +97,7 @@ func Register_POST(c *gin.Context) {
 	// Validatae username & password
 	if username == "" || password == "" {
 		// Log
-		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered username or password is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered username or password is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 
 		view_data := gin.H{}
 		view_data["RegisterError"] = "Fill all field"
@@ -108,7 +107,7 @@ func Register_POST(c *gin.Context) {
 	exists, err := model_function.IsUserExistsByUsername(username)
 	if err != nil {
 		// Log
-		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 
 		view_data := gin.H{}
 		view_data["RegisterError"] = "Unknown error"
@@ -117,7 +116,7 @@ func Register_POST(c *gin.Context) {
 	}
 	if exists == true {
 		// Log
-		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered unavailable username", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered unavailable username", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		view_data := gin.H{}
 		view_data["RegisterError"] = "This username is unavailable"
 		c.HTML(http.StatusUnprocessableEntity, "login.html", view_data)
@@ -128,7 +127,7 @@ func Register_POST(c *gin.Context) {
 	pass_hash, err := general_func.HashPassword(password)
 	if err != nil {
 		//Log
-		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 
 		view_data := gin.H{}
 		view_data["RegisterError"] = "Unknown error,try again."
@@ -145,14 +144,14 @@ func Index(c *gin.Context) {
 	products, err := model_function.GetProductInViewModel(15)
 	if err != nil {
 		// Log Error
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
 	// Get categories
 	categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -168,7 +167,7 @@ func Index(c *gin.Context) {
 		username, ok := untyped_username.(string)
 		if !ok {
 			// Log
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during convert session's username to string ", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during convert session's username to string ", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			// Return error page
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 			return
@@ -195,27 +194,27 @@ func ProductList(c *gin.Context) {
 		// Get all categories name
 		categoriesName, err := model_function.GetCategoriesName()
 		if err != nil {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 			return
 		}
 		// Check entered category is exists in database
 		if !general_func.ValueExistsInSlice(&categoriesName, enteredCategory) {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered category name doesn't exists in database", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered category name doesn't exists in database", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, "Category name entered in the url is invalid.")
 			return
 		}
 		// Get Products by entered category
 		products, err := model_function.GetProductByCategoryInViewModel(strings.ToLower(enteredCategory), 15)
 		if err != nil {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 			return
 		}
 		// Get all categories for sidebar
 		categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
 		if err != nil {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 			return
 		}
@@ -234,14 +233,14 @@ func ProductList(c *gin.Context) {
 		var products []model.Product
 		err := model_function.Get(&products, -1, "created_at", "desc", "Images")
 		if err != nil {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 			return
 		}
 		var categories []model.Product_Category
 		err = model_function.GetCategoryByOrderingProductsCount(&categories)
 		if err != nil {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 			return
 		}
@@ -262,7 +261,7 @@ func ProductDetails(c *gin.Context) {
 	str_id := c.Param("id")
 	// check str_id is Empty
 	if str_id == "" {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered product id is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered product id is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Product id entered in the url is empty")
 		return
 	}
@@ -270,7 +269,7 @@ func ProductDetails(c *gin.Context) {
 	int_id, err := strconv.ParseInt(str_id, 10, 64)
 	// Parse check
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Product id entered in the url is invalid")
 		return
 	}
@@ -278,7 +277,7 @@ func ProductDetails(c *gin.Context) {
 	err = model_function.GetByID(&product, int(int_id))
 	// Check get product error
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -295,7 +294,7 @@ func Discussions(c *gin.Context) {
 	var Discussion_categories []model.Discussion_Category
 	err := model_function.Get(&Discussion_categories, -1, "created_at", "ASC", "Discussions")
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -318,20 +317,20 @@ func Discussions(c *gin.Context) {
 			// Get discussion posts count
 			post_count, err := model_function.GetDiscussionPostsCount(d)
 			if err != nil {
-				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 				return
 			}
 			topic_count, err := model_function.GetDiscussionTopicsCount(d)
 			if err != nil {
-				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 				return
 			}
 			// Get discussion forums name
 			forums_name, err := model_function.GetDiscussionForumsName(d)
 			if err != nil {
-				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 				return
 			}
@@ -358,26 +357,26 @@ func Discussions(c *gin.Context) {
 func DiscussionForums(c *gin.Context) {
 	discussion_name := c.Param("discussion")
 	if discussion_name == "" {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered discussion name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered discussion name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Discussion name entered in the url is empty")
 		return
 	}
 	var discussion_fields = model.Discussion{}
 	err := model_function.GetFieldsByAnotherFieldValue(&discussion_fields, []string{"name"}, "name", discussion_name)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, fmt.Sprintf("%s discussion doesn't exists.", discussion_name))
 		return
 	}
 	discussion_forums, err := model_function.GetDiscussionForumsInViewModel(int(discussion_fields.ID))
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
 	discussion_topics, err := model_function.GetDiscussionTopics(int(discussion_fields.ID))
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -395,14 +394,14 @@ func DiscussionForums(c *gin.Context) {
 func ForumTopics(c *gin.Context) {
 	forum_name := c.Param("forum")
 	if forum_name == "" {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered forum name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered forum name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Forum name entered in the url is empty.")
 		return
 	}
 	var forum_fields = model.Forum{}
 	err := model_function.GetFieldsByAnotherFieldValue(&forum_fields, []string{"id"}, "name", forum_name)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Forum name entered in the url is invalid.")
 		return
 	}
@@ -423,43 +422,45 @@ func AddTopic_GET(c *gin.Context) {
 	// Check sent forum name is exists
 	forum_name := c.Param("forum")
 	if forum_name == "" {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered forum name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered forum name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Forum name entered in the url is empty.")
 		return
 	}
 	var forum_fields model.Forum
 	err := model_function.GetFieldsByAnotherFieldValue(&forum_fields, []string{"id"}, "name", forum_name)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error() + "Entered forum name is invalid", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error() + "Entered forum name is invalid", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Forum name entered in the url is invalid.")
 		return
 	}
 
 	s := sessions.Default(c)
-
-	view_data := gin.H{}
-	view_data["Title"] = "Post new topic"
-	view_data["WriteTopicData"] = gin.H{
-		"ForumName":     forum_name,
-		"TopicSubject":  s.Get("TopicSubject"),
-		"TopicMarkdown": s.Get("TopicMarkdown"),
-		"TopicTags":     s.Get("TopicTags"),
+	view_data := gin.H{
+		"Title": "Post new topic",
+		"MSG":   fmt.Sprintf("You are posting topic in %s forum", forum_name),
+		"WriteTopicData": gin.H{
+			"Mode":          "Add",
+			"ForumName":     forum_name,
+			"TopicSubject":  s.Get("TopicSubject"),
+			"TopicMarkdown": s.Get("TopicMarkdown"),
+			"TopicTags":     s.Get("TopicTags"),
+		},
 	}
-	c.HTML(200, "add_topic.html", view_data)
+	c.HTML(200, "edit_add_topic.html", view_data)
 }
 func AddTopic_POST(c *gin.Context) {
 	// Get forum name from the url
 	forum_name := c.Param("forum")
 	// Check sent forum name is exists
 	if forum_name == "" {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered forum name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered forum name is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Forum name entered in the url is empty.")
 		return
 	}
 	var forum_fields = model.Forum{}
 	err := model_function.GetFieldsByAnotherFieldValue(&forum_fields, []string{"id"}, "name", forum_name)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error() + "Entered forum name is invalid", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error() + "Entered forum name is invalid", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Forum name entered in the url is invalid.")
 		return
 	}
@@ -469,28 +470,24 @@ func AddTopic_POST(c *gin.Context) {
 	if topic_markdown == "" {
 		// Log
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered topic markdown is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-
 		// Send error in add topic page for user
 		view_data := gin.H{
 			"Title": "Post new topic",
+			"MSG":   fmt.Sprintf("You are posting topic in %s forum", forum_name),
 			"WriteTopicData": gin.H{
+				"Mode":          "Add",
 				"TopicSubject":  c.Request.FormValue("subject"),
 				"TopicMarkdown": topic_markdown,
 				"TopicTags":     c.Request.FormValue("tags"),
 				"Error":         "Topic Markdown field must be filled",
 			},
 		}
-		c.HTML(http.StatusUnprocessableEntity, "add_topic.html", view_data)
+		c.HTML(http.StatusUnprocessableEntity, "edit_add_topic.html", view_data)
 		return
 	}
 	topic_markdown = strings.TrimSpace(topic_markdown)
 	// Convert Markdown to Html
-	topic_html, err := general_func.MarkdownToHtml(topic_markdown)
-	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error() + "This error occurred during convert markdown to html", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
-		controller_helper.ErrorPage(c, "Topic markdown entered in form is invalid.")
-		return
-	}
+	topic_html := general_func.MarkdownToHtml(topic_markdown)
 	// Remove space from start and end of topic_html
 	topic_html = strings.TrimSpace(topic_html)
 	// Prevent XSS Attacks
@@ -500,16 +497,19 @@ func AddTopic_POST(c *gin.Context) {
 	if is_preview := c.Request.FormValue("preview"); is_preview != "" {
 		view_data := gin.H{
 			"Title": "Post new topic",
+			"MSG":   fmt.Sprintf("You are posting topic in %s forum", forum_name),
 			"WriteTopicData": gin.H{
+				"Mode":          "Add",
+				"ForumName":     forum_name,
 				"TopicPreview":  template.HTML(topic_html),
 				"TopicSubject":  c.Request.FormValue("subject"),
 				"TopicMarkdown": topic_markdown,
 				"TopicTags":     c.Request.FormValue("tags"),
 			},
 		}
-		c.HTML(200, "add_topic.html", view_data)
+		c.HTML(200, "edit_add_topic.html", view_data)
 		return
-		// User wants save her/his topic markdown
+		// User wants save her/his topic markdown (draft)
 	} else if is_save := c.Request.FormValue("save"); is_save != "" {
 		s := sessions.Default(c)
 		s.Set("TopicSubject", c.Request.FormValue("subject"))
@@ -517,17 +517,34 @@ func AddTopic_POST(c *gin.Context) {
 		s.Set("TopicTags", c.Request.FormValue("tags"))
 		s.Save()
 		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/AddTopic/%s", forum_name))
+		// User wants delete her/his topic draft
+	} else if is_delete := c.Request.FormValue("delete"); is_delete != "" {
+		controller_helper.DeleteUserTopicDraftFromSession(c)
+		view_data := gin.H{
+			"Title": "Post new topic",
+			"MSG":   fmt.Sprintf("You are posting topic in %s forum", forum_name),
+			"WriteTopicData": gin.H{
+				"Mode":          "Add",
+				"ForumName":     forum_name,
+				"TopicSubject":  c.Request.FormValue("subject"),
+				"TopicMarkdown": topic_markdown,
+				"TopicTags":     c.Request.FormValue("tags"),
+			},
+		}
+		c.HTML(200, "edit_add_topic.html", view_data)
+		return
 		// User wants submit her/his text
 	} else if is_submit := c.Request.FormValue("submit"); is_submit != "" {
 		subject := c.Request.FormValue("subject")
 		if subject == "" {
 			// Log
 			wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Empty topic subject sent", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-
 			// Send error in add topic page for user
 			view_data := gin.H{
 				"Title": "Post new topic",
+				"MSG":   fmt.Sprintf("You are posting topic in %s forum", forum_name),
 				"WriteTopicData": gin.H{
+					"Mode":          "Add",
 					"TopicSubject":  c.Request.FormValue("subject"),
 					"TopicMarkdown": topic_markdown,
 					"TopicTags":     c.Request.FormValue("tags"),
@@ -535,7 +552,7 @@ func AddTopic_POST(c *gin.Context) {
 				},
 			}
 			// 442 = Unprocessable
-			c.HTML(442, "add_topic.html", view_data)
+			c.HTML(442, "edit_add_topic.html", view_data)
 			return
 		}
 		// Fill topic and insert it in database
@@ -546,11 +563,30 @@ func AddTopic_POST(c *gin.Context) {
 		// Add topic tags if user entered any
 		if sloppy_tags := c.Request.FormValue("tags"); sloppy_tags != "" {
 			splited_tags := strings.Split(sloppy_tags, "|")
+			//Return error response if the number of topic tags is greater than five
+			if len(splited_tags) > 5 {
+				// Log
+				wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Empty topic subject sent", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				// Send error in add topic page for user
+				view_data := gin.H{
+					"Title": "Post new topic",
+					"MSG":   fmt.Sprintf("You are posting topic in %s forum", forum_name),
+					"WriteTopicData": gin.H{
+						"TopicSubject":  c.Request.FormValue("subject"),
+						"TopicMarkdown": topic_markdown,
+						"TopicTags":     c.Request.FormValue("tags"),
+						"Error":         "Number of topic tags must less than five",
+					},
+				}
+				// 442 = Unprocessable
+				c.HTML(442, "edit_add_topic.html", view_data)
+				return
+			}
 			for i := range splited_tags {
 				// Get or create tag by its name
 				tag, err := model_function.FirstOrCreateTopicTagByName(splited_tags[i])
 				if err != nil {
-					wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during check tag existance", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+					wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during check tag existance", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 					controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 					return
 				}
@@ -560,19 +596,20 @@ func AddTopic_POST(c *gin.Context) {
 		// Add user id
 		untyped_user_id := sessions.Default(c).Get("UserID")
 		if untyped_user_id == nil {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "User hasn't user_id in her/his session values", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "User hasn't user_id in her/his session values", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, "You are not logged in,go to login page.")
 			return
 		}
 		user_id, ok := untyped_user_id.(int)
 		if !ok {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Invalid user_id in user's session", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Invalid user_id in user's session", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, "Your user_id in your session is invalid.")
 			return
 		}
 		topic.UserID = uint(user_id)
 
 		// Insert topic
+		// When Add Function executed topic.ID automatically set by dataase, and so we have topic's id
 		err := model_function.Add(&topic)
 		if err != nil {
 			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
@@ -580,34 +617,331 @@ func AddTopic_POST(c *gin.Context) {
 			return
 		}
 
+		// Delete topic information in user session
+		controller_helper.DeleteUserTopicDraftFromSession(c)
+
 		// Send user to topic page
 		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/Topic/%d", topic.ID))
+	}
+}
+func EditTopic_Get(c *gin.Context) {
+	// Get topic id
+	topic_id_str := c.Param("topic_id")
+	if topic_id_str == "" {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Empty toipc id entered", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, "Entered topic id in the url is empty.")
+		return
+	}
+	// Convert topic id to int
+	topic_id, err := strconv.ParseInt(topic_id_str, 10, 64)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Invalid toipc id entered", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, "Entered topic id in the url is Invalid.")
+		return
+	}
 
+	// Check user has saved edit information
+	s := sessions.Default(c)
+	if topic_subject := s.Get("TopicSubject"); topic_subject != nil {
+		topic_name, err := model_function.GetTopicNameByTopicID(int(topic_id))
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get topic name" + err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		view_data := gin.H{
+			"Title": fmt.Sprintf("Edit %s topic", topic_name),
+			"MSG":   fmt.Sprintf("You are editing %s topic", topic_name),
+			"WriteTopicData": gin.H{
+				"Mode":          "Edit",
+				"TopicID":       topic_id,
+				"TopicSubject":  topic_subject,
+				"TopicMarkdown": s.Get("TopicMarkdown"),
+				"TopicTags":     s.Get("TopicTags"),
+			},
+		}
+		c.HTML(200, "edit_add_topic.html", view_data)
+		return
+	}
+
+	// User hasn't saved edit information, so we show topic information saved in database
+	// Get topic informations for edit
+	topic, err := model_function.GetTopicByIDForEdit(int(topic_id))
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get topic for edit " + err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	if topic == nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "User entered topic id which that topic id dosen't exists" + err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, fmt.Sprintf("This topic with %d id doesn't exists", topic_id))
+		return
+	}
+	// Convert topic html to markdown
+	topic.Description, err = general_func.HtmlToMarkdown(topic.Description)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during convert topic html to markdown " + err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	view_data := gin.H{
+		"Title": fmt.Sprintf("Edit %s topic", topic.Name),
+		"MSG":   fmt.Sprintf("You are editing %s topic", topic.Name),
+		"WriteTopicData": gin.H{
+			"Mode":          "Edit",
+			"TopicID":       topic_id,
+			"TopicSubject":  topic.Name,
+			"TopicMarkdown": topic.Description,
+			"TopicTags":     general_func.SplitEachTagsWithPipe(topic.Tags),
+		},
+	}
+	c.HTML(200, "edit_add_topic.html", view_data)
+}
+func EditTopic_POST(c *gin.Context) {
+	// Get topic id
+	topic_id_str := c.Param("topic_id")
+	if topic_id_str == "" {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Empty toipc id entered", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, "Entered topic id in the url is empty.")
+		return
+	}
+	// Convert topic id to int
+	topic_id, err := strconv.ParseInt(topic_id_str, 10, 64)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Invalid toipc id entered", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, "Entered topic id in the url is Invalid.")
+		return
+	}
+
+	// topic Markdown
+	topic_markdown := c.Request.FormValue("topic-markdown")
+	if topic_markdown == "" {
+		// Log
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered topic markdown is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		// Send error in add topic page for user
+		topic_name, err := model_function.GetTopicNameByTopicID(int(topic_id))
+		if err != nil {
+			// Log
+			wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error occurred during get topic name form its id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			// Return error page
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		view_data := gin.H{
+			"Title": "Edit a topic",
+			"MSG":   fmt.Sprintf("You are editing %s topic", topic_name),
+			"WriteTopicData": gin.H{
+				"Mode":          "Edit",
+				"TopicID":       topic_id,
+				"TopicSubject":  c.Request.FormValue("subject"),
+				"TopicMarkdown": topic_markdown,
+				"TopicTags":     c.Request.FormValue("tags"),
+				"Error":         "Topic Markdown field must be filled",
+			},
+		}
+		c.HTML(http.StatusUnprocessableEntity, "edit_add_topic.html", view_data)
+		return
+	}
+	topic_markdown = strings.TrimSpace(topic_markdown)
+	// Convert Markdown to Html
+	topic_html := general_func.MarkdownToHtml(topic_markdown)
+	// Remove space from start and end of topic_html
+	topic_html = strings.TrimSpace(topic_html)
+	// Prevent XSS Attacks
+	topic_html = constansts.XSSPreventor.Sanitize(topic_html)
+
+	// User wants preview of her/his topic markdown
+	if is_preview := c.Request.FormValue("preview"); is_preview != "" {
+		topic_name, err := model_function.GetTopicNameByTopicID(int(topic_id))
+		if err != nil {
+			// Log
+			wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error occurred during get topic name form its id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			// Return error page
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		view_data := gin.H{
+			"Title": "Edit a topic",
+			"MSG":   fmt.Sprintf("You are editing %s topic", topic_name),
+			"WriteTopicData": gin.H{
+				"Mode":          "Edit",
+				"TopicID":       topic_id,
+				"TopicPreview":  template.HTML(topic_html),
+				"TopicSubject":  c.Request.FormValue("subject"),
+				"TopicMarkdown": topic_markdown,
+				"TopicTags":     c.Request.FormValue("tags"),
+			},
+		}
+		c.HTML(200, "edit_add_topic.html", view_data)
+		return
+		// User wants save her/his topic markdown
+	} else if is_save := c.Request.FormValue("save"); is_save != "" {
+		s := sessions.Default(c)
+		s.Set("TopicSubject", c.Request.FormValue("subject"))
+		s.Set("TopicMarkdown", topic_markdown)
+		s.Set("TopicTags", c.Request.FormValue("tags"))
+		s.Save()
+		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/EditTopic/%d", topic_id))
+		// User wants delete her/his topic draft
+	} else if is_delete := c.Request.FormValue("delete"); is_delete != "" {
+		controller_helper.DeleteUserTopicDraftFromSession(c)
+		topic_name, err := model_function.GetTopicNameByTopicID(int(topic_id))
+		if err != nil {
+			// Log
+			wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error occurred during get topic name form its id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			// Return error page
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		view_data := gin.H{
+			"Title": "Edit a topic",
+			"MSG":   fmt.Sprintf("You are editing %s topic", topic_name),
+			"WriteTopicData": gin.H{
+				"Mode":          "Edit",
+				"TopicID":       topic_id,
+				"TopicSubject":  c.Request.FormValue("subject"),
+				"TopicMarkdown": topic_markdown,
+				"TopicTags":     c.Request.FormValue("tags"),
+			},
+		}
+		c.HTML(200, "edit_add_topic.html", view_data)
+		return
+		// User wants submit her/his text
+	} else if is_submit := c.Request.FormValue("submit"); is_submit != "" {
+		subject := c.Request.FormValue("subject")
+		if subject == "" {
+			// Log
+			wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Empty topic subject sent", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			// Send error in add topic page for user
+			topic_name, err := model_function.GetTopicNameByTopicID(int(topic_id))
+			if err != nil {
+				// Log
+				wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error occurred during get topic name form its id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				// Return error page
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+			view_data := gin.H{
+				"Title": "Post new topic",
+				"MSG":   fmt.Sprintf("You are editing %s topic", topic_name),
+				"WriteTopicData": gin.H{
+					"Mode":          "Edit",
+					"TopicID":       topic_id,
+					"TopicSubject":  c.Request.FormValue("subject"),
+					"TopicMarkdown": topic_markdown,
+					"TopicTags":     c.Request.FormValue("tags"),
+					"Error":         "Topic subject field must be filled",
+				},
+			}
+			// 442 = Unprocessable
+			c.HTML(442, "edit_add_topic.html", view_data)
+			return
+		}
+		// Fill topic and insert it in database
+		var updated_topic model.Topic
+		updated_topic.Name = subject
+		updated_topic.Description = topic_html
+		forum_id, err := model_function.GetTopicForumIDByTopicID(int(topic_id))
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get topic forum id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		updated_topic.ForumID = uint(forum_id)
+		// Add topic tags if user entered any
+		if sloppy_tags := c.Request.FormValue("tags"); sloppy_tags != "" {
+			splited_tags := strings.Split(sloppy_tags, "|")
+			//Return error response if the number of topic tags is greater than five
+			if len(splited_tags) > 5 {
+				// Log
+				wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Empty topic subject sent", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				// Send error in add topic page for user
+				topic_name, err := model_function.GetTopicNameByTopicID(int(topic_id))
+				if err != nil {
+					// Log
+					wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error occurred during get topic name form its id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+					// Return error page
+					controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+					return
+				}
+				view_data := gin.H{
+					"Title": "Post new topic",
+					"MSG":   fmt.Sprintf("You are editing %s topic", topic_name),
+					"WriteTopicData": gin.H{
+						"TopicSubject":  c.Request.FormValue("subject"),
+						"TopicID":       topic_id,
+						"TopicMarkdown": topic_markdown,
+						"TopicTags":     c.Request.FormValue("tags"),
+						"Error":         "Number of topic tags must less than five",
+					},
+				}
+
+				// 442 = Unprocessable
+				c.HTML(442, "edit_add_topic.html", view_data)
+				return
+			}
+			for i := range splited_tags {
+				// Get or create tag by its name
+				tag, err := model_function.FirstOrCreateTopicTagByName(splited_tags[i])
+				if err != nil {
+					wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during check tag existance", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+					controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+					return
+				}
+				updated_topic.Tags = append(updated_topic.Tags, tag)
+			}
+		}
+		// Add user id
+		untyped_user_id := sessions.Default(c).Get("UserID")
+		if untyped_user_id == nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "User hasn't user_id in her/his session values", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, "You are not logged in,go to login page.")
+			return
+		}
+		user_id, ok := untyped_user_id.(int)
+		if !ok {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Invalid user_id in user's session", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, "Your user_id in your session is invalid.")
+			return
+		}
+		updated_topic.UserID = uint(user_id)
+
+		// Update topic
+		// Create a topic with id for detect which topic should be change
+		result_model, err := model_function.Update(&model.Topic{BasicModel: model.BasicModel{ID: uint(topic_id)}}, &updated_topic)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+
+		// Send user to topic page
+		c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/Topic/%d", result_model.ID))
 	}
 }
 func ShowTopic(c *gin.Context) {
 	topic_id_string := c.Param("topic_id")
 	if topic_id_string == "" {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered topic id in the url is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered topic id in the url is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Topic id entered in the url is empty.")
 		return
 	}
 	topic_id, err := strconv.ParseInt(topic_id_string, 10, 64)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Topic id entered in the url is invalid.")
 		return
 	}
 	// Get Topic and topic comments
 	topic, err := model_function.GetTopicByIDForShowTopicInViewModel(int(topic_id))
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
 	topic_comments, err := model_function.GetTopicCommentsByIDForShowTopicInViewModel(int(topic_id))
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}

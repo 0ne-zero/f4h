@@ -56,12 +56,17 @@ func init() {
 			fmt.Printf("MKdirAll: Cannot create directory in %s path", log_file_directory_path)
 		}
 	}
+
+	// Custom fatal log handler
+	//logrus.RegisterExitHandler(cleanup.CleanUpResources)
+
 }
 
 func (f *customLogrusFormatter) Format(e *logrus.Entry) ([]byte, error) {
 	time := e.Time.UTC().Format(time.RFC3339)
 	level := strings.ToUpper(e.Level.String())
 	log_msg := e.Message
+
 	log_text := fmt.Sprintf("[%s]-[%s]-[%s]:\nMsg= %s\n%s\n", time, level, constansts.AppName, log_msg, strings.Repeat("-", 70))
 	return []byte(log_text), nil
 }
@@ -79,7 +84,6 @@ func (log_info *LogInfo) log(level string) {
 	file := openLogFile()
 	// Close file
 	defer file.Close()
-
 	// Create log_msg for log
 	var fields string
 	var log_msg string
@@ -117,8 +121,10 @@ func (log_info *LogInfo) log(level string) {
 	case "PANIC":
 		logger.Panic(log_msg)
 	case "FATAL":
-		file.Close()
+		// Log and close the program
 		logger.Fatal(log_msg)
+		// File will be close by os
+		//file.Close()
 	}
 }
 

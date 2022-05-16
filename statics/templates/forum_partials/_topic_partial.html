@@ -59,6 +59,25 @@
 		<div class="content">
 		  {{.Description}}
 		</div>
+		  	<div class="list-inner">
+			    {{$tags_len := .Tags | TopicTagsSliceLength}}
+			    <!-- minus one to get last index not length -->
+			    {{$tags_len = minus $tags_len 1}}
+			    {{$counter := 0}}
+			    <strong style="color:#AE8B8B">Tags:</strong>
+			    {{if .Tags}}
+			        {{range $tag := .Tags}}
+			            <a href="https://forum.bitcoin.com/{{$tag.Name}}/" class="subforum read">{{$tag.Name}}</a>
+			            {{if eq $counter $tags_len}}
+			            {{else}}
+			            ,
+			            {{end}}
+			        {{$counter = plus $counter 1}}
+			        {{end}}
+			    {{else}}
+			        <a href="" class="subforum read">Nothing</a>
+			    {{end}}
+			</div>
 	  </div>
 	</div>
   </div>

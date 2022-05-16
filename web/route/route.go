@@ -59,6 +59,8 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/ForumTopics/:forum", controller.ForumTopics)
 		authorized.GET("/AddTopic/:forum", controller.AddTopic_GET)
 		authorized.POST("/AddTopic/:forum", controller.AddTopic_POST)
+		authorized.GET("/EditTopic/:topic_id", controller.EditTopic_Get)
+		authorized.POST("/EditTopic/:topic_id", controller.EditTopic_POST)
 		authorized.GET("/Topic/:topic_id", controller.ShowTopic)
 
 	}

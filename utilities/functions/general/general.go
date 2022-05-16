@@ -1,17 +1,19 @@
 package general
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
 
+	html_to_markdown "github.com/JohannesKaufmann/html-to-markdown"
+	markdown_to_html "github.com/gomarkdown/markdown"
+
 	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/public_struct"
+	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	"github.com/0ne-zero/f4h/utilities/functions/setting"
 	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"github.com/gin-gonic/gin"
@@ -68,15 +70,21 @@ func ValueExistsInSlice[T comparable](slice *[]T, value T) bool {
 	}
 	return false
 }
-func MarkdownToHtml(markdown string) (string, error) {
-	if _, err := os.Stat(constansts.MarkdownFilePath); err != nil {
-		return "", errors.New(fmt.Sprintf("Please put Markdown file in %s path", constansts.MarkdownFilePath))
-	}
-	command := fmt.Sprintf(`echo "%s" | %s`, markdown, constansts.MarkdownFilePath)
-	topic_markdown_html_bytes, err := exec.Command("bash", "-c", command).Output()
-	return string(topic_markdown_html_bytes), err
-}
+func MarkdownToHtml(markdown string) string {
+	return string(markdown_to_html.ToHTML([]byte(markdown), nil, nil))
 
+	// if _, err := os.Stat(constansts.MarkdownFilePath); err != nil {
+	// 	return "", errors.New(fmt.Sprintf("Please put Markdown file in %s path", constansts.MarkdownFilePath))
+	// }
+	// command := fmt.Sprintf(`echo "%s" | %s`, markdown, constansts.MarkdownFilePath)
+	// topic_markdown_html_bytes, err := exec.Command("bash", "-c", command).Output()
+	// return string(topic_markdown_html_bytes), err
+}
+func HtmlToMarkdown(html string) (string, error) {
+	converter := html_to_markdown.NewConverter("", true, nil)
+	md, err := converter.ConvertString(html)
+	return md, err
+}
 func AppendTextToFile(path string, text string) error {
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0775)
 	if err != nil {
@@ -89,7 +97,6 @@ func AppendTextToFile(path string, text string) error {
 	}
 	return nil
 }
-
 func GetCallerInfo(skip int) wrapper_logger.ErrorLocation {
 
 	// Remove this function from stack
@@ -139,4 +146,26 @@ func GetRequestBasicInfo(c *gin.Context) public_struct.RequestBasicInformation {
 		Path:   c.Request.URL.Path,
 		Method: c.Request.Method,
 	}
+}
+func ConvertIntSliceToStringSlice(int_slice []int) []string {
+	var s_slice []string
+	for i := range int_slice {
+		s_slice = append(s_slice, fmt.Sprint(int_slice[i]))
+	}
+	return s_slice
+}
+func SplitEachTagsWithPipe(tags []viewmodel.TopicTagBasicInformation) string {
+	if tags == nil {
+		return ""
+	}
+	var res string
+	var tags_index_len = len(tags) - 1
+	for i := range tags {
+		if i != tags_index_len {
+			res += tags[i].Name + " | "
+		} else {
+			res += tags[i].Name
+		}
+	}
+	return res
 }

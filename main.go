@@ -2,13 +2,16 @@ package main
 
 import (
 	"github.com/0ne-zero/f4h/database"
+	"github.com/0ne-zero/f4h/utilities/functions/general"
+	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
+
 	"github.com/0ne-zero/f4h/web/route"
 )
 
 func main() {
-	db, err := database.Initialize()
+	db, err := database.InitializeOrGetDB()
 	if err != nil {
-
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "Cannot connect to database " + err.Error(), Fields: map[string]string{"Hint": "Maybe you should start database service(deamon)"}, ErrorLocation: general.GetCallerInfo(0)})
 	}
 
 	err = database.MigrateModels(db)

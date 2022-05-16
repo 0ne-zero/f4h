@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"time"
 
+	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,11 +26,12 @@ func getDayMonthYearFromTime(t time.Time) string {
 func AddFunctionsToRoute(r *gin.Engine) {
 	r.SetFuncMap(
 		template.FuncMap{
-			"remainder":         remainder,
-			"stringSliceLength": sliceLength[string],
-			"plus":              plus,
-			"minus":             minus,
-			"formatTime":        getDayMonthYearFromTime,
+			"remainder":            remainder,
+			"stringSliceLength":    sliceLength[string],
+			"TopicTagsSliceLength": sliceLength[viewmodel.TopicTagBasicInformation],
+			"plus":                 plus,
+			"minus":                minus,
+			"formatTime":           getDayMonthYearFromTime,
 		},
 	)
 }
