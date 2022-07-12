@@ -7,7 +7,7 @@ import (
 	"github.com/0ne-zero/f4h/database/model"
 )
 
-type ProductViewModel struct {
+type ProductBasicViewModel struct {
 	ID    int
 	Name  string
 	Price float64
@@ -112,4 +112,45 @@ type TopicForEditViewModel struct {
 	Description string
 	Tags        []TopicTagBasicInformation `gorm:"-"`
 	ForumName   string                     `gorm:"-"`
+}
+
+// User Panel
+type UserPanel_Overview_Front struct {
+	JoinedAt              *time.Time
+	LastLoginAt           *time.Time
+	LastPasswordChangedAt *time.Time
+	LastBuyAt             *time.Time
+	TotalPosts            int
+	TotalProducts         int
+	TotalPolls            int
+}
+type UserPanel_Overview_Login struct {
+	Login_At *time.Time
+}
+type UserPanel_Overview_LastBuy struct {
+	OrderID     int
+	Time        *time.Time
+	TotalPrice  uint
+	OrderStatus string
+}
+type UserPanel_Profile_EditAccount struct {
+	Email string
+}
+type UserPanel_Profile_ManageAddress struct {
+	Name           string
+	Country        string
+	Province       string
+	City           string
+	Street         string
+	BuildingNumber string
+	PostalCode     string
+	Description    string
+}
+type UserPanel_Profile_ManageWallet struct {
+	Name      string
+	Addr      string
+	IsDefault bool
+}
+type UserPanel_Profile_EditSignature struct {
+	Signature string
 }

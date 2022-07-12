@@ -3312,7 +3312,7 @@ ul.cplist {
 /* Container for sub-navigation list */
 #navigation {
   width: 100%;
-  padding: 10px 0;
+  
 }
 #navigation ul {
   list-style: none;
@@ -3602,7 +3602,7 @@ dd.pm_foe_colour {
 }
 #subhead-title {
   float: left;
-  margin: 30px 0 0;
+  margin: 15px 0 0;
 }
 #subhead-minilist {
   float: right;

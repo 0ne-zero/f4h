@@ -1,20 +1,30 @@
 package main
 
 import (
-	"github.com/0ne-zero/f4h/database"
-	"github.com/0ne-zero/f4h/utilities/functions/general"
-	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
+	"fmt"
 
+	"github.com/0ne-zero/f4h/database"
+	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
+	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"github.com/0ne-zero/f4h/web/route"
 )
 
 func main() {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "Cannot connect to database " + err.Error(), Fields: map[string]string{"Hint": "Maybe you should start database service(deamon)"}, ErrorLocation: general.GetCallerInfo(0)})
+	if !general_func.IsUserRoot() {
+		fmt.Println("Only root user can run this program (:\nProbably you forgot to use 'sudo' command.")
+		//os.Exit(1)
 	}
 
+	db := general_func.ConnectToDatabaseANDHandleErrors()
+	// If db is nil we kill the program, because we can't continue without database
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "We really cannot connect to the database", ErrorLocation: general_func.GetCallerInfo(0)})
+	}
+
+	var err error
 	err = database.MigrateModels(db)
+
+	print(err)
 	// database.CreateTestData(db)
 
 	// database.CreateEssentialData(db)

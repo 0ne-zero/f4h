@@ -2,6 +2,7 @@ package general
 
 import (
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -10,8 +11,10 @@ import (
 
 	html_to_markdown "github.com/JohannesKaufmann/html-to-markdown"
 	markdown_to_html "github.com/gomarkdown/markdown"
+	"gorm.io/gorm"
 
 	"github.com/0ne-zero/f4h/constansts"
+	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/public_struct"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	"github.com/0ne-zero/f4h/utilities/functions/setting"
@@ -168,4 +171,67 @@ func SplitEachTagsWithPipe(tags []viewmodel.TopicTagBasicInformation) string {
 		}
 	}
 	return res
+}
+
+func ExistsStringInStringSlice(s string, slice []string) bool {
+	for i := range slice {
+		if s == slice[i] {
+			return true
+		}
+	}
+	return false
+}
+func GetMapKeys[key_type comparable, value_type interface{}](m map[key_type]value_type) []key_type {
+	keys := make([]key_type, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
+// Tries to connect to the database and handle errors if any occurred
+// Returns *gorm.DB. if it was nil means we cannot connect to database and also it can't be handled
+func ConnectToDatabaseANDHandleErrors() *gorm.DB {
+	var db *gorm.DB
+	var err error
+	// Try again to connect to database
+	var try_again bool = true
+
+	for try_again {
+		db, err = database.InitializeOrGetDB()
+		try_again = false
+		if err != nil {
+			switch err.(type) {
+			case *net.OpError:
+				op_err := err.(*net.OpError)
+				// Get TCPAddr if exists
+				if tcp_addr, ok := op_err.Addr.(*net.TCPAddr); ok {
+					// Check error occurred when we trired to connect to mysql
+					if tcp_addr.Port == 3306 {
+						// Try to start mysql service
+						try_again = database.StartMySqlService()
+					}
+				}
+			default:
+				wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "Cannot connect to database " + err.Error(), Fields: map[string]string{"Hint": "Maybe you should start database service(deamon)"}, ErrorLocation: GetCallerInfo(0)})
+			}
+		}
+	}
+
+	return db
+}
+
+// Checks is root user that runed the program or not
+// It will kill program if program runed on windows system
+func IsUserRoot() bool {
+	usr_id := os.Getuid()
+	if usr_id == -1 {
+		fmt.Println("This program can only run in unix-like operating systems like linux and other...")
+		os.Exit(1)
+		return false
+	} else if usr_id == 0 {
+		return true
+	} else {
+		return false
+	}
 }

@@ -2,9 +2,7 @@ package middleware
 
 import (
 	"net/http"
-	"time"
 
-	"github.com/0ne-zero/f4h/database/model"
 	"github.com/0ne-zero/f4h/database/model_function"
 	"github.com/0ne-zero/f4h/utilities/functions/general"
 	wrapper_logger "github.com/0ne-zero/f4h/utilities/wrapper_logger"
@@ -15,17 +13,35 @@ import (
 
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		session := sessions.Default(c)
-		auth := session.Get("authenticated")
+		// session := sessions.Default(c)
+		// auth := session.Get("authenticated")
+		// user_id := session.Get("UserID")
+		// if user_id == nil {
+		// 	data := gin.H{
+		// 		"error": "You are NOT authorized. Go to login page",
+		// 	}
+		// 	c.HTML(http.StatusUnauthorized, "login.html", data)
+		// 	c.Abort()
+		// 	return
+		// } else if user_id_int, ok := user_id.(int); !ok || user_id_int < 1 {
+		// 	// Ban user, they enetered non-int value, how ?; i don't know
 
-		if auth == true {
-			data := gin.H{
-				"error": "You are NOT authorized. Go to login page",
-			}
-			c.HTML(http.StatusUnauthorized, "login.html", data)
-			c.Abort()
-			return
-		}
+		// 	data := gin.H{
+		// 		"error": "You are NOT authorized. Go to login page",
+		// 	}
+		// 	c.HTML(http.StatusUnauthorized, "login.html", data)
+		// 	c.Abort()
+		// 	return
+		// }
+
+		// if auth != true {
+		// 	data := gin.H{
+		// 		"error": "You are NOT authorized. Go to login page",
+		// 	}
+		// 	c.HTML(http.StatusUnauthorized, "login.html", data)
+		// 	c.Abort()
+		// 	return
+		// }
 	}
 }
 func NotFound() gin.HandlerFunc {
@@ -56,7 +72,7 @@ func TooManyRequest() gin.HandlerFunc {
 			c.Abort()
 			return
 		} else {
-			model_function.Add(&model.Request{IP: client_ip, Url: url, Method: method, Time: time.Now().UTC()})
+			//model_function.Add(&model.Request{IP: client_ip, Url: url, Method: method, Time: time.Now().UTC()})
 		}
 	}
 }

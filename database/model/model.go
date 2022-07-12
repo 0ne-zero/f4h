@@ -18,6 +18,9 @@ type User struct {
 	Email        string `gorm:"NOT NULL;"`
 	PasswordHash string `gorm:"NOT NULL;"`
 	IsSeller     bool   `gorm:"NOT NULL;"`
+	Signature    string
+	AvatarPath   string
+	JoinedAt     *time.Time
 	// User has many Order
 	Orders []*Order `gorm:"foreignkey:UserID;references:ID"`
 	// User has many Cart
@@ -56,6 +59,7 @@ type User struct {
 	Product_Comment_Votes []*Product_Comment_Vote
 	// User has many Topic_Vote
 	Topic_Votes []*Topic_Vote
+	// User has one ProfileSetting
 }
 
 type Address struct {
@@ -68,6 +72,7 @@ type Address struct {
 	BuildingNumber string `gorm:"NOT NULL;"`
 	PostalCode     string
 	Description    string
+	IsDefault      bool `gorm:"NOT NULL;"`
 	// Address has one User
 	UserID uint `gorm:"NOT NULL;"`
 }
@@ -83,10 +88,11 @@ type WalletInfo struct {
 }
 type Activity struct {
 	BasicModel
-	LastLoginAt          *time.Time `gorm:"NOT NULL;"`
+	LastLoginAt          *time.Time
 	LastBuyAt            *time.Time
-	LastChatAt           *time.Time
 	LastChangePasswordAt *time.Time
+	// list of logins times split by "|" character
+	LoginsAt string
 	// Activity has one User
 	UserID uint `gorm:"NOT NULL;"`
 }
@@ -167,20 +173,21 @@ type Order struct {
 	// Order has many WalletInfo for recivers
 	ReciversWalletInfo []*WalletInfo
 
-	Cart Cart
 	// Order has one Cart
+	Cart   Cart
 	CartID uint
 	// Order has one User
 	UserID uint
 	// Order has one OrderStatus
 	OrderStatusID uint `gorm:"NOT NULL;"`
 }
-type OrderItem struct {
+type CartItem struct {
 	BasicModel
-	// OrderItem has one Product
-	ProductID uint    `gorm:"NOT NULL;"`
-	Product   Product `gorm:"NOT NULL;"`
-	// OrderItem has one Cart
+	// CartItem has one Product
+	ProductID       uint    `gorm:"NOT NULL;"`
+	Product         Product `gorm:"NOT NULL;"`
+	ProductQuantity uint    `gorm:"NOT NULL"`
+	// CartItem has one Cart
 	CartID uint
 }
 type OrderStatus struct {
@@ -191,15 +198,14 @@ type OrderStatus struct {
 }
 type Cart struct {
 	BasicModel
+	TotalPrice float64 `gorm:"NOT NULL;"`
+	IsOrdered  bool    `gorm:"NOT NULL;"`
 
-	TotalPrice        float64 `gorm:"NOT NULL;"`
-	IsOrdered         bool    `gorm:"NOT NULL;"`
-	OrderItemQuantity uint    `gorm:"NOT NULL;"`
 	// Cart has one User
 	UserID uint `gorm:"NOT NULL;"`
 
-	// Cart has many OrderItem
-	OrderItems []*OrderItem `gorm:"NOT NULL;"`
+	// Cart has many CartItem
+	CartItems []*CartItem `gorm:"NOT NULL;"`
 }
 
 //endregion

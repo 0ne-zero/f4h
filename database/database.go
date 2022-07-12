@@ -1,6 +1,11 @@
 package database
 
 import (
+	"database/sql"
+	"fmt"
+	"os"
+	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/0ne-zero/f4h/database/model"
@@ -21,19 +26,38 @@ func InitializeOrGetDB() (*gorm.DB, error) {
 		}
 
 		// Open connection to database
-		db, err := gorm.Open(
-			// Open Databse
-			mysql.New(mysql.Config{DSN: dsn}),
-			// Config GORM
-			&gorm.Config{
-				// Allow create tables with null foreignkey
-				DisableForeignKeyConstraintWhenMigrating: true,
-				// All Datetime in database is in UTC
-				NowFunc:              func() time.Time { return time.Now().UTC() },
-				FullSaveAssociations: true,
-			})
-		if err != nil {
-			return nil, err
+		var db *gorm.DB
+		try_again := true
+		for try_again {
+			// Connect to database with gorm
+			db, err = gorm.Open(
+				// Open Databse
+				mysql.New(mysql.Config{DSN: dsn}),
+				// Config GORM
+				&gorm.Config{
+					// Allow create tables with null foreignkey
+					DisableForeignKeyConstraintWhenMigrating: true,
+					// All Datetime in database is in UTC
+					NowFunc:              func() time.Time { return time.Now().UTC() },
+					FullSaveAssociations: true,
+				})
+
+			if err != nil {
+				// If databse doesn't exists, so we have to create the database
+				if strings.Contains(err.Error(), "Unknown database") {
+					err = CreateDatabaseFromDSN(dsn)
+					if err != nil {
+						fmt.Println(fmt.Sprintf("Mentioned database in dsn isn't created,program tried to create that database but it can't do that.\nError: %s", err.Error()))
+						os.Exit(1)
+					}
+					// We don't need to set try_again to True, its default value
+					// try_again = true
+				} else {
+					return nil, err
+				}
+			}
+			// We don't need to try again to connect to database because we are connected
+			try_again = false
 		}
 		db.Set("gorm:auto_preload", true)
 		return db, nil
@@ -55,7 +79,7 @@ func MigrateModels(db *gorm.DB) error {
 		&model.Product_Image{},
 		&model.Product_Comment{},
 		&model.Order{},
-		&model.OrderItem{},
+		&model.CartItem{},
 		&model.OrderStatus{},
 		&model.Cart{},
 		&model.Product_Comment_Vote{},
@@ -125,7 +149,7 @@ func CreateTestData(db *gorm.DB) {
 	db.Create(&model.User{Username: "admin", Email: "admin@gmail.com", PasswordHash: "x", IsSeller: false, Roles: []*model.Role{{Name: "xxxx", Description: "xssxx"}, {Name: "xxssssssssxxx", Description: ""}}})
 	// activity
 	utc_now_time := time.Now().UTC()
-	db.Create(&model.Activity{LastLoginAt: &utc_now_time, LastBuyAt: nil, LastChatAt: nil, LastChangePasswordAt: nil, UserID: 1})
+	db.Create(&model.Activity{LastLoginAt: &utc_now_time, LastBuyAt: nil, LastChangePasswordAt: nil, UserID: 1})
 	// product
 	// inventory
 	// tag
@@ -170,7 +194,7 @@ func CreateTestData(db *gorm.DB) {
 	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
 
 	// cart
-	db.Create(&model.Cart{TotalPrice: 2322, OrderItemQuantity: 3, IsOrdered: true, UserID: 1})
+	db.Create(&model.Cart{TotalPrice: 2322, IsOrdered: true, UserID: 1})
 	// order status
 	db.Create(&model.OrderStatus{Status: "xxxxxxxxxx"})
 	db.Create(&model.OrderStatus{Status: "xxxxxxxxxxx"})
@@ -178,9 +202,9 @@ func CreateTestData(db *gorm.DB) {
 	// order
 	db.Create(&model.Order{SenderWalletInfoID: 1, UserID: 1, OrderStatusID: 1, CartID: 1})
 	// order item
-	db.Create(&model.OrderItem{ProductID: 1, CartID: 1})
-	db.Create(&model.OrderItem{ProductID: 1, CartID: 1})
-	db.Create(&model.OrderItem{ProductID: 1, CartID: 1})
+	db.Create(&model.CartItem{ProductID: 1, CartID: 1, ProductQuantity: 2})
+	db.Create(&model.CartItem{ProductID: 1, CartID: 1, ProductQuantity: 2})
+	db.Create(&model.CartItem{ProductID: 1, CartID: 1, ProductQuantity: 2})
 	// poll
 	db.Create(&model.Poll{Name: "xxxx", Description: "xxxx", UserID: 1})
 	// comment
@@ -251,4 +275,36 @@ func AnonymizeUser(db *gorm.DB, user *model.User) {
 	}
 	db.Unscoped().Delete(&user, user.ID)
 	//endregion
+}
+func GetDatabaseNameFromDSN(dsn string) string {
+	before, _, _ := strings.Cut(strings.Split(dsn, "/")[1], "?")
+	return before
+}
+
+func CreateDatabaseFromDSN(dsn string) error {
+	// Create database
+	dsn_without_database := strings.Split(dsn, "/")[0] + "/"
+	db, err := sql.Open("mysql", dsn_without_database)
+	if err != nil {
+		if !StartMySqlService() {
+			fmt.Println(fmt.Sprintf("We can't connect to mysql and we can't even start mysql.service\nError: %s", err.Error()))
+			os.Exit(1)
+		}
+		db, err = sql.Open("mysql", dsn_without_database)
+		if err != nil {
+			fmt.Println(fmt.Sprintf("mysql.service is in start mode, but for any reason we can't connect to database\nError: %s", err.Error()))
+			os.Exit(1)
+		}
+	}
+	db_name := GetDatabaseNameFromDSN(dsn)
+	_, err = db.Exec("CREATE DATABASE " + db_name)
+	return err
+}
+func StartMySqlService() bool {
+	command := fmt.Sprintf("systemctl start mysql.service")
+	_, err := exec.Command("bash", "-c", command).Output()
+	if err != nil {
+		return false
+	}
+	return true
 }
