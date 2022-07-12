@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--head-->
+<head>
+<link href="/statics/css/bootstrap.min.css" rel="stylesheet">
+{{template "_forum_head"}}
+<link href="/statics/css/main.css" rel="stylesheet">
+<link rel="shortcut icon" href="/statics/images/ico/favicon.ico">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+</head>
+<!--/head-->
+
+<body>
+	<!--header-->
+	<header id="header">
+	    {{template "_header"}}
+	</header>
+	<!--/header-->
+
+    {{$mode := toString .Mode}}
+    {{$tab := toString .Tab}}
+	<section>
+        <div id="wrap-subhead">
+            <div class="chunk">
+                <div class="wrap-subhead">
+                    <ul id="breadcrumbs" role="menubar">
+                        <li class="breadcrumbs rightside">
+                        <span class="crumb">
+                            <a href="/Discussions">
+                                Discussion Index
+                            </a>
+                        </span>
+                        </li>
+                    </ul>
+
+                    <ul id="subhead-tabs">
+                        <!-- Create tabs -->
+                        {{$active_tab_enabled := false}}
+                        {{range $t := .Tabs}}
+                            {{if eq $active_tab_enabled false}}
+                                {{if eq $tab $t}}
+                                    <li class="tab activetab">
+                                        <a href="#">
+                                        {{$t | titlelizeEachWord}}
+                                        </a>
+                                    </li>
+                                    {{$active_tab_enabled = true}}
+                                {{else}}
+                                    <li class="tab">
+                                        <a href="/Profile?tab={{$t}}">
+                                        {{$t | titlelizeEachWord}}
+                                        </a>
+                                    </li>
+                                {{end}}
+                            {{else}}
+                                <li class="tab">
+                                    <a href="/Profile?tab={{$t}}">
+                                    {{$t | titlelizeEachWord}}
+                                    </a>
+                                </li>
+                            {{end}}
+                        {{end}}
+                    </ul>
+                </div>
+                <div id="subhead-title">
+                    <h2 class="ucp-title">
+                        {{$pretty_tab := replace $tab "_" " "}}
+                        {{$pretty_mode := replace $mode "_" " "}}
+                        {{$pretty_tab = titlelizeEachWord $pretty_tab}}
+                        {{$pretty_mode = titlelizeEachWord $pretty_mode}}
+                        {{$pretty_tab}} - {{$pretty_mode}}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="wrap-body">
+            <div class="chunk">
+                <div id="cp-menu">
+                    <div id="navigation" role="navigation">
+                        <ul>
+                            <!-- Create Tab modes -->
+                            {{$active_mode_enabled := false}}
+                            {{range $mode := .TabModes}}
+                                {{if eq $active_mode_enabled false}}
+                                    {{if eq $mode $mode}}
+                                        <li id="active-subsection">
+                                            <a href="#">
+                                            <span>
+                                            {{replace $mode "_" " " | titlelizeEachWord}}
+                                            </span>
+                                            </a>
+                                        </li>
+                                        {{$active_mode_enabled = true}}
+                                    {{else}}
+                                        <li>
+                                            <a href="/Profile?tab={{$tab}}&mode={{$mode}}">
+                                            <span>
+                                            {{replace $mode "_" " " | titlelizeEachWord}}
+                                            </span>
+                                            </a>
+                                        </li>
+                                    {{end}}
+                                {{else}}
+                                    <li>
+                                        <a href="/Profile?tab={{$tab}}&mode={{$mode}}">
+                                        <span>
+                                        {{replace $mode "_" " " | titlelizeEachWord}}
+                                        </span>
+                                        </a>
+                                    </li>
+                                {{end}}
+                            {{end}}
+                        </ul>
+                    </div>
+                </div>
+                <div id="cp-main" class="ucp-main panel-container">
+                    <div id="cp-main-inner">
+                        {{if eq $tab "overview"}}
+                            {{if eq $mode "front_page"}}
+                                <div class="panel">
+                                    <div class="inner">
+                                        <p>
+                                        Welcome to the User Control Panel. From here you can monitor, view and update your profile, preferences, subscribed forums and topics. You can also send messages to other users (if permitted). Please ensure you read any announcements before continuing.
+                                        </p>
+                                        <h3>
+                                        Your activity
+                                        </h3>
+                                        <dl class="details">
+                                            <dt>Joined:</dt> 
+                                            <dd>{{.PanelData.JoinedAt}}</dd>
+                                            <dt>Last login at:</dt> 
+                                            <dd>{{.PanelData.LastLoginAt}}</dd>
+                                            <dt>Last password changed at:</dt>
+                                            <dd>{{.PanelData.LastPasswordChanged}}</dd>
+                                            
+                                            <dt>Total posts:</dt> 
+                                            <dd>
+                                                {{.PanelData.TotalPosts}} | 
+                                                <strong>
+                                                    <a href="/Search?mode=topic&username={{.Username}}">Show your posts
+                                                    </a>
+                                                </strong>
+                                            </dd>
+                                            <dt>Last buy at:</dt> 
+                                            <dd>{{.PanelData.LastBuyAt}}</dd>		
+                                            
+                                            <dt>Total products:</dt> 
+                                            <dd>
+                                                {{.PanelData.TotalProducts}} |
+                                                <strong>
+                                                    <a href="/Search?mode=products&username={{.Username}}">Show your products
+                                                    </a>
+                                                </strong>
+                                            </dd>			
+                                        </dl>
+                                    </div>
+                                </div>
+                            {{else if eq $mode "logins"}}
+                                <div class="panel">
+                                    <div class="inner">
+                                        <p>The "Remember Me" login keys automatically log you in when you visit the board. If you logout, the remember me login key is deleted only on the computer you are using to logout. Here you can see remember login keys created on other computers you used to access this site.
+                                        </p>
+                                        <table class="table1">
+                                            <thead>
+                                                <tr>
+                                                <th>Login Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{$row_number := 0}}
+                                                {{range $login_info := .PanelData.LoginInformation}}
+                                                    {{$remaind := remainder $row_number 2}}
+                                                    {{if eq $remaind 0}}
+                                                        <tr class="bg1">
+                                                            <td style="text-align: center">
+                                                            {{formatTime $login_info.Login_At}}
+                                                            </td>
+                                                        </tr>
+                                                        {{$row_number = plus $row_number 1}}
+                                                    {{else}}
+                                                        <tr class="bg2">
+                                                            <td style="text-align: center">
+                                                            {{formatTime $login_info.Login_At}}
+                                                            </td>
+                                                        </tr>
+                                                        {{$row_number = plus $row_number 1}}
+                                                    {{end}}
+                                                {{end}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            {{else if eq $mode "orders"}}
+                                 <div class="panel">
+                                    <div class="inner">
+                                        <p>The "Remember Me" login keys automatically log you in when you visit the board. If you logout, the remember me login key is deleted only on the computer you are using to logout. Here you can see remember login keys created on other computers you used to access this site.
+                                        </p>
+                                        <table class="table1">
+                                            <thead>
+                                                <tr>
+                                                <th>Buy Time</th>
+                                                <th>Bought Products</th>
+                                                <th>Total Price</th>
+                                                <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{$row_number := 0}}
+                                                {{range $order := .PanelData.LastOrder}}
+                                                    {{$remaind := remainder $row_number 2}}
+                                                    {{if eq $remaind 0 }}
+                                                        <tr class="bg1">
+                                                            <td style="text-align: center">
+                                                            {{formatTime $order.Time}}
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                            <a href="">Products You Bought</a>
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                            {{$order.TotalPrice}}
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                            {{$order.Status}}
+                                                            </td>
+                                                        </tr>
+                                                        {{$row_number = plus $row_number 1}}
+                                                    {{else}}
+                                                        <tr class="bg2">
+                                                            <td style="text-align: center">
+                                                            {{formatTime $order.Time}}
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                            <a href="">Products You Bought</a>
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                            {{$order.TotalPrice}}
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                            {{$order.Status}}
+                                                        </tr>
+                                                        {{$row_number = plus $row_number 1}}
+                                                    {{end}}
+                                                {{end}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            {{end}}
+                        {{else if eq $tab "profile"}}
+                            {{if eq $mode "edit_account"}}
+                                <form id="ucp" method="post" action="/Profile">
+                                    <div class="panel">
+                                        <div class="inner">
+                                        <fieldset>
+                                            <dl>
+                                                <dt>
+                                                    <label for="email">Email address:
+                                                    </label>
+                                                    <br>
+                                                    <span>You can set or change your email address
+                                                    </span>
+                                                </dt>
+                                                <dd>
+                                                    <input type="email" name="email" id="email" maxlength="100" value="9909unknown9909@gmail.com" class="inputbox" title="Email address" autocomplete="off">
+                                                </dd>
+                                            </dl>
+                                        </fieldset>
+                                        </div>
+                                    </div>                               
+                                    <div class="panel">
+                                        <div class="inner">
+                                        <fieldset>
+                                          <dl>
+                                                <dt>
+                                                    <label for="new_password">New password:
+                                                    </label>
+                                                    <br>
+                                                    <span>Must be between 9 characters and 100 characters.
+                                                    </span>
+                                                </dt>
+                                                <dd>
+                                                    <input type="password" name="new_password" id="new_password" maxlength="255" value="" class="inputbox" title="Change password" autocomplete="off">
+                                                </dd>
+                                            </dl>
+
+                                            <dl>
+                                                <dt>
+                                                    <label for="password_confirm">Confirm password:
+                                                    </label>
+                                                    <br>
+                                                    <span>You only need to confirm your password if you changed it above.
+                                                    </span>
+                                                </dt>
+                                            
+                                                <dd>
+                                                    <input type="password" name="password_confirm" id="password_confirm" maxlength="255" value="" class="inputbox" title="Confirm password" autocomplete="off">
+                                                </dd>
+                                            </dl>
+
+                                        </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="panel">
+                                        <div class="inner">
+                                        <fieldset>
+                                            <dl>
+                                            <dt>
+                                                <label for="cur_password">Current password:
+                                                </label>
+                                                <br>
+                                                <span>To change your password, your email address, you must enter your current password.
+                                                </span>
+                                            </dt>
+                                            <dd>
+                                                <input type="password" name="cur_password" id="cur_password" maxlength="255" value="" class="inputbox" title="Current password" autocomplete="off">
+                                            </dd>
+                                            </dl>
+                                        </fieldset>
+                                        </div>
+                                    </div>
+                                    <fieldset class="submit-buttons">
+                                        <input type="submit" name="submit" value="Submit" class="button1">
+                                    </fieldset>
+                                </form>
+                            {{else if eq $mode "edit_signature"}}
+                            {{else if eq $mode "edit_avatar"}}
+                                <form method="post" action="/Profile/EditAvatar_POST" enctype="multipart/form-data">
+                                    <h2>Edit avatar</h2>
+                                    <div class="panel">
+                                        <div class="inner">
+                                        <fieldset>
+                                            <dl>
+                                                <dt>
+                                                    <label>Current image:
+                                                    </label>
+                                                    <br>
+                                                    <span>Maximum file size: 1 MG.
+                                                    </span>
+                                                </dt>
+                                                <dd>
+                                                    <img src="{{.PanelData.AvatarPath}}" alt="Avatar">
+                                                </dd>
+                                            </dl>
+                                        </fieldset>
+                                        <div id="avatar_options">
+                                            <div id="avatar_option_avatar_driver_upload">
+                                            <div>
+                                                <h3 class="avatar_section_header">Upload avatar
+                                                </h3>
+                                            </div>
+                                            <fieldset>
+                                                <dl>
+                                                <dt>
+                                                    <label for="avatar_upload_file">Upload from your machine:
+                                                    </label>
+                                                </dt>
+                                                <dd>
+                                                    <input type="file" name="avatar_upload_file" id="avatar_upload_file" class="inputbox autowidth">
+                                                </dd>
+                                                </dl>
+                                            </fieldset>
+                                            </div>
+                                        </div>
+                                        <fieldset class="submit-buttons">
+                                            <input href="/Profile/DeleteAvatar" type="button" value="delete_avatar" name="delete_avatar" class="button2">
+                                            <input type="submit" name="submit" value="Submit" class="button1">
+                                        </fieldset>
+                                        </div>
+                                    </div>
+                                </form>                  
+                            {{else if eq $mode "manage_address"}}
+                                <form id="ucp" method="post" action="/Profile">
+                                    <div class="panel">
+                                        <div class="inner">
+                                            <fieldset>
+                                                <dl>
+                                                    <dt>
+                                                        <label for="new_password">Name:
+                                                        </label>
+                                                        <br>
+                                                        <span>It will write on packet.</span>
+                                                    </dt>
+                                                    <dd>
+                                                        <input type="text" name="Name" value="" class="inputbox" title="Reciver Name" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt>
+                                                        <label>Country:
+                                                        </label>
+                                                        <br>
+                                                        <span>Reciver country.</span>
+                                                    </dt>
+
+                                                    <dd>
+                                                        <input type="text" name="country" value="" class="inputbox" title="Country name" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt>
+                                                        <label>Province:
+                                                        </label>
+                                                        <br>
+                                                        <span>Reciver province.</span>
+                                                    </dt>
+
+                                                    <dd>
+                                                        <input type="text" name="province" value="" class="inputbox" title="Reciver province" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt>
+                                                        <label>City:
+                                                        </label>
+                                                        <br>
+                                                        <span>Reciver city.</span>
+                                                    </dt>
+
+                                                    <dd>
+                                                        <input type="text" name="city" value="" class="inputbox" title="Reciver city" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt>
+                                                        <label>Street:
+                                                        </label>
+                                                        <br>
+                                                        <span>Reciver street.</span>
+                                                    </dt>
+
+                                                    <dd>
+                                                        <input type="text" name="street" value="" class="inputbox" title="Reciver street" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt>
+                                                        <label>Building Number:
+                                                        </label>
+                                                        <br>
+                                                        <span>Reciver building number.
+                                                        </span>
+                                                    </dt>
+
+                                                    <dd>
+                                                        <input type="text" name="building_number" value="" class="inputbox" title="Reciver building number" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt>
+                                                        <label>Postal-Code:
+                                                        </label>
+                                                        <br>
+                                                        <span>Reciver postal-code.</span>
+                                                    </dt>
+
+                                                    <dd>
+                                                        <input type="text" name="postal_code" value="" class="inputbox" title="Reciver postal-code" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt>
+                                                        <label>Description:
+                                                        </label>
+                                                        <br>
+                                                        <span>Description that you want the postman to see.</span>
+                                                    </dt>
+
+                                                    <dd>
+                                                        <input type="text" name="description" value="" class="inputbox" title="Description" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                            </fieldset>
+                                            <fieldset class="submit-buttons">
+                                                <input href="/Profile/DeleteAvatar/" type="button" value="delete_avatar" name="delete_avatar" class="button2">
+                                                <input type="submit" name="submit" value="Submit" class="button1">
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </form>
+                            {{else if eq $mode "manage_wallet"}}
+                                <form method="post" action="/Profile">
+                                    <div class="panel">
+                                        <div class="inner">
+                                            <fieldset>
+                                                <dl>
+                                                    <dt>
+                                                        <label for="new_password">Your wallet address:
+                                                        </label>
+                                                        <br>
+                                                        <span>Money from products sold will be deposited at this address.</span>
+                                                    </dt>
+                                                    <dd>
+                                                        <input type="text" name="Name" value="" class="inputbox" title="Wallet address" autocomplete="off">
+                                                    </dd>
+                                                </dl>
+                                            </fieldset>
+                                            <fieldset class="submit-buttons">
+                                                <input href="/Profile/SetWalletAddress" type="button" value="delete_avatar" name="delete_avatar" class="button2">
+                                                <input type="submit" name="submit" value="Submit" class="button1">
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </form>
+                            {{end}}
+                        {{else if eq $tab "products"}}
+                        {{else if eq $tab "payments"}}
+                        {{else if eq $tab "topics"}}
+                        {{else if eq $tab "polls"}}
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
+
+	<!--Footer-->
+	<footer id="footer">
+		{{template "_footer"}}	
+	</footer>
+	<!--/Footer-->
+</body>
+</html>

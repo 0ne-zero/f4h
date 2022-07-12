@@ -30,7 +30,7 @@ func MakeRoute() *gin.Engine {
 	r.NoRoute(middleware.NotFound())
 
 	// Use session
-	session_key := "s"
+	session_key := "secret"
 	if gin.Mode() == "PRODUCTION" {
 		if sk := os.Getenv("F4H_SESSION_KEY"); sk == "" {
 			wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "F4H_SESSION_KEY isn't exists in environment variables", Fields: nil, ErrorLocation: general.GetCallerInfo(0)})
@@ -62,6 +62,7 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/EditTopic/:topic_id", controller.EditTopic_Get)
 		authorized.POST("/EditTopic/:topic_id", controller.EditTopic_POST)
 		authorized.GET("/Topic/:topic_id", controller.ShowTopic)
+		authorized.GET("/Profile", controller.Profile_GET)
 
 	}
 	constansts.Routes = r.Routes()

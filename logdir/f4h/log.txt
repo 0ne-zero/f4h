@@ -221,3 +221,382 @@ Msg= 'Not Found'
 Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
 Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------
+[2022-05-17T11:50:53Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T11:52:06Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T11:53:08Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/products/XXXX' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T11:53:08Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T11:53:09Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:05:42Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:05:43Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:06:17Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:06:35Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:07:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:07:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:07:30Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:08:15Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:08:31Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:08:49Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:08:58Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:09:58Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:10:02Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:10:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:10:13Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:10:16Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/css/font-awesome.min.css'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:10:22Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:11:52Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:12:07Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:12:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:12:30Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/css/font-awesome.min.css'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:23:55Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/css/font-awesome.min.css'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T12:26:22Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:00:56Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/profile' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:00:57Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:00:57Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:00:57Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:29:16Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:29:16Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:46:16Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/Login'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T15:46:17Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T16:12:43Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T16:12:43Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T16:14:14Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T16:14:14Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T16:25:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-17T16:25:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-18T17:20:29Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database dial tcp 127.0.0.1:3306: connect: connection refused'
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-05-18T17:22:31Z]-[WARNING]-[f4h]:
+Msg= 'Entered unavailable mode'
+Fields= IP='127.0.0.1' | URL='/Profile' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:309 github.com/0ne-zero/f4h/web/controller.Profile_GET
+----------------------------------------------------------------------
+[2022-05-18T17:22:31Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-18T17:22:31Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-18T17:25:38Z]-[WARNING]-[f4h]:
+Msg= 'Entered unavailable mode'
+Fields= IP='127.0.0.1' | URL='/Profile' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:309 github.com/0ne-zero/f4h/web/controller.Profile_GET
+----------------------------------------------------------------------
+[2022-05-18T17:25:39Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-21T01:26:04Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database dial tcp 127.0.0.1:3306: connect: connection refused'
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-05-21T01:27:09Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-21T01:27:09Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:22:09Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:24:44Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:24:45Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:24:49Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:34 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:24:59Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:32 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:25:50Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/profile' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:32 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:25:51Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:32 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-24T01:26:35Z]-[WARNING]-[f4h]:
+Msg= 'Entered unavailable mode'
+Fields= IP='127.0.0.1' | URL='/Profile' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:307 github.com/0ne-zero/f4h/web/controller.Profile_GET
+----------------------------------------------------------------------
+[2022-05-24T01:26:36Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:32 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-26T18:27:50Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database dial tcp 127.0.0.1:3306: connect: connection refused'
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-05-26T20:02:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-26T20:02:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-05-30T15:32:01Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-01T08:38:04Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database dial tcp 127.0.0.1:3306: connect: connection refused'
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-06-11T15:40:22Z]-[FATAL]-[f4h]:
+Msg= 'We really cannot connect to the database'
+Location= /home/me/go/src/f4h/main.go:14 main.main
+----------------------------------------------------------------------
+[2022-06-11T16:07:40Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-11T16:07:42Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-11T16:07:42Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-13T15:08:54Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-13T15:08:54Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-13T15:13:59Z]-[WARNING]-[f4h]:
+Msg= 'sql: Scan error on column index 0, name "joined_at": unsupported Scan, storing driver.Value type <nil> into type *time.Time'
+Fields= IP='127.0.0.1' | URL='/Profile' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/controller/controllers.go:339 github.com/0ne-zero/f4h/web/controller.Profile_GET
+----------------------------------------------------------------------
+[2022-06-13T15:14:00Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/css/font-awesome.min.css'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-13T15:14:00Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-06-24T01:36:17Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database Error 1049: Unknown database 'test''
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/utilities/functions/general/general.go:225 github.com/0ne-zero/f4h/utilities/functions/general.ConnectToDatabaseANDHandleErrors
+----------------------------------------------------------------------
+[2022-06-24T16:12:26Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database Error 1049: Unknown database 'test''
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/go/src/f4h/utilities/functions/general/general.go:234 github.com/0ne-zero/f4h/utilities/functions/general.ConnectToDatabaseANDHandleErrors
+----------------------------------------------------------------------

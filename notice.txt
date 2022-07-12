@@ -25,3 +25,11 @@
 -- check user authority for edit topic
 -- complete edit route
 -- user must not edit her/his cookies
+-- add delete topic ability
+-- complete user control panel with things that saved in database(address,orders)
+-- enable add every request to database
+-- ban user in authenticatin middleware
+-- thing about use hash sign instead of using id
+-- check user's wallet address is valid or not !
+-- complete user panel
+-- create database if it doesn't exists

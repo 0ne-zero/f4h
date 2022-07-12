@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -158,7 +159,7 @@ func Index(c *gin.Context) {
 
 	// Everything is ok
 	view_data := gin.H{
-		"Title": "Index",
+		"Title": constansts.AppName + " | Home",
 	}
 
 	// If user is login, show her/his username. get username from session
@@ -286,6 +287,125 @@ func ProductDetails(c *gin.Context) {
 	view_data["Title"] = product.Name
 	view_data["Product"] = product
 	c.HTML(http.StatusOK, "product-details.html", view_data)
+}
+func Profile_GET(c *gin.Context) {
+	// Get user id
+	//user_id := sessions.Default(c).Get("UserID").(int)
+	// Available tabs and their modes
+	tabs_modes := map[string][]string{
+		"overview": {"front_page", "logins", "orders"},
+		"profile":  {"edit_account", "edit_signature", "edit_avatar", "manage_login", "manage_address", "manage_wallets"},
+		"products": {"front_page"},
+		"payments": {"front_page"},
+		"topics":   {"front_page"},
+		"polls":    {"front_page"},
+	}
+	sorted_tabs := general_func.GetMapKeys(tabs_modes)
+	sort.Strings(sorted_tabs)
+
+	view_data := gin.H{
+		"Title": fmt.Sprintf("%s Profile | %s", sessions.Default(c).Get("Username"), constansts.AppName),
+		"Tabs":  sorted_tabs,
+	}
+
+	// Check user entered tab
+	if tab := c.Query("tab"); tab != "" {
+		// Check entered tab available
+		if !general_func.ExistsStringInStringSlice(tab, general_func.GetMapKeys(tabs_modes)) {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered unavailable tab", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		// Insert tab to information that will send to template
+		view_data["Tab"] = tab
+		// Check user entered tab mode
+		if mode := c.Query("mode"); mode != "" {
+			// Check entered mode available
+			if !general_func.ExistsStringInStringSlice(mode, tabs_modes[tab]) {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered unavailable mode", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+			// Insert mode to information that will send to template
+			view_data["Mode"] = mode
+
+			// Get panel data
+			switch tab {
+			case "overview":
+				switch mode {
+				case "front_page":
+					// panel_data, err := model_function.GetUserDataForUserPanel_Overview_FrontPage(user_id)
+					// if err != nil {
+					// 	wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+					// 	controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+					// 	return
+					// }
+					// view_data["PanelData"] = panel_data
+				case "logins":
+					//panel_data,err := model_function.GetUserDataForUserPanel_Overview_FrontPage()
+				case "orders":
+				}
+			case "profile":
+				switch mode {
+				case "edit_account":
+				case "edit_signature":
+				case "edit_avatar":
+				case "manage_login":
+				case "manage_address":
+				case "manage_wallets":
+				}
+			case "products":
+				switch mode {
+				case "front_page":
+				}
+			case "payments":
+				switch mode {
+				case "front_page":
+				}
+			case "topics":
+				switch mode {
+				case "front_page":
+				}
+			case "polls":
+				switch mode {
+				case "front_page":
+				}
+
+			}
+
+			c.HTML(200, "profile.html", view_data)
+			return
+		}
+		// Tab's mode isn't selected so select default mode (first element)
+		view_data["Mode"] = tabs_modes[tab][0]
+
+		// Get panel data
+		switch tab {
+		case "overview":
+		case "profile":
+		case "products":
+		case "payments":
+		case "topics":
+		case "polls":
+		}
+		c.HTML(200, "profile.html", view_data)
+		return
+	}
+
+	// Neither tab nor tab mode is selected, so select default tab and default tab mode, which that means overview tab and its first mode
+	view_data["Tab"] = "overview"
+	view_data["Mode"] = "front_page"
+	view_data["TabModes"] = tabs_modes["overview"]
+
+	// Get panel data
+	// panel_data, err := model_function.GetUserDataForProfile_Overview_Front(user_id)
+	// if err != nil {
+	// 	wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+	// 	controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+	// 	return
+	// }
+	// view_data["PanelData"] = panel_data
+	c.HTML(200, "profile.html", view_data)
 }
 
 //region Forum
