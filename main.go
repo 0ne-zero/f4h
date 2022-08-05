@@ -15,14 +15,14 @@ func main() {
 		//os.Exit(1)
 	}
 
-	db := general_func.ConnectToDatabaseANDHandleErrors()
+	db := database.InitializeOrGetDB()
+
 	// If db is nil we kill the program, because we can't continue without database
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "We really cannot connect to the database", ErrorLocation: general_func.GetCallerInfo(0)})
 	}
 
-	var err error
-	err = database.MigrateModels(db)
+	err := database.MigrateModels(db)
 
 	print(err)
 	// database.CreateTestData(db)
@@ -34,4 +34,5 @@ func main() {
 	// time level msg func file
 	route := route.MakeRoute()
 	route.Run(":8080")
+	print("alive")
 }
