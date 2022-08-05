@@ -41,30 +41,37 @@ var GetCallerInfoErrorCount int
 // Errors
 var SomethingBadHappenedError string
 
+// Is already loaded
+var loaded bool
+
 func init() {
-	// Errors
-	SomethingBadHappenedError = "Something Bad Happened, Please back later."
-	// Paths
-	ExecutableDirectory = filepath.Dir(os.Args[0])
-	if setting_path := os.Getenv("F4H_SETTING_PATH"); setting_path != "" {
-		SettingFilePath = setting_path
-	} else {
-		SettingFilePath = filepath.Join(ExecutableDirectory, "config", "setting.json")
-	}
-	UtilitiesDirectory = filepath.Join(ExecutableDirectory, "utilities")
-	MarkdownFilePath = filepath.Join(UtilitiesDirectory, "Markdown.pl")
+	if !loaded {
+		// Errors
+		SomethingBadHappenedError = "Something Bad Happened, Please back later."
+		// Paths
+		ExecutableDirectory = filepath.Dir(os.Args[0])
+		if setting_path := os.Getenv("F4H_SETTING_PATH"); setting_path != "" {
+			SettingFilePath = setting_path
+		} else {
+			SettingFilePath = filepath.Join(ExecutableDirectory, "config", "setting.json")
+		}
+		UtilitiesDirectory = filepath.Join(ExecutableDirectory, "utilities")
+		MarkdownFilePath = filepath.Join(UtilitiesDirectory, "Markdown.pl")
 
-	// Load Setting File
-	var err error
-	SettingData, err = readSettingFile(SettingFilePath)
-	if err != nil {
-		os.Exit(1)
-	}
-	AppName = SettingData["APP_NAME"]
-	LogFilePath = filepath.Join(SettingData["LOG_FILE_PARENT_DIRECTORY"], SettingData["APP_NAME"], "log.txt")
+		// Load Setting File
+		var err error
+		SettingData, err = readSettingFile(SettingFilePath)
+		if err != nil {
+			os.Exit(1)
+		}
+		AppName = SettingData["APP_NAME"]
+		LogFilePath = filepath.Join(SettingData["LOG_FILE_PARENT_DIRECTORY"], SettingData["APP_NAME"], "log.txt")
 
-	// Initial XSS preventation
-	XSSPreventor = bluemonday.UGCPolicy()
+		// Initial XSS preventation
+		XSSPreventor = bluemonday.UGCPolicy()
+		// Set loaded to true, so next time it won't load again and will use them immediately
+		loaded = true
+	}
 }
 
 func readSettingFile(setting_path string) (map[string]string, error) {
