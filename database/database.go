@@ -26,7 +26,6 @@ func InitializeOrGetDB() (*gorm.DB, error) {
 		}
 
 		// Open connection to database
-		var db *gorm.DB
 		try_again := true
 		for try_again {
 			// Connect to database with gorm
