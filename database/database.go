@@ -3,67 +3,96 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"net"
 	"os"
 	"os/exec"
 	"strings"
 	"time"
 
 	"github.com/0ne-zero/f4h/database/model"
+	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
 	"github.com/0ne-zero/f4h/utilities/functions/setting"
+	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
 
-func InitializeOrGetDB() (*gorm.DB, error) {
+// If it couldn't connect to database, and also it didn't close program, returns nil
+func InitializeOrGetDB() *gorm.DB {
 	if db == nil {
-		// Get DSN from setting file
 		// DSN = Data source name (like connection string for database)
 		dsn, err := setting.ReadFieldInSettingData("DSN")
 		if err != nil {
-			return nil, err
+			return nil
 		}
 
-		// Open connection to database
-		try_again := true
-		for try_again {
-			// Connect to database with gorm
-			db, err = gorm.Open(
-				// Open Databse
-				mysql.New(mysql.Config{DSN: dsn}),
-				// Config GORM
-				&gorm.Config{
-					// Allow create tables with null foreignkey
-					DisableForeignKeyConstraintWhenMigrating: true,
-					// All Datetime in database is in UTC
-					NowFunc:              func() time.Time { return time.Now().UTC() },
-					FullSaveAssociations: true,
-				})
-
+		// For error handling
+		var connect_again = true
+		for connect_again {
+			db, err = connectDB(dsn)
 			if err != nil {
-				// If databse doesn't exists, so we have to create the database
+				// Specific error handling
+
+				//Databse doesn't exists, we have to create the database
 				if strings.Contains(err.Error(), "Unknown database") {
 					err = CreateDatabaseFromDSN(dsn)
 					if err != nil {
+						// Database isn't exists
+						// Also we can't create database from dsn
 						fmt.Println(fmt.Sprintf("Mentioned database in dsn isn't created,program tried to create that database but it can't do that.\nError: %s", err.Error()))
 						os.Exit(1)
 					}
-					// We don't need to set try_again to True, its default value
-					// try_again = true
-				} else {
-					return nil, err
+					// Database created in mysql
+					// Don't check rest of possible errors and try to connect again
+					continue
 				}
+				// Error handling with error type detection
+				switch err.(type) {
+				case *net.OpError:
+					op_err := err.(*net.OpError)
+					// Get TCPAddr if exists
+					if tcp_addr, ok := op_err.Addr.(*net.TCPAddr); ok {
+						// Check error occurred when we trired to connect to mysql
+						if tcp_addr.Port == 3306 {
+							// Try to start mysql service
+							connect_again = StartMySqlService()
+						}
+					}
+				default:
+					wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "Cannot connect to database " + err.Error(), Fields: map[string]string{"Hint": "Maybe you should start database service(deamon)"}, ErrorLocation: general_func.GetCallerInfo(0)})
+				}
+			} else {
+				// We don't need to try again to connect to database because we are connected
+				connect_again = false
 			}
-			// We don't need to try again to connect to database because we are connected
-			try_again = false
 		}
+
 		db.Set("gorm:auto_preload", true)
-		return db, nil
+		return getDB()
 	} else {
-		return db, nil
+		return getDB()
 	}
 
+}
+func connectDB(dsn string) (*gorm.DB, error) {
+	// Connect to database with gorm
+	return gorm.Open(
+		// Open Databse
+		mysql.New(mysql.Config{DSN: dsn}),
+		// Config GORM
+		&gorm.Config{
+			// Allow create tables with null foreignkey
+			DisableForeignKeyConstraintWhenMigrating: true,
+			// All Datetime in database is in UTC
+			NowFunc:              func() time.Time { return time.Now().UTC() },
+			FullSaveAssociations: true,
+		})
+}
+
+func getDB() *gorm.DB {
+	return db
 }
 func MigrateModels(db *gorm.DB) error {
 	return db.AutoMigrate(
@@ -276,13 +305,14 @@ func AnonymizeUser(db *gorm.DB, user *model.User) {
 	//endregion
 }
 func GetDatabaseNameFromDSN(dsn string) string {
-	before, _, _ := strings.Cut(strings.Split(dsn, "/")[1], "?")
-	return before
+	// w = without
+	w_user_pass_protocol_ip := dsn[strings.LastIndex(dsn, "/")+1:]
+	return w_user_pass_protocol_ip[:strings.LastIndex(w_user_pass_protocol_ip, "?")]
 }
 
 func CreateDatabaseFromDSN(dsn string) error {
 	// Create database
-	dsn_without_database := strings.Split(dsn, "/")[0] + "/"
+	dsn_without_database := dsn[:strings.LastIndex(dsn, "/")] + "/"
 	db, err := sql.Open("mysql", dsn_without_database)
 	if err != nil {
 		if !StartMySqlService() {
@@ -300,10 +330,13 @@ func CreateDatabaseFromDSN(dsn string) error {
 	return err
 }
 func StartMySqlService() bool {
-	command := fmt.Sprintf("systemctl start mysql.service")
-	_, err := exec.Command("bash", "-c", command).Output()
-	if err != nil {
-		return false
+	var service_names = []string{"mysqld.service", "mysql.service"}
+	for i := range service_names {
+		command := fmt.Sprintf("systemctl start %s", service_names[i])
+		_, err := exec.Command("bash", "-c", command).Output()
+		if err == nil {
+			return true
+		}
 	}
-	return true
+	return false
 }

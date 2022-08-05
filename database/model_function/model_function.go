@@ -11,6 +11,7 @@ import (
 	"github.com/0ne-zero/f4h/database/model"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
+	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 )
 
 type Model interface {
@@ -18,9 +19,9 @@ type Model interface {
 }
 
 func Add[m Model](model *m) error {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	return db.Create(model).Error
 }
@@ -30,23 +31,23 @@ func Add[m Model](model *m) error {
 // update_model = the model with some change, you wish to apply the consider model
 // Returns Changed model (result)
 func Update[m Model](consider_model *m, updated_model *m) (*m, error) {
-	db, err := database.InitializeOrGetDB()
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	err := db.Model(consider_model).Updates(updated_model).Error
 	if err != nil {
 		return nil, err
 	}
-	err = db.Model(consider_model).Updates(updated_model).Error
-	if err != nil {
-		return nil, err
-	}
-	//err = db.Save(consider_model).Error
+	//err := db.Save(consider_model).Error
 
 	return consider_model, err
 }
 func Get[m Model](model *[]m, limit int, orderBy string, orderType string, preloads ...string) error {
 
-	context, err := database.InitializeOrGetDB()
-	if err != nil {
-		return err
+	context := database.InitializeOrGetDB()
+	if context == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	if preloads != nil {
 		for _, p := range preloads {
@@ -54,7 +55,7 @@ func Get[m Model](model *[]m, limit int, orderBy string, orderType string, prelo
 			context = context.Preload(p)
 		}
 	}
-
+	var err error
 	if limit < 1 {
 		err = context.Order(fmt.Sprintf("%s %s", orderBy, orderType)).Find(model).Error
 	} else {
@@ -64,81 +65,79 @@ func Get[m Model](model *[]m, limit int, orderBy string, orderType string, prelo
 }
 func IsExistsByID[m Model](model *m, id uint) (bool, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return false, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var exists bool
-	err = db.Model(model).Select("count(*) >0").Where("ID = ?", id).Find(&exists).Error
+	err := db.Model(model).Select("count(*) >0").Where("ID = ?", id).Find(&exists).Error
 	return exists, err
 }
 func GetByID[m Model](model *m, id int) error {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	return db.Where("id = ?", id).First(model).Error
 }
 func GetUserPassHashByUsername(username string) (string, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return "", err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var pass_hash string
-	err = db.Where("username = ?", username).Select("password_hash").First(&pass_hash).Error
+	err := db.Where("username = ?", username).Select("password_hash").First(&pass_hash).Error
 	return pass_hash, err
 }
 func IsUserExistsByUsername(username string) (bool, error) {
-
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return false, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var exists bool
-	err = db.Model(&model.User{}).Select("count(*) >0").Where("username = ?", username).Find(&exists).Error
+	err := db.Model(&model.User{}).Select("count(*) >0").Where("username = ?", username).Find(&exists).Error
 	return exists, err
 }
 func GetUserByUsername(username string) (model.User, error) {
-
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return model.User{}, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var u model.User
-	err = db.Where("username = ?", username).First(&u).Error
+	err := db.Where("username = ?", username).First(&u).Error
 	return u, err
 }
 func GetUsernameByUserID(user_id int) (string, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return "", err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var username string
-	err = db.Model(&model.User{}).Where("id = ?", user_id).Select("username").Scan(&username).Error
+	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("username").Scan(&username).Error
 	return username, err
 }
 func GetFieldsByAnotherFieldValue[m Model](model *m, out_fields_name []string, in_field_name string, in_field_value string) error {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
-	err = db.Model(model).Where(fmt.Sprintf("%s = ?", in_field_name), in_field_value).Select(out_fields_name).Scan(model).Error
+	err := db.Model(model).Where(fmt.Sprintf("%s = ?", in_field_name), in_field_value).Select(out_fields_name).Scan(model).Error
 	return err
 }
 func TooManyRequest(ip string, url string, method string) (bool, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return false, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var req_count int64
 	now := time.Now().UTC()
 	one_hour_ago := now.Add(time.Duration(-1) * time.Hour)
-	err = db.Model(&model.Request{}).Where("ip = ? AND url = ? AND method = ? AND time <= ? ", ip, url, method, one_hour_ago).Count(&req_count).Error
+	err := db.Model(&model.Request{}).Where("ip = ? AND url = ? AND method = ? AND time <= ? ", ip, url, method, one_hour_ago).Count(&req_count).Error
 	if err != nil {
 		return false, err
 	}
@@ -149,11 +148,12 @@ func TooManyRequest(ip string, url string, method string) (bool, error) {
 }
 func GetProductInViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var products []viewmodel.ProductBasicViewModel
+	var err error
 	if limit > 0 {
 		err = db.Model(&model.Product{}).Limit(limit).Select("id", "name", "price").Scan(&products).Error
 	} else {
@@ -163,14 +163,14 @@ func GetProductInViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error)
 }
 func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmodel.ProductBasicViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var products []viewmodel.ProductBasicViewModel
 	var c model.Product_Category
 
-	err = db.Preload("Products").Where("name = ?", category_name).Find(&c).Error
+	err := db.Preload("Products").Where("name = ?", category_name).Find(&c).Error
 	if err != nil {
 		return nil, err
 	} else if c.Products == nil {
@@ -183,13 +183,13 @@ func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmod
 }
 func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	// Get categories
 	var categories []model.Product_Category
-	err = db.Preload("Products").Preload("SubCategories").Find(&categories).Error
+	err := db.Preload("Products").Preload("SubCategories").Find(&categories).Error
 	if err != nil {
 		return err
 	}
@@ -217,12 +217,12 @@ func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
 }
 func GetCategoriesWithRelationsInViewModel(ordering bool) ([]viewmodel.SidebarCategoryViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var categories []model.Product_Category
-
+	var err error
 	if !ordering {
 		err = db.Preload("SubCategories").Find(&categories).Error
 	} else {
@@ -255,12 +255,12 @@ func GetCategoriesWithRelationsInViewModel(ordering bool) ([]viewmodel.SidebarCa
 }
 func GetCategoriesName() ([]string, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var s []string
-	err = db.Model(&model.Product_Category{}).Select("name").Scan(&s).Error
+	err := db.Model(&model.Product_Category{}).Select("name").Scan(&s).Error
 	return s, err
 }
 
@@ -278,19 +278,19 @@ func GetForumPostsCount(forum_id int) (int, error) {
 
 func GetDiscussionForumsName(d *model.Discussion) ([]string, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var forums_name []string
-	err = db.Model(&model.Forum{}).Where("discussion_id = ?", d.ID).Select("name").Find(&forums_name).Error
+	err := db.Model(&model.Forum{}).Where("discussion_id = ?", d.ID).Select("name").Find(&forums_name).Error
 	return forums_name, err
 }
 func GetTopicLastPostInViewModel(topic_id int) (viewmodel.LastPost, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return viewmodel.LastPost{}, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	// Topic comment count
 	comment_count, err := getTopicCommentsCount(topic_id)
@@ -315,7 +315,7 @@ func GetTopicLastPostInViewModel(topic_id int) (viewmodel.LastPost, error) {
 		}
 		lp.AuthorUsername = username
 	} else {
-		err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("created_at", "user_id").Scan(&temp_lp).Error
+		err := db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("created_at", "user_id").Scan(&temp_lp).Error
 		if err != nil {
 			return viewmodel.LastPost{}, err
 		}
@@ -330,12 +330,12 @@ func GetTopicLastPostInViewModel(topic_id int) (viewmodel.LastPost, error) {
 }
 func GetDiscussionTopicsCount(d *model.Discussion) (int, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return 0, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var discussion_forums []model.Forum
-	err = db.Select("id").Where("discussion_id = ?", d.BasicModel.ID).Find(&discussion_forums).Error
+	err := db.Select("id").Where("discussion_id = ?", d.BasicModel.ID).Find(&discussion_forums).Error
 	if err != nil {
 		return 0, err
 	}
@@ -352,12 +352,12 @@ func GetDiscussionTopicsCount(d *model.Discussion) (int, error) {
 }
 func GetDiscussionPostsCount(d *model.Discussion) (int, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return 0, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var discussion_forums []model.Forum
-	err = db.Select("id").Where("discussion_id = ?", d.ID).Find(&discussion_forums).Error
+	err := db.Select("id").Where("discussion_id = ?", d.ID).Find(&discussion_forums).Error
 	if err != nil {
 		return 0, err
 	}
@@ -373,12 +373,12 @@ func GetDiscussionPostsCount(d *model.Discussion) (int, error) {
 }
 func GetDiscussionForumsInViewModel(discussion_id int) ([]viewmodel.ForumViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var forums []viewmodel.ForumViewModel
-	err = db.Model(&model.Forum{}).Where("discussion_id = ?", discussion_id).Select("name", "description", "id").Scan(&forums).Error
+	err := db.Model(&model.Forum{}).Where("discussion_id = ?", discussion_id).Select("name", "description", "id").Scan(&forums).Error
 	if err != nil {
 		return nil, err
 	}
@@ -394,9 +394,9 @@ func GetDiscussionForumsInViewModel(discussion_id int) ([]viewmodel.ForumViewMod
 }
 func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var topics []viewmodel.TopicBriefViewModel
 	discussion_forums_ids, err := getDiscussionForumsIDs(discussion_id)
@@ -418,11 +418,12 @@ func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicBriefViewModel, er
 }
 func GetDiscussionForumsByField(discussion_id int, fields []string) ([]model.Forum, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var forums []model.Forum
+	var err error
 	if fields != nil {
 		err = db.Where("discussion_id = ?", discussion_id).Select(fields).Find(&forums).Error
 	} else {
@@ -432,12 +433,12 @@ func GetDiscussionForumsByField(discussion_id int, fields []string) ([]model.For
 }
 func GetDiscussionTopicsBasedForums(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var topics []viewmodel.TopicBriefViewModel
-	err = db.Where("discussion_id = ?", discussion_id).Select("name", "id", "view_count", "created_at").Find(&topics).Error
+	err := db.Where("discussion_id = ?", discussion_id).Select("name", "id", "view_count", "created_at").Find(&topics).Error
 	for _, t := range topics {
 		commentCount, err := getTopicCommentsCount(int(t.ID))
 		if err != nil {
@@ -449,14 +450,14 @@ func GetDiscussionTopicsBasedForums(discussion_id int) ([]viewmodel.TopicBriefVi
 }
 
 func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicBriefViewModel, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	// Temp topic view model
 	var temp_topics_view []viewmodel.TopicForShowTopicViewModelWithUserID
 
-	err = db.Model(&model.Topic{}).Where("forum_id = ?", forum_id).Select("id", "name", "view_count", "created_at", "user_id").Scan(&temp_topics_view).Error
+	err := db.Model(&model.Topic{}).Where("forum_id = ?", forum_id).Select("id", "name", "view_count", "created_at", "user_id").Scan(&temp_topics_view).Error
 	if err != nil {
 		return nil, err
 	}
@@ -496,13 +497,13 @@ func GetForumTopicsInViewModel(forum_id int) ([]viewmodel.TopicBriefViewModel, e
 
 func GetTopicByIDForShowTopicInViewModel(topic_id int) (viewmodel.TopicForShowTopicViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return viewmodel.TopicForShowTopicViewModel{}, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	// Get topic basic information
 	var t viewmodel.TopicBasicInformation
-	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("user_id", "name", "description", "created_at").Scan(&t).Error
+	err := db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("user_id", "name", "description", "created_at").Scan(&t).Error
 	if err != nil {
 		return viewmodel.TopicForShowTopicViewModel{}, err
 	}
@@ -527,13 +528,13 @@ func GetTopicByIDForShowTopicInViewModel(topic_id int) (viewmodel.TopicForShowTo
 
 func GetTopicCommentsByIDForShowTopicInViewModel(topic_id int) ([]viewmodel.TopicCommentViewModel, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	// Get Topic comments
 	var tc []viewmodel.TopicCommentBasicInformation
-	err = db.Model(&model.Topic_Comment{}).Where("topic_id = ?", topic_id).Select("text", "created_at", "user_id", "reply_id").Scan(&tc).Error
+	err := db.Model(&model.Topic_Comment{}).Where("topic_id = ?", topic_id).Select("text", "created_at", "user_id", "reply_id").Scan(&tc).Error
 	if err != nil {
 		return nil, err
 	}
@@ -563,44 +564,44 @@ func GetTopicCommentsByIDForShowTopicInViewModel(topic_id int) ([]viewmodel.Topi
 
 func FirstOrCreate[m Model](model *m) error {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
-	err = db.FirstOrCreate(&model).Error
+	err := db.FirstOrCreate(&model).Error
 	return err
 }
 func FirstOrCreateTopicTagByName(name string) (*model.Topic_Tag, error) {
 
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var t model.Topic_Tag
-	err = GetFieldsByAnotherFieldValue(&t, []string{"id"}, "name", name)
+	err := GetFieldsByAnotherFieldValue(&t, []string{"id"}, "name", name)
 	if err != nil {
 		return nil, err
 	}
 	// Topic tag is exists
 	if t.ID != 0 {
-		err = db.Model(&t).Where("id = ?", t.ID).First(&t).Error
+		err := db.Model(&t).Where("id = ?", t.ID).First(&t).Error
 		return &t, err
 	} else {
 		t.Name = name
-		err = db.Create(&t).Error
+		err := db.Create(&t).Error
 		return &t, err
 	}
 }
 func GetTopicByIDForEdit(topic_id int) (*viewmodel.TopicForEditViewModel, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	// Result
 	var t viewmodel.TopicForEditViewModel
 
 	// Get topic name,description
-	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("name", "description").Scan(&t).Error
+	err := db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("name", "description").Scan(&t).Error
 	if err != nil {
 		return nil, err
 	}
@@ -619,31 +620,31 @@ func GetTopicByIDForEdit(topic_id int) (*viewmodel.TopicForEditViewModel, error)
 }
 
 func GetTopicForumIDByTopicID(topic_id int) (int, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return -1, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var f_id int
-	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("forum_id").Scan(&f_id).Error
+	err := db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("forum_id").Scan(&f_id).Error
 	return f_id, err
 }
 func GetTopicNameByTopicID(topic_id int) (string, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return "", err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var topic_name string
-	err = db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("name").Scan(&topic_name).Error
+	err := db.Model(&model.Topic{}).Where("id = ?", topic_id).Select("name").Scan(&topic_name).Error
 	return topic_name, err
 }
 
 func GetUserDataForUserPanel_Overview_FrontPage(user_id int) (*viewmodel.UserPanel_Overview_Front, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var joined_at time.Time
-	err = db.Model(&model.User{}).Where("id = ?", user_id).Select("joined_at").Scan(&joined_at).Error
+	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("joined_at").Scan(&joined_at).Error
 	if err != nil {
 		return nil, err
 	}
@@ -694,22 +695,22 @@ func GetUserDataForUserPanel_Overview_Orders(user_id int) ([]viewmodel.UserPanel
 }
 
 func GetProductBasicInfoByID(product_id int) (*viewmodel.ProductBasicViewModel, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var p_vm viewmodel.ProductBasicViewModel
-	err = db.Model(&model.Product{}).Where("id = ?", product_id).Select("name", "price").Find(&p_vm).Error
+	err := db.Model(&model.Product{}).Where("id = ?", product_id).Select("name", "price").Find(&p_vm).Error
 	return &p_vm, err
 }
 
 // func GetUserDataForUserPanel_Overview_Logins(user_id int) ([]viewmodel.UserPanel_Overview_Login, error) {
-// 	db, err := database.InitializeOrGetDB()
+// 	db := database.InitializeOrGetDB()
 // 	if err != nil {
 // 		return nil, err
 // 	}
 // 	var activity_logins model.Activity
-// 	err = db.Model(&model.Activity{}).Where("user_id = ?", user_id).Select("logins_at").First(&activity_logins).Error
+// 	err := db.Model(&model.Activity{}).Where("user_id = ?", user_id).Select("logins_at").First(&activity_logins).Error
 // 	if err != nil {
 // 		return nil, err
 // 	}
@@ -721,12 +722,12 @@ func GetProductBasicInfoByID(product_id int) (*viewmodel.ProductBasicViewModel, 
 // }
 
 func GetOrderStatusByOrderID(order_id int) (string, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return "", err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var order_status_id int
-	err = db.Model(&model.Order{}).Where("id = ?", order_id).Select("order_status_id").Scan(&order_status_id).Error
+	err := db.Model(&model.Order{}).Where("id = ?", order_id).Select("order_status_id").Scan(&order_status_id).Error
 	if err != nil {
 		return "", err
 	}
@@ -749,33 +750,33 @@ func GetUserDataForUserPanel_Topic_FrontPage(user_id int) {
 func GetUserDataForUserPanel_Poll_FrontPage(user_id int) {
 }
 func GetUserDataForUserPanel_Profile_EditAccount(user_id int) (*viewmodel.UserPanel_Profile_EditAccount, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var email string
-	err = db.Model(&model.User{}).Where("id = ?", user_id).Select("email").Scan(&email).Error
+	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("email").Scan(&email).Error
 	return &viewmodel.UserPanel_Profile_EditAccount{Email: email}, err
 }
 func GetUserDataForUserPanel_Profile_ManageAddress(user_id int) (*viewmodel.UserPanel_Profile_ManageAddress, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var address model.Address
-	err = db.Model(address).Where("user_id = ?", user_id).Find(&address).Error
+	err := db.Model(address).Where("user_id = ?", user_id).Find(&address).Error
 	if err != nil {
 		return nil, err
 	}
 	return &viewmodel.UserPanel_Profile_ManageAddress{Name: address.Name, Country: address.Country, Province: address.Province, City: address.City, Street: address.Street, BuildingNumber: address.BuildingNumber, PostalCode: address.PostalCode, Description: address.Description}, nil
 }
 func GetUserDataForUserPanel_Profile_ManageWallet(user_id int) ([]viewmodel.UserPanel_Profile_ManageWallet, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var wallets []model.WalletInfo
-	err = db.Model(&model.WalletInfo{}).Where("user_id = ?", user_id).Find(&wallets).Error
+	err := db.Model(&model.WalletInfo{}).Where("user_id = ?", user_id).Find(&wallets).Error
 	if err != nil {
 		return nil, err
 	}
@@ -790,11 +791,11 @@ func GetUserDataForUserPanel_Profile_ManageWallet(user_id int) ([]viewmodel.User
 	return wallets_vm, nil
 }
 func GetUserDataForUserPanel_Profile_EditSignature(user_id int) (*viewmodel.UserPanel_Profile_EditSignature, error) {
-	db, err := database.InitializeOrGetDB()
-	if err != nil {
-		return nil, err
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var signature string
-	err = db.Model(&model.User{}).Where("id = ?", user_id).Select("signature").Scan(&signature).Error
+	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("signature").Scan(&signature).Error
 	return &viewmodel.UserPanel_Profile_EditSignature{Signature: signature}, err
 }

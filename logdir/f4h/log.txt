@@ -600,3 +600,16 @@ Msg= 'Cannot connect to database Error 1049: Unknown database 'test''
 Fields= Hint='Maybe you should start database service(deamon)'
 Location= /home/me/go/src/f4h/utilities/functions/general/general.go:234 github.com/0ne-zero/f4h/utilities/functions/general.ConnectToDatabaseANDHandleErrors
 ----------------------------------------------------------------------
+[2022-08-05T15:57:01Z]-[FATAL]-[f4h]:
+Msg= 'We really cannot connect to the database'
+Location= /home/me/code/go/src/f4h/main.go:21 main.main
+----------------------------------------------------------------------
+[2022-08-05T15:58:17Z]-[FATAL]-[f4h]:
+Msg= 'We really cannot connect to the database'
+Location= /home/me/code/go/src/f4h/main.go:21 main.main
+----------------------------------------------------------------------
+[2022-08-05T17:20:12Z]-[FATAL]-[f4h]:
+Msg= 'Cannot connect to database Error 1045: Access denied for user 'me'@'localhost' (using password: YES)'
+Fields= Hint='Maybe you should start database service(deamon)'
+Location= /home/me/code/go/src/f4h/database/database.go:63 github.com/0ne-zero/f4h/database.InitializeOrGetDB
+----------------------------------------------------------------------
