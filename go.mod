@@ -3,8 +3,10 @@ module github.com/0ne-zero/f4h
 go 1.18
 
 require (
+	github.com/JohannesKaufmann/html-to-markdown v1.3.3
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.7.7
+	github.com/gomarkdown/markdown v0.0.0-20220510115730-2372b9aa33e5
 	github.com/microcosm-cc/bluemonday v1.0.18
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/crypto v0.0.0-20220313003712-b769efc7c000
@@ -12,7 +14,6 @@ require (
 )
 
 require (
-	github.com/JohannesKaufmann/html-to-markdown v1.3.3 // indirect
 	github.com/PuerkitoBio/goquery v1.5.1 // indirect
 	github.com/andybalholm/cascadia v1.1.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
@@ -22,7 +23,6 @@ require (
 	github.com/go-playground/validator/v10 v10.10.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/gomarkdown/markdown v0.0.0-20220510115730-2372b9aa33e5 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
