@@ -3,6 +3,7 @@ package general
 import (
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -57,13 +58,7 @@ func RemoveSliceElement[T any](slice []T, i int) []T {
 	}
 }
 func RemoveSlashFromBeginAndEnd(s string) string {
-	if strings.HasPrefix(s, "/") {
-		s = s[1:]
-	}
-	if strings.HasSuffix(s, "/") {
-		s = s[:len(s)-1]
-	}
-	return s
+	return strings.TrimSuffix(strings.TrimPrefix(s, "/"), "/")
 }
 func ValueExistsInSlice[T comparable](slice *[]T, value T) bool {
 	for _, e := range *slice {
@@ -234,4 +229,19 @@ func IsUserRoot() bool {
 	} else {
 		return false
 	}
+}
+
+func DetectFileType(path string) (string, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+	buffer := make([]byte, 512)
+	_, err = f.Read(buffer)
+	if err != nil {
+		return "", err
+	}
+	return http.DetectContentType(buffer), nil
+
 }
