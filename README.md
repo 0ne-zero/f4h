@@ -1,2 +1,2 @@
 # Freedom For Humans
-> Incomplete online free market place with forum
+> Incomplete free online market place with forum
