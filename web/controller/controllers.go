@@ -282,11 +282,22 @@ func ProductDetails(c *gin.Context) {
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
+	// Get categories
+	categories, err := model_function.GetCategoriesWithRelationsInViewModel(true)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
 	// Everything is ok
 	view_data := gin.H{}
 	view_data["Title"] = product.Name
 	view_data["Product"] = product
+	view_data["Categories"] = categories
 	c.HTML(http.StatusOK, "product-details.html", view_data)
+}
+func AddToCart(c *gin.Context) {
+
 }
 
 // Incomplete
