@@ -28,9 +28,15 @@ func getDayMonthYearFromTime(t time.Time) string {
 func toString(i interface{}) string {
 	return fmt.Sprint(i)
 }
+func iterate(end int) []uint {
+	var list []uint
+	for i := 0; i < end; i++ {
+		list = append(list, uint(i))
+	}
+	return list
+}
 func titlelizeEachWordFirstLetter(s string) string {
-	var words []string
-	words = strings.Split(s, " ")
+	words := strings.Split(s, " ")
 	words_len := len(words)
 	var result string
 	for i := range words {
@@ -48,6 +54,7 @@ func replaceString(s, o_char, n_char string) string {
 func AddFunctionsToRoute(r *gin.Engine) {
 	r.SetFuncMap(
 		template.FuncMap{
+			"iterate":              iterate,
 			"remainder":            remainder,
 			"stringSliceLength":    sliceLength[string],
 			"TopicTagsSliceLength": sliceLength[viewmodel.TopicTagBasicInformation],
