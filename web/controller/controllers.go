@@ -115,7 +115,7 @@ func Register_POST(c *gin.Context) {
 		c.HTML(http.StatusUnprocessableEntity, "login.html", view_data)
 		return
 	}
-	if exists == true {
+	if exists {
 		// Log
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered unavailable username", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		view_data := gin.H{}
@@ -288,9 +288,9 @@ func ProductDetails(c *gin.Context) {
 	view_data["Product"] = product
 	c.HTML(http.StatusOK, "product-details.html", view_data)
 }
+
+// Incomplete
 func Profile_GET(c *gin.Context) {
-	// Get user id
-	//user_id := sessions.Default(c).Get("UserID").(int)
 	// Available tabs and their modes
 	tabs_modes := map[string][]string{
 		"overview": {"front_page", "logins", "orders"},
@@ -300,17 +300,21 @@ func Profile_GET(c *gin.Context) {
 		"topics":   {"front_page"},
 		"polls":    {"front_page"},
 	}
+	// Get user id
+	user_id := sessions.Default(c).Get("UserID").(int)
+	// Sort tabs and modes
 	sorted_tabs := general_func.GetMapKeys(tabs_modes)
 	sort.Strings(sorted_tabs)
 
+	// Finally view data
 	view_data := gin.H{
 		"Title": fmt.Sprintf("%s Profile | %s", sessions.Default(c).Get("Username"), constansts.AppName),
 		"Tabs":  sorted_tabs,
 	}
 
-	// Check user entered tab
+	// Check is user selected tab
 	if tab := c.Query("tab"); tab != "" {
-		// Check entered tab available
+		// Check selected tab is available
 		if !general_func.ExistsStringInStringSlice(tab, general_func.GetMapKeys(tabs_modes)) {
 			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered unavailable tab", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
@@ -318,7 +322,7 @@ func Profile_GET(c *gin.Context) {
 		}
 		// Insert tab to information that will send to template
 		view_data["Tab"] = tab
-		// Check user entered tab mode
+		// Check user selected tab mode
 		if mode := c.Query("mode"); mode != "" {
 			// Check entered mode available
 			if !general_func.ExistsStringInStringSlice(mode, tabs_modes[tab]) {
@@ -398,14 +402,73 @@ func Profile_GET(c *gin.Context) {
 	view_data["TabModes"] = tabs_modes["overview"]
 
 	// Get panel data
-	// panel_data, err := model_function.GetUserDataForProfile_Overview_Front(user_id)
-	// if err != nil {
-	// 	wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-	// 	controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
-	// 	return
-	// }
-	// view_data["PanelData"] = panel_data
+	panel_data, err := model_function.GetUserDataForUserPanel_Overview_FrontPage(user_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	view_data["PanelData"] = panel_data
 	c.HTML(200, "profile.html", view_data)
+}
+
+func Cart(c *gin.Context) {
+	user_id := sessions.Default(c).Get("UserID").(int)
+	// Get users cart information
+	cart, err := model_function.GetUserCart(user_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during get users cart information", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	view_data := gin.H{}
+	view_data["Title"] = "Cart"
+	view_data["CartItems"] = cart.CartItems
+	view_data["CartInfo"] = cart
+	c.HTML(200, "cart.html", view_data)
+}
+
+func DeleteCartItem(c *gin.Context) {
+	id_str := c.Param("id")
+	if id_str != "" {
+		if id_int, err := strconv.Atoi(id_str); err == nil {
+			err = model_function.DeleteCartItem(id_int)
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during delete cart item", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+		}
+	}
+	c.Redirect(http.StatusMovedPermanently, "/Cart")
+}
+func DecreaseCartItemQuantity(c *gin.Context) {
+	id_str := c.Param("id")
+	if id_str != "" {
+		if id_int, err := strconv.Atoi(id_str); err == nil {
+			err = model_function.DecreaseCartItemQuantity(id_int)
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during decrease cart item quantity", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+		}
+	}
+	c.Redirect(http.StatusMovedPermanently, "/Cart")
+}
+func IncreaseCartItemQuantity(c *gin.Context) {
+	id_str := c.Param("id")
+	if id_str != "" {
+		if id_int, err := strconv.Atoi(id_str); err == nil {
+			err = model_function.IncreaseCartItemQuantity(id_int)
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during increase cart item quantity", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+		}
+	}
+	c.Redirect(http.StatusMovedPermanently, "/Cart")
 }
 
 //region Forum
@@ -526,7 +589,11 @@ func ForumTopics(c *gin.Context) {
 		return
 	}
 	forum_topics, err := model_function.GetForumTopicsInViewModel(int(forum_fields.ID))
-
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, "Forum name entered in the url is invalid.")
+		return
+	}
 	view_data := gin.H{}
 	var _topics_list_template_view_model = map[string]interface{}{
 		"Topics":    forum_topics,

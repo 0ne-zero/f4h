@@ -122,6 +122,9 @@ func getTopicCommentByIDInViewModel(comment_id int) (*viewmodel.TopicCommentView
 
 	// Get author information
 	u, err := getUserInformationByIDForShowTopicInViewModel(tc.UserID)
+	if err != nil {
+		return nil, err
+	}
 
 	// Fill view model and finally return it
 	tc_vm := viewmodel.TopicCommentViewModel{

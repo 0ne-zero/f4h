@@ -33,3 +33,10 @@
 -- check user's wallet address is valid or not !
 -- complete user panel
 -- create database if it doesn't exists
+-- add search topics(by text, tags and such more)
+-- complete profile
+-- set loginat field in database at login page
+-- add quantity of item in cart (cartitem.html)
+-- delete item form cart (cartitem.html)
+-- edit cart info html as you like and it's prober for site
+-- complete cart info, prewrite information from user address

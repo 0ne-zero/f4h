@@ -192,15 +192,15 @@ func CreateTestData(db *gorm.DB) {
 	db.Create(&model.WalletInfo{Name: "xxxx", Addr: "xxxx", IsDefault: true, UserID: 1, OrderID: 1})
 
 	// Discussion category
-	db.Create(&model.Discussion_Category{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", UserID: 1})
+	db.Create(&model.Discussion_Category{Name: "General", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", UserID: 1})
 	db.Create(&model.Discussion_Category{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", UserID: 1})
 
-	db.Create(&model.Discussion{Name: "Drug", Description: "drugs things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
+	db.Omit("Categories*").Create(&model.Discussion{Name: "Drug", Description: "drugs things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
 	db.Create(&model.Discussion{Name: "Art", Description: "Art things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
-	db.Create(&model.Discussion{Name: "Other", Description: "Other things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
+	db.Create(&model.Discussion{Name: "Other", Description: "Other things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 2}}}})
 
-	db.Create(&model.Forum{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 1, UserID: 1})
-	db.Create(&model.Forum{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 1, UserID: 1})
+	db.Create(&model.Forum{Name: "Medical", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 1, UserID: 1})
+	db.Create(&model.Forum{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 2, UserID: 1})
 
 	// forum
 	db.Create(&model.Forum{Name: "blockchain", Description: "some description for blockchain", UserID: 1, DiscussionID: 1})
@@ -223,6 +223,7 @@ func CreateTestData(db *gorm.DB) {
 
 	// cart
 	db.Create(&model.Cart{TotalPrice: 2322, IsOrdered: true, UserID: 1})
+	db.Create(&model.Cart{TotalPrice: 232, IsOrdered: false, UserID: 1})
 	// order status
 	db.Create(&model.OrderStatus{Status: "xxxxxxxxxx"})
 	db.Create(&model.OrderStatus{Status: "xxxxxxxxxxx"})
