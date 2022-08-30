@@ -51,19 +51,27 @@ func MakeRoute() *gin.Engine {
 	authorized.Use(middleware.Authentication())
 	{
 		// Public authorized routes
+		// Surface
 		authorized.GET("/", controller.Index)
 		authorized.GET("/Products/*category", controller.ProductList)
 		authorized.GET("/ProductDetails/:id", controller.ProductDetails)
+		authorized.GET("/Profile", controller.Profile_GET)
+		authorized.GET("/Cart", controller.Cart)
+
+		// Forum
 		authorized.GET("/Discussions", controller.Discussions)
 		authorized.GET("/DiscussionForums/:discussion", controller.DiscussionForums)
 		authorized.GET("/ForumTopics/:forum", controller.ForumTopics)
+		authorized.GET("/Topic/:topic_id", controller.ShowTopic)
 		authorized.GET("/AddTopic/:forum", controller.AddTopic_GET)
 		authorized.POST("/AddTopic/:forum", controller.AddTopic_POST)
 		authorized.GET("/EditTopic/:topic_id", controller.EditTopic_Get)
 		authorized.POST("/EditTopic/:topic_id", controller.EditTopic_POST)
-		authorized.GET("/Topic/:topic_id", controller.ShowTopic)
-		authorized.GET("/Profile", controller.Profile_GET)
 
+		// Sub-Routes
+		authorized.GET("/DeleteCartItem/:id", controller.DeleteCartItem)
+		authorized.GET("/IncreaseCartItemQuantity/:id", controller.IncreaseCartItemQuantity)
+		authorized.GET("/DecreaseCartItemQuantity/:id", controller.DecreaseCartItemQuantity)
 	}
 	constansts.Routes = r.Routes()
 

@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"html/template"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
+	"github.com/0ne-zero/f4h/public_struct"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
 	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
@@ -43,23 +45,23 @@ func Update[m Model](consider_model *m, updated_model *m) (*m, error) {
 
 	return consider_model, err
 }
-func Get[m Model](model *[]m, limit int, orderBy string, orderType string, preloads ...string) error {
+func Get[m Model](ref_model *[]m, limit int, orderBy string, orderType string, preloads ...string) error {
 
 	context := database.InitializeOrGetDB()
 	if context == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
-	if preloads != nil {
-		for _, p := range preloads {
-			// Include Preload command in db commands chain
-			context = context.Preload(p)
-		}
+
+	for _, p := range preloads {
+		// Include Preload command in db commands chain
+		context = context.Preload(p)
 	}
 	var err error
+
 	if limit < 1 {
-		err = context.Order(fmt.Sprintf("%s %s", orderBy, orderType)).Find(model).Error
+		err = context.Order(fmt.Sprintf("%s %s", orderBy, orderType)).Find(ref_model).Error
 	} else {
-		err = context.Order(fmt.Sprintf("%s %s", orderBy, orderType)).Find(model).Limit(limit).Error
+		err = context.Order(fmt.Sprintf("%s %s", orderBy, orderType)).Find(ref_model).Limit(limit).Error
 	}
 	return err
 }
@@ -174,7 +176,7 @@ func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmod
 	if err != nil {
 		return nil, err
 	} else if c.Products == nil {
-		return nil, errors.New("Products field is empty")
+		return nil, errors.New("products field is empty")
 	}
 	for _, p := range c.Products {
 		products = append(products, viewmodel.ProductBasicViewModel{ID: int(p.ID), Name: p.Name, Price: p.Price})
@@ -513,7 +515,11 @@ func GetTopicByIDForShowTopicInViewModel(topic_id int) (viewmodel.TopicForShowTo
 		return viewmodel.TopicForShowTopicViewModel{}, err
 	}
 	// Get topic tags
-	tags_vm, err := getTopicTagsByTopicIDInViewModel(topic_id)
+	var tags_vm []viewmodel.TopicTagBasicInformation
+	tags_vm, err = getTopicTagsByTopicIDInViewModel(topic_id)
+	if err != nil {
+		return viewmodel.TopicForShowTopicViewModel{}, err
+	}
 
 	// Fill view model and return it
 	var topic_vm = viewmodel.TopicForShowTopicViewModel{
@@ -638,6 +644,32 @@ func GetTopicNameByTopicID(topic_id int) (string, error) {
 	return topic_name, err
 }
 
+func GetOrderStatusByOrderID(order_id int) (string, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var order_status_id int
+	err := db.Model(&model.Order{}).Where("id = ?", order_id).Select("order_status_id").Scan(&order_status_id).Error
+	if err != nil {
+		return "", err
+	}
+	var s string
+	s, err = getOrderStatus_StatusByOrderStatusID(order_status_id)
+	return s, err
+}
+
+func GetProductBasicInfoByID(product_id int) (*viewmodel.ProductBasicViewModel, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var p_vm viewmodel.ProductBasicViewModel
+	err := db.Model(&model.Product{}).Where("id = ?", product_id).Select("name", "price").Find(&p_vm).Error
+	return &p_vm, err
+}
+
+// Overview tab
 func GetUserDataForUserPanel_Overview_FrontPage(user_id int) (*viewmodel.UserPanel_Overview_Front, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -661,7 +693,11 @@ func GetUserDataForUserPanel_Overview_FrontPage(user_id int) (*viewmodel.UserPan
 	if err != nil {
 		return nil, err
 	}
-	total_polls, err := getUserPollsCount(user_id)
+	var total_polls int
+	total_polls, err = getUserPollsCount(user_id)
+	if err != nil {
+		return nil, err
+	}
 
 	return &viewmodel.UserPanel_Overview_Front{
 		JoinedAt:              &joined_at,
@@ -682,7 +718,7 @@ func GetUserDataForUserPanel_Overview_Orders(user_id int) ([]viewmodel.UserPanel
 	for order_i := range orders {
 		var d_vm viewmodel.UserPanel_Overview_LastBuy
 		d_vm.Time = &orders[order_i].CreatedAt
-		d_vm.TotalPrice = uint(orders[order_i].Cart.TotalPrice)
+		d_vm.TotalPrice = (orders[order_i].Cart.TotalPrice)
 		order_status, err := GetOrderStatusByOrderID(int(orders[order_i].ID))
 		if err != nil {
 			return nil, err
@@ -693,61 +729,137 @@ func GetUserDataForUserPanel_Overview_Orders(user_id int) ([]viewmodel.UserPanel
 	}
 	return last_buy_vm, nil
 }
-
-func GetProductBasicInfoByID(product_id int) (*viewmodel.ProductBasicViewModel, error) {
+func GetUserDataForUserPanel_Overview_Logins(user_id int) ([]viewmodel.UserPanel_Overview_Login, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
-	var p_vm viewmodel.ProductBasicViewModel
-	err := db.Model(&model.Product{}).Where("id = ?", product_id).Select("name", "price").Find(&p_vm).Error
-	return &p_vm, err
-}
-
-// func GetUserDataForUserPanel_Overview_Logins(user_id int) ([]viewmodel.UserPanel_Overview_Login, error) {
-// 	db := database.InitializeOrGetDB()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	var activity_logins model.Activity
-// 	err := db.Model(&model.Activity{}).Where("user_id = ?", user_id).Select("logins_at").First(&activity_logins).Error
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	var vm_l []viewmodel.UserPanel_Overview_Login
-// 	for i := range activity_logins.Logins {
-// 		vm_l = append(vm_l, viewmodel.UserPanel_Overview_Login{Login_At: &activity_logins.Logins[i]})
-// 	}
-// 	return vm_l, nil
-// }
-
-func GetOrderStatusByOrderID(order_id int) (string, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var order_status_id int
-	err := db.Model(&model.Order{}).Where("id = ?", order_id).Select("order_status_id").Scan(&order_status_id).Error
+	var activity_logins model.Activity
+	err := db.Model(&model.Activity{}).Where("user_id = ?", user_id).Select("logins_at").First(&activity_logins).Error
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	var s string
-	s, err = getOrderStatus_StatusByOrderStatusID(order_status_id)
-	return s, err
+	// Check if there is more than one logintime in database (logins time seperated with "|")
+	if strings.Contains(activity_logins.LoginsAt, "|") {
+		// Seperate times and get a list of them in string
+		str_times := strings.Split(activity_logins.LoginsAt, "|")
+		vm_l := make([]viewmodel.UserPanel_Overview_Login, len(str_times))
+		for i := range str_times {
+			t, err := time.Parse(time.RFC3339, str_times[i])
+			if err != nil {
+				return nil, err
+			}
+			vm_l[i].Login_At = &t
+		}
+		return vm_l, nil
+	} else {
+		t, err := time.Parse(time.RFC3339, activity_logins.LoginsAt)
+		if err != nil {
+			return nil, err
+		}
+		return []viewmodel.UserPanel_Overview_Login{{Login_At: &t}}, nil
+	}
 }
+func getProductInfoForCartItem(product_id int) (*public_struct.ProductForCartItems, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var p model.Product
+	err := db.Model(&model.Product{}).Where("id = ?", product_id).Find(&p).Error
+	if err != nil {
+		return nil, err
+	}
+	// Getting main image of product
+	// Check product has any images
+	var main_image_path = ""
+	if p.Images != nil && len(p.Images) > 0 {
+		main_image_path = p.Images[0].Path
+	}
+	return &public_struct.ProductForCartItems{
+		ID:        int(p.ID),
+		Name:      p.Name,
+		Price:     p.Price,
+		ImagePath: main_image_path,
+	}, nil
+}
+func IncreaseCartItemQuantity(cart_item_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var current_quantity int
+	err := db.Model(&model.CartItem{}).Where("id = ?", cart_item_id).Select("product_quantity").Scan(&current_quantity).Error
+	if err != nil {
+		return err
+	}
+	return db.Model(&model.CartItem{}).Where("id = ?", cart_item_id).Update("product_quantity", current_quantity+1).Error
+}
+func DecreaseCartItemQuantity(cart_item_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var current_quantity int
+	err := db.Model(&model.CartItem{}).Where("id = ?", cart_item_id).Select("product_quantity").Scan(&current_quantity).Error
+	if err != nil {
+		return err
+	}
+	return db.Model(&model.CartItem{}).Where("id = ?", cart_item_id).Update("product_quantity", current_quantity-1).Error
+}
+func DeleteCartItem(cart_item_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	err := db.Unscoped().Delete(&model.CartItem{}, cart_item_id).Error
+	return err
+}
+
+func GetUserCart(user_id int) (*viewmodel.Cart, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Get cart id for getting cart items
+	var cart_id int
+	err := db.Model(&model.Cart{}).Where("user_id = ? AND is_ordered = FALSE", user_id).Select("id").Scan(&cart_id).Error
+	if err != nil {
+		return nil, err
+	}
+	// Get cart items
+	var cart_items []model.CartItem
+	err = db.Model(&model.CartItem{}).Where("cart_id = ?", cart_id).Find(&cart_items).Error
+	if err != nil {
+		return nil, err
+	}
+	// Create result(viewdata) and return it
+	var cart_vm viewmodel.Cart
+	for i := range cart_items {
+		// Get item(product info)
+		p, err := getProductInfoForCartItem(int(cart_items[i].ProductID))
+		if err != nil {
+			return nil, err
+		}
+		p.Quantity = int(cart_items[i].ProductQuantity)
+		// Calculate total price of cart item
+		item_total_price := float64(p.Price) * float64(p.Quantity)
+		cart_vm.CartItems = append(cart_vm.CartItems, viewmodel.CartItem{ID: int(cart_items[i].ID), ProductID: p.ID, Name: p.Name, Price: p.Price, ImagePath: p.ImagePath, Quantity: p.Quantity, TotalPrice: item_total_price})
+	}
+	// Calculate total price of cart
+	for i := range cart_vm.CartItems {
+		cart_vm.TotalPrice += cart_vm.CartItems[i].TotalPrice
+	}
+	return &cart_vm, err
+}
+
+// Profile tab
+// Should be complete
 func GetUserDataForUserPanel_Profile_FrontPage(user_id int) {
 }
 func GetUserDataForUserPanel_Profile_EditAvatar(user_id int) {
 }
 func GetUserDataForUserPanel_Profile_ManageLogin(user_id int) {
-}
-func GetUserDataForUserPanel_Product_FrontPage(user_id int) {
-}
-func GetUserDataForUserPanel_Payment_FrontPage(user_id int) {
-}
-func GetUserDataForUserPanel_Topic_FrontPage(user_id int) {
-}
-func GetUserDataForUserPanel_Poll_FrontPage(user_id int) {
 }
 func GetUserDataForUserPanel_Profile_EditAccount(user_id int) (*viewmodel.UserPanel_Profile_EditAccount, error) {
 	db := database.InitializeOrGetDB()
@@ -798,4 +910,20 @@ func GetUserDataForUserPanel_Profile_EditSignature(user_id int) (*viewmodel.User
 	var signature string
 	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("signature").Scan(&signature).Error
 	return &viewmodel.UserPanel_Profile_EditSignature{Signature: signature}, err
+}
+
+// Product tab
+func GetUserDataForUserPanel_Product_FrontPage(user_id int) {
+}
+
+// Payment tab
+func GetUserDataForUserPanel_Payment_FrontPage(user_id int) {
+}
+
+// Topic tab
+func GetUserDataForUserPanel_Topic_FrontPage(user_id int) {
+}
+
+// Poll tab
+func GetUserDataForUserPanel_Poll_FrontPage(user_id int) {
 }

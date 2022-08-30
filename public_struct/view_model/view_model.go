@@ -130,7 +130,7 @@ type UserPanel_Overview_Login struct {
 type UserPanel_Overview_LastBuy struct {
 	OrderID     int
 	Time        *time.Time
-	TotalPrice  uint
+	TotalPrice  float64
 	OrderStatus string
 }
 type UserPanel_Profile_EditAccount struct {
@@ -153,4 +153,20 @@ type UserPanel_Profile_ManageWallet struct {
 }
 type UserPanel_Profile_EditSignature struct {
 	Signature string
+}
+
+type CartItem struct {
+	// Cart item id
+	ID int
+	// Product id
+	ProductID  int
+	Name       string
+	Price      float64
+	Quantity   int
+	ImagePath  string
+	TotalPrice float64
+}
+type Cart struct {
+	TotalPrice float64
+	CartItems  []CartItem
 }
