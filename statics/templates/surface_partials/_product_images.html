@@ -1,0 +1,40 @@
+{{define "_product_images"}}
+<div class="col-sm-5">
+	<div class="view-product">
+		<a href="{{.MainImage}}"> <img src="{{.MainImage}}" alt="" /> </a>
+	</div>
+	<div id="similar-product" class="carousel slide" data-ride="carousel">
+		  <!-- Wrapper for slides -->
+		    <div class="carousel-inner">
+                {{$is_first := true}}
+                {{$index := 0}}
+
+                {{range $_ := iterate .NumberOfSlides}}
+                    {{if eq $is_first true}}
+        				<div class="item active">
+                            {{range $_ := iterate 3}}
+			                    <a href="{{ index .SubImages.Path $index}}"><img src="{{index .SubImages.Path $index}}" alt=""></a>
+                                {{$index = plus $index 1}}
+                            {{end}}
+                        <div>
+                        {{$is_first = false}}
+                    {{else}}
+                		<div class="item">
+                            {{range $_ := iterate 3}}
+			                    <a href="{index .SubImages.Path $index}}"><img src="{{index .SubImages.Path $index}}" alt=""></a>
+                                {{$index = plus $index 1}}
+                            {{end}}
+                        <div>
+                    {{end}}
+                {{end}}		
+			</div>
+		  <!-- Controls -->
+		  <a class="left item-control" href="#similar-product" data-slide="prev">
+			<i class="fa fa-angle-left"></i>
+		  </a>
+		  <a class="right item-control" href="#similar-product" data-slide="next">
+			<i class="fa fa-angle-right"></i>
+		  </a>
+	</div>
+</div>
+{{end}}

@@ -1,0 +1,63 @@
+{{define "_recommended_items"}}
+{{if .}}
+    {{if gt .NumberOfSlides 0}}
+        <div class="recommended_items"><!--recommended_items-->
+            <h2 class="title text-center">recommended items</h2>
+            
+            <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {{$is_first := true}}
+                    {{$index := 0}}
+
+                    {{range $_ := iterate .NumberOfSlides}}
+                        {{if eq $is_first true}}
+                            <div class="item active">
+                                {{range $_ := iterate 3}}
+                                    <div class="col-sm-4">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <img src="{{index .RecommendedItems.ImagePath $index}}" alt="{{index .RecommendedItems.Name $index}}" />
+                                                    <h2>${{index .RecommendedItems.Price $index}}</h2>
+                                                    <p>{{index .RecommendedItems.Name $index}}</p>
+                                                    <a class="btn btn-default add-to-cart" href="/AddToCart/{{index .RecommendedItems.ID $index}}"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{$index = plus $index 1}}
+                                {{end}}
+                            </div>
+                            {{$is_first = false}}
+                        {{else}}
+                            <div class="item">	
+                                {{range $_ := iterate 3}}
+                                    <div class="col-sm-4">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <img src="{{index .RecommendedItems.ImagePath}}" alt="{{index .RecommendedItems.Name $index}}" />
+                                                    <h2>${{index .RecommendedItems.Price $index}}</h2>
+                                                    <p>{{index .RecommendedItems.Name $index}}</p>
+                                                    <a class="btn btn-default add-to-cart" href="/AddToCart/{{index .RecommendedItems.ID $index}}"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{$index = plus $index 1}}
+                                {{end}}
+                            </div>
+                        {{end}}
+                    {{end}}
+                </div>
+                <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                </a>			
+            </div>
+        </div><!--/recommended_items-->
+    {{end}}
+{{end}}
+{{end}}

@@ -170,3 +170,56 @@ type Cart struct {
 	TotalPrice float64
 	CartItems  []CartItem
 }
+type ImageViewData struct {
+	Name string
+	Path string
+}
+type ProductDetailsImagesViewData struct {
+	MainImage      string
+	NumberOfSlides int
+	SubImages      []ImageViewData
+}
+
+type ProductDetailsDetail struct {
+	ID        int
+	Name      string
+	Price     float64
+	Inventory int
+}
+type ProductDetailsDescription struct {
+	Username    string
+	Time        time.Time
+	Description string
+}
+type ProductDetailsUserProduct struct {
+	ID        int
+	ImagePath string
+	Name      string
+	Price     float64
+}
+type ProductDetailsComment struct {
+	ID       int
+	Username string
+	Time     *time.Time
+	Text     string
+}
+type ProductDetailsComments struct {
+	ProductID int
+	Comments  []ProductDetailsComment
+}
+type ProductDetailsTabs struct {
+	NumberOfComments int
+	DescriptionData  ProductDetailsDescription
+	UserProductsData []ProductDetailsUserProduct
+	CommentsData     ProductDetailsComments
+}
+type RecommendedItems struct {
+	ID        int
+	Name      string
+	ImagePath string
+	Price     float64
+}
+type RecommendedViewData struct {
+	NumberOfSlides   int
+	RecommendedItems []RecommendedItems
+}

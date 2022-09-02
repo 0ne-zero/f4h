@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--head-->
+<head>
+{{template "head" .Title}}
+</head>
+<!--/head-->
+
+<body>
+	<!--header-->
+	<header id="header">
+	{{template "header"}}
+	</header>
+	<!--/header-->
+
+	<section>
+	 <br>
+	 <br>
+		{{template "content" .}}
+	</section>
+
+	<!--Footer-->
+	<footer id="footer">
+	{{template "footer"}}	
+	</footer>
+	<!--/Footer-->
+
+	<!--javascript-->
+	{{template "js"}}
+	<!--/javascript-->
+</body>
+</html>

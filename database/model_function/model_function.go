@@ -17,7 +17,7 @@ import (
 )
 
 type Model interface {
-	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
+	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product_Comment | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
 }
 
 func Add[m Model](model *m) error {
@@ -130,8 +130,155 @@ func GetFieldsByAnotherFieldValue[m Model](model *m, out_fields_name []string, i
 	err := db.Model(model).Where(fmt.Sprintf("%s = ?", in_field_name), in_field_value).Select(out_fields_name).Scan(model).Error
 	return err
 }
-func TooManyRequest(ip string, url string, method string) (bool, error) {
+func GetProductDetailInViewData(p_id int) (*viewmodel.ProductDetailsDetail, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var vm viewmodel.ProductDetailsDetail
+	err := db.Model(&model.Product{}).Where("id = ?", p_id).Select("id", "name", "inventory", "price").Scan(&vm).Error
+	return &vm, err
+}
+func GetProductDetailsImagesInViewData(p_id int) (*viewmodel.ProductDetailsImagesViewData, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Get all images of product
+	var images_path []string
+	err := db.Model(&model.Product_Image{}).Where("product_id = ?", p_id).Select("path").Scan(&images_path).Error
+	if err != nil {
+		return nil, err
+	}
+	// Get product name
+	var p_name string
+	err = db.Model(&model.Product{}).Where("id = ?", p_id).Select("name").Scan(&p_name).Error
+	if err != nil {
+		return nil, err
+	}
+	// Fill view model (vm)
+	var vm viewmodel.ProductDetailsImagesViewData
+	for i := range images_path {
+		if i == 0 {
+			vm.MainImage = images_path[0]
+		}
+		vm.SubImages = append(vm.SubImages, viewmodel.ImageViewData{Path: images_path[i], Name: p_name})
+	}
+	return &vm, nil
+}
+func getMainImagePathOfProduct(p_id int) (string, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var main_image_path string
+	err := db.Model(&model.Product_Image{}).Where("product_id = ?", p_id).Select("path").First(&main_image_path).Error
+	return main_image_path, err
+}
+func GetUserProductsInViewmodel(user_id int) ([]viewmodel.ProductDetailsUserProduct, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var user_products []model.Product
+	err := db.Model(&model.Product{}).Where("user_id = ?", user_id).Select("name", "price", "id").Find(&user_products).Error
+	if err != nil {
+		return nil, err
+	}
+	user_products_vm := make([]viewmodel.ProductDetailsUserProduct, len(user_products))
+	if user_products != nil {
+		for i := range user_products {
+			user_products_vm[i].ID = int(user_products[i].ID)
+			user_products_vm[i].Name = user_products[i].Name
+			user_products_vm[i].Price = user_products[i].Price
+			// Get main image path of product
+			main_img_path, err := getMainImagePathOfProduct(user_products_vm[i].ID)
+			if err != nil {
+				return nil, err
+			}
+			user_products_vm[i].ImagePath = main_img_path
+		}
+	}
+	return user_products_vm, nil
+}
+func GetProductCommentsInViewmodel(p_id int) ([]viewmodel.ProductDetailsComment, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var comments []model.Product_Comment
+	err := db.Model(&model.Product_Comment{}).Where("product_id = ?", p_id).Select("id", "created_at", "user_id", "text").Find(&comments).Error
+	if err != nil {
+		return nil, err
+	}
+	var comments_vm viewmodel.ProductDetailsComments
+	for i := range comments {
+		// Get username of who written comment
+		var c_vm viewmodel.ProductDetailsComment
+		c_vm.ID = int(comments[i].ID)
+		c_vm.Text = comments[i].Text
+		c_vm.Time = &comments[i].CreatedAt
+		user_name, err := GetUsernameByUserID(int(comments[i].UserID))
+		if err != nil {
+			return nil, err
+		}
+		c_vm.Username = user_name
+		comments_vm.Comments = append(comments_vm.Comments, c_vm)
+	}
+	return comments_vm.Comments, nil
+}
+func GetProductdetailsTabsContentInViewModel(p_id int) (*viewmodel.ProductDetailsTabs, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Get product needed information
+	var p model.Product
+	err := db.Model(&model.Product{}).Where("id = ?", p_id).Select("user_id", "name", "description", "created_at").Scan(&p).Error
+	if err != nil {
+		return nil, err
+	}
+	var description_vm viewmodel.ProductDetailsDescription
+	description_vm.Description = p.Description
+	description_vm.Time = p.CreatedAt
+	// Get username by id
+	user_name, err := GetUsernameByUserID(int(p.UserID))
+	if err != nil {
+		return nil, err
+	}
+	description_vm.Username = user_name
 
+	// Get user products
+	user_products_vm, err := GetUserProductsInViewmodel(int(p.UserID))
+	if err != nil {
+		return nil, err
+	}
+	// Delete taken product from user products list
+	var del_element_index int
+	for i := range user_products_vm {
+		if user_products_vm[i].ID == p_id {
+			del_element_index = i
+		}
+	}
+	user_products_vm = general_func.RemoveSliceElement(user_products_vm, del_element_index)
+
+	// Get product comments
+	comments_vm, err := GetProductCommentsInViewmodel(p_id)
+	if err != nil {
+		return nil, err
+	}
+	return &viewmodel.ProductDetailsTabs{
+		DescriptionData: description_vm, UserProductsData: user_products_vm,
+		CommentsData:     viewmodel.ProductDetailsComments{ProductID: p_id, Comments: comments_vm},
+		NumberOfComments: len(comments_vm)}, nil
+}
+func GetRecommendedProdcuts(by_product_id int) ([]model.Product, error) {
+	return nil, nil
+}
+func GetRecommendedProdcutsInViewModel(by_product_id int) (*viewmodel.RecommendedViewData, error) {
+	return nil, nil
+}
+func TooManyRequest(ip string, url string, method string) (bool, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
@@ -594,7 +741,7 @@ func FirstOrCreateTopicTagByName(name string) (*model.Topic_Tag, error) {
 		return &t, err
 	} else {
 		t.Name = name
-		err := db.Create(&t).Error
+		err := Add(&t)
 		return &t, err
 	}
 }
@@ -782,6 +929,14 @@ func getProductInfoForCartItem(product_id int) (*public_struct.ProductForCartIte
 		Price:     p.Price,
 		ImagePath: main_image_path,
 	}, nil
+}
+func AddProductComment(user_id int, p_id int, text string) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	return Add(&model.Product_Comment{Text: text, UserID: uint(user_id), ProductID: uint(p_id)})
+
 }
 func IncreaseCartItemQuantity(cart_item_id int) error {
 	db := database.InitializeOrGetDB()
