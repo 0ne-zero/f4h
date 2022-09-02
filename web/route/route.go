@@ -73,6 +73,7 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/IncreaseCartItemQuantity/:id", controller.IncreaseCartItemQuantity)
 		authorized.GET("/DecreaseCartItemQuantity/:id", controller.DecreaseCartItemQuantity)
 		authorized.GET("/AddToCart/:id", controller.AddToCart)
+		authorized.POST("/AddProductComment/", controller.AddProductComment)
 	}
 	constansts.Routes = r.Routes()
 

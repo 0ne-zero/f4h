@@ -1,0 +1,18 @@
+{{define "_product_details_user_products"}}
+<div class="tab-pane fade" id="user_products" >
+    {{range $product := .}}
+	    <div class="col-sm-3">
+	    	<div class="product-image-wrapper">
+	    		<div class="single-products">
+	    			<div class="productinfo text-center">
+	    				<img src="{{.ImagePath}}" alt="" />
+	    				<h2>${{.Price}}</h2>
+	    				<p>{{.Name}}</p>
+	    				<a href="/AddToCart/{{.ID}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+	    			</div>
+	    		</div>
+	    	</div>
+	    </div>
+    {{end}}
+</div>
+{{end}}

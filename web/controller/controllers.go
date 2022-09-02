@@ -267,7 +267,7 @@ func ProductDetails(c *gin.Context) {
 		return
 	}
 	// Integer product id
-	int_id, err := strconv.ParseInt(str_id, 10, 64)
+	int_id, err := strconv.Atoi(str_id)
 	// Parse check
 	if err != nil {
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
@@ -275,7 +275,7 @@ func ProductDetails(c *gin.Context) {
 		return
 	}
 	var product model.Product
-	err = model_function.GetByID(&product, int(int_id))
+	err = model_function.GetByID(&product, int_id)
 	// Check get product error
 	if err != nil {
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
@@ -289,15 +289,78 @@ func ProductDetails(c *gin.Context) {
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	images_view_data, err := model_function.GetProductDetailsImagesInViewData(int_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	tabs_view_data, err := model_function.GetProductdetailsTabsContentInViewModel(int_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	recommended_viewdata, err := model_function.GetRecommendedProdcutsInViewModel(int_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+
+	detail_view_data := viewmodel.ProductDetailsDetail{
+		ID:        int(product.ID),
+		Name:      product.Name,
+		Price:     product.Price,
+		Inventory: int(product.Inventory),
+	}
 	// Everything is ok
 	view_data := gin.H{}
 	view_data["Title"] = product.Name
 	view_data["Product"] = product
+	view_data["ProductImages"] = images_view_data
+	view_data["ProductDetail"] = detail_view_data
+	view_data["ProductTabs"] = tabs_view_data
+	view_data["RecommendedProducts"] = recommended_viewdata
 	view_data["Categories"] = categories
 	c.HTML(http.StatusOK, "product-details.html", view_data)
 }
 func AddToCart(c *gin.Context) {
 
+}
+
+func AddProductComment(c *gin.Context) {
+	user_id := sessions.Default(c).Get("UserID").(int)
+	product_id_str := strings.TrimSpace(c.PostForm("product_id"))
+	if product_id_str == "" {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Empty product id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	product_id, err := strconv.Atoi(product_id_str)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Non-int product id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	comment_text := strings.TrimSpace(c.PostForm("text"))
+	if comment_text == "" {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Empty comment", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	err = model_function.AddProductComment(user_id, product_id, comment_text)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during add product comment", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/ProductDetails/%d", product_id))
 }
 
 // Incomplete

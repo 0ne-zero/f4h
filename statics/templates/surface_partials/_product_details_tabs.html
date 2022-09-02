@@ -1,0 +1,17 @@
+{{define "_product_details_tabs"}}
+<div class="category-tab shop-details-tab"><!--category-tab-->
+	<div class="col-sm-12">
+		<ul class="nav nav-tabs">
+			<li class="active" ><a href="#details" onclick="showTab(this)" data-toggle="tab">Details</a></li>
+			<li><a href="#user_products" onclick="showTab(this)" data-toggle="tab">User Products</a></li>
+			<li><a href="#reviews" onclick="showTab(this)" data-toggle="tab">Comments ({{.NumberOfComments}})</a></li>
+		</ul>
+	</div>
+	
+	<div class="tab-content">
+        {{template "_product_details_description" .DescriptionData}}
+        {{template "_product_details_user_products" .UserProductsData}}
+        {{template "_product_details_comments" .CommentsData}}
+	</div>
+</div><!--/category-tab-->
+{{end}}

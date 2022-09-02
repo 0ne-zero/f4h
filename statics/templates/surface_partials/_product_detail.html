@@ -1,0 +1,27 @@
+{{define "_product_detail"}}
+<div class="col-sm-7">
+	<div class="product-information" style="min-height:380px;max-height:380px"><!--/product-information-->
+		<h2>{{.Name}}</h2>
+		<img src="/statics/images/product-details/rating.png" alt="" />
+		<br>
+		<span>
+			<span style="color:#696763">Price: </span>
+			<span>${{.Price}} US</span>
+		</span>
+
+		<p><b>Inventory:</b> {{.Inventory}}</p>
+		<label>Quantity:</label>
+		<span>
+			<input type="text" name="quantity" value="1" />
+		</span>
+		<br>
+		<br>
+		<br>
+		<a href="/AddToCart/{{.ID}}" class="btn btn-fefault cart" style="float:right;margin-right:35px">
+			<i class="fa fa-shopping-cart"></i>
+			Add to cart
+		</a>
+		
+	</div><!--/product-information-->
+</div>
+{{end}}
