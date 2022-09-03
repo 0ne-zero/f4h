@@ -17,7 +17,7 @@ import (
 )
 
 type Model interface {
-	model.Forum | model.Discussion | model.User | model.Product_Category | model.Product_Comment | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
+	model.Forum | model.Discussion | model.CartItem | model.User | model.Product_Category | model.Product_Comment | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
 }
 
 func Add[m Model](model *m) error {
@@ -166,6 +166,63 @@ func GetProductDetailsImagesInViewData(p_id int) (*viewmodel.ProductDetailsImage
 	}
 	return &vm, nil
 }
+func GetUserWishlistInViewmodel(user_id int) ([]viewmodel.ProductBasicViewModel, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var w model.Wishlist
+	err := db.Model(&model.Wishlist{}).Preload("Products").Preload("Products.Images").Where("user_id = ?", user_id).Find(&w).Error
+	if err != nil {
+		return nil, err
+	}
+	if w.Products == nil {
+		return []viewmodel.ProductBasicViewModel{}, nil
+	}
+	var vm = make([]viewmodel.ProductBasicViewModel, len(w.Products))
+	for i := range w.Products {
+		vm[i].ID = int(w.Products[i].ID)
+		vm[i].Name = w.Products[i].Name
+		vm[i].Price = w.Products[i].Price
+		if w.Products[i].Images != nil {
+			vm[i].ImagePath = w.Products[i].Images[0].Path
+		}
+	}
+	return vm, nil
+}
+func isProductInCart(cart_id, p_id int) (bool, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var is bool
+	err := db.Model(&model.CartItem{}).Select("count(*) > 0").Where("cart_id = ? AND product_id = ?", cart_id, p_id).Scan(&is).Error
+	return is, err
+}
+func AddProductToCart(p_id, cart_id, quantity int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check product exist in cart
+	exists, err := isProductInCart(cart_id, p_id)
+	if err != nil {
+		return err
+	}
+	if exists {
+		// Get current quantity of product in cart
+		var current_quantity int
+		err = db.Model(&model.CartItem{}).Where("cart_id = ? AND product_id = ?", cart_id, p_id).Select("product_quantity").Scan(&current_quantity).Error
+		if err != nil {
+			return err
+		}
+		// Update the quantity of product
+		final_quantity := current_quantity + quantity
+		return db.Model(&model.CartItem{}).Where("cart_id = ? AND product_id = ?", cart_id, p_id).Update("product_quantity", final_quantity).Error
+	} else {
+		return Add(&model.CartItem{ProductID: uint(p_id), CartID: uint(cart_id), ProductQuantity: uint(quantity)})
+	}
+}
 func getMainImagePathOfProduct(p_id int) (string, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -301,34 +358,53 @@ func GetProductInViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error)
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
-	var products []viewmodel.ProductBasicViewModel
+	var products []model.Product
 	var err error
 	if limit > 0 {
-		err = db.Model(&model.Product{}).Limit(limit).Select("id", "name", "price").Scan(&products).Error
+		err = db.Model(&model.Product{}).Limit(limit).Preload("Images").Select("id", "name", "price").Scan(&products).Error
 	} else {
-		err = db.Model(&model.Product{}).Select("id", "name", "price").Scan(&products).Error
+		err = db.Model(&model.Product{}).Preload("Images").Select("id", "name", "price").Scan(&products).Error
 	}
-	return products, err
+	if len(products) < 1 {
+		return []viewmodel.ProductBasicViewModel{}, nil
+	}
+	var vm = make([]viewmodel.ProductBasicViewModel, len(products))
+	for i := range products {
+		vm[i].ID = int(products[i].ID)
+		vm[i].Name = products[i].Name
+		vm[i].Price = products[i].Price
+		if products[i].Images != nil {
+			vm[i].ImagePath = products[i].Images[0].Path
+		}
+	}
+	return vm, err
 }
 func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmodel.ProductBasicViewModel, error) {
-
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
-	var products []viewmodel.ProductBasicViewModel
-	var c model.Product_Category
 
-	err := db.Preload("Products").Where("name = ?", category_name).Find(&c).Error
+	var c model.Product_Category
+	err := db.Preload("Products").Preload("Products.Images").Where("name = ?", category_name).Find(&c).Error
+	// If error occured or products are nil returns nil
 	if err != nil {
 		return nil, err
 	} else if c.Products == nil {
 		return nil, errors.New("products field is empty")
 	}
-	for _, p := range c.Products {
-		products = append(products, viewmodel.ProductBasicViewModel{ID: int(p.ID), Name: p.Name, Price: p.Price})
+
+	// Fill view model
+	var vm = make([]viewmodel.ProductBasicViewModel, len(c.Products))
+	for i := range c.Products {
+		vm[i].ID = int(c.Products[i].ID)
+		vm[i].Name = c.Products[i].Name
+		vm[i].Price = c.Products[i].Price
+		if c.Products[i].Images != nil {
+			vm[i].ImagePath = c.Products[i].Images[0].Path
+		}
 	}
-	return products, nil
+	return vm, nil
 }
 func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
 
@@ -811,9 +887,19 @@ func GetProductBasicInfoByID(product_id int) (*viewmodel.ProductBasicViewModel, 
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
+	var p model.Product
+	err := db.Model(&model.Product{}).Where("id = ?", product_id).Preload("Images").Select("name", "price").Find(&p).Error
+	if err != nil {
+		return nil, err
+	}
 	var p_vm viewmodel.ProductBasicViewModel
-	err := db.Model(&model.Product{}).Where("id = ?", product_id).Select("name", "price").Find(&p_vm).Error
-	return &p_vm, err
+	p_vm.ID = product_id
+	p_vm.Name = p.Name
+	p_vm.Price = p.Price
+	if p.Images != nil {
+		p_vm.ImagePath = p.Images[0].Path
+	}
+	return &p_vm, nil
 }
 
 // Overview tab
@@ -970,6 +1056,57 @@ func DeleteCartItem(cart_item_id int) error {
 	err := db.Unscoped().Delete(&model.CartItem{}, cart_item_id).Error
 	return err
 }
+func GetCartIDByUserID(user_id int) (int, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var cart_id int
+	err := db.Model(&model.Cart{}).Where("user_id = ? AND is_ordered = FALSE", user_id).Select("id").Scan(&cart_id).Error
+	return cart_id, err
+}
+func getWishlistIDByUserID(user_id int) (int, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var wish_id int
+	err := db.Model(&model.Wishlist{}).Where("user_id = ?", user_id).Select("id").Scan(&wish_id).Error
+	return wish_id, err
+}
+func isProductInUserWishlist(wishlist_id, p_id int) (bool, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var exists bool
+	err := db.Table("product_wishlist_m2m").Select("count(*) > 0").Where("wishlist_id = ? AND product_id = ?", wishlist_id, p_id).Scan(&exists).Error
+	return exists, err
+}
+func AddToWishlist(user_id, p_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	wishlist_id, err := getWishlistIDByUserID(user_id)
+	if err != nil {
+		return err
+	}
+	already_exists, err := isProductInUserWishlist(wishlist_id, p_id)
+	if err != nil {
+		return err
+	}
+	if already_exists {
+		return nil
+	}
+	// Insert into product-wishlist relation table (many to many)
+	p_w_data := struct {
+		WishlistID int
+		ProductID  int
+	}{WishlistID: wishlist_id, ProductID: p_id}
+	err = db.Table("product_wishlist_m2m").Create(&p_w_data).Error
+	return err
+}
 
 func GetUserCart(user_id int) (*viewmodel.Cart, error) {
 	db := database.InitializeOrGetDB()
@@ -977,8 +1114,7 @@ func GetUserCart(user_id int) (*viewmodel.Cart, error) {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	// Get cart id for getting cart items
-	var cart_id int
-	err := db.Model(&model.Cart{}).Where("user_id = ? AND is_ordered = FALSE", user_id).Select("id").Scan(&cart_id).Error
+	cart_id, err := GetCartIDByUserID(user_id)
 	if err != nil {
 		return nil, err
 	}

@@ -10,17 +10,21 @@
 		</span>
 
 		<p><b>Inventory:</b> {{.Inventory}}</p>
-		<label>Quantity:</label>
-		<span>
-			<input type="text" name="quantity" value="1" />
-		</span>
-		<br>
-		<br>
-		<br>
-		<a href="/AddToCart/{{.ID}}" class="btn btn-fefault cart" style="float:right;margin-right:35px">
-			<i class="fa fa-shopping-cart"></i>
-			Add to cart
-		</a>
+		
+		<form action="/AddToCart/" method="POST" >
+			<label>Quantity:</label>
+			<span>
+				<input type="text" name="p_quantity" value="1" />
+			</span>
+			<input type="hidden" name="p_id" value="{{.ID}}"/>
+			<br>
+			<br>
+			<br>
+			<button type="submit" class="btn btn-fefault cart" style="float:right;margin-right:35px">
+				<i class="fa fa-shopping-cart"></i>
+				Add to cart
+			</button>
+		</form>
 		
 	</div><!--/product-information-->
 </div>

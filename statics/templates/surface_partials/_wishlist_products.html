@@ -1,0 +1,25 @@
+{{define "_wishlist_products"}}
+<div class="col-sm-12">
+	<div class="features_items"><!--features_items-->
+		{{if .}}
+			<h2 class="title text-center">YOUR WISHLIST PRODUCTS</h2>
+			{{range $product := .}}
+				<div class="col-sm-4">
+					<div class="product-image-wrapper">
+						<div class="single-products">
+							<div class="productinfo text-center">
+								<img src="{{$product.ImagePath}}" alt="{{$product.Name}}" />
+								<h2>${{$product.Price}}</h2>
+								<p>{{$product.Name}}</p>
+								<a href="/ProductDetails/{{$product.ID}}" class="btn btn-default" style="margin-bottom: 15px;"><i class="fa"></i>Product Details</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{end}}
+		{{else}}
+		<h2 class="title text-center">Currently No Products</h2>
+		{{end}}						
+	</div><!--features_items-->
+</div>
+{{end}}

@@ -112,6 +112,7 @@ func MigrateModels(db *gorm.DB) error {
 		&model.Cart{},
 		&model.Product_Comment_Vote{},
 		&model.Topic_Comment_Vote{},
+		&model.Wishlist{},
 		&model.Poll_Vote{},
 		&model.Topic_Vote{},
 		&model.Forum{},

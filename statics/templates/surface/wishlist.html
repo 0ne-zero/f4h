@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "_head" .Title}}
+<body>
+	{{template "_header"}}
+	<br>
+	<br>
+	<section>
+		<div class="container">
+			<div class="row">
+				{{template "_wishlist_products" .Products}}
+			</div>
+		</div>
+	</section>
+	
+	<!--Footer-->
+	<footer id="footer">
+		{{template "_footer"}}	
+	</footer>
+	<!--/Footer-->
+
+	<!--javascript-->
+	{{template "_js"}}
+	<!--/javascript-->
+</body>
+</html>

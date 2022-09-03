@@ -8,9 +8,10 @@ import (
 )
 
 type ProductBasicViewModel struct {
-	ID    int
-	Name  string
-	Price float64
+	ID        int
+	Name      string
+	Price     float64
+	ImagePath string
 }
 type DiscussionViewModel struct {
 	model.Discussion
