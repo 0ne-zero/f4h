@@ -331,9 +331,68 @@ func ProductDetails(c *gin.Context) {
 	c.HTML(http.StatusOK, "product-details.html", view_data)
 }
 func AddToCart(c *gin.Context) {
+	user_id := sessions.Default(c).Get("UserID").(int)
+	// Get product id
+	p_id, err := strconv.Atoi(c.PostForm("p_id"))
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Non_int product id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	// Get quantity of product
+	p_quantity, err := strconv.Atoi(c.PostForm("p_quantity"))
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Non-int quantity", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
 
+	// Get user cart id by user id
+	cart_id, err := model_function.GetCartIDByUserID(user_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during get cart id by user id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	err = model_function.AddProductToCart(p_id, cart_id, p_quantity)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during add product to user cart", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("/ProductDetails/%d", p_id))
 }
-
+func Wishlist(c *gin.Context) {
+	user_id := sessions.Default(c).Get("UserID").(int)
+	// Get wishlist products
+	wishlist_products, err := model_function.GetUserWishlistInViewmodel(user_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during get wishlist products", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	view_data := gin.H{}
+	view_data["Title"] = "Wishlist"
+	view_data["Products"] = wishlist_products
+	c.HTML(200, "wishlist.html", view_data)
+}
+func AddToWishlist(c *gin.Context) {
+	user_id := sessions.Default(c).Get("UserID").(int)
+	p_id, err := strconv.Atoi(c.Param("p_id"))
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Non-int product id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	err = model_function.AddToWishlist(user_id, p_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during add product to wishlist", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	// Redirect to referer page
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
 func AddProductComment(c *gin.Context) {
 	user_id := sessions.Default(c).Get("UserID").(int)
 	product_id_str := strings.TrimSpace(c.PostForm("product_id"))

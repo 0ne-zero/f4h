@@ -1873,3 +1873,793 @@ Msg= 'Not Found'
 Fields= METHOD='GET' | IP='127.0.0.1' | URL='/favicon.ico'
 Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------
+[2022-09-02T19:35:38Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/AddToCart/1' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T19:35:38Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T19:35:41Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T19:35:42Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T19:36:27Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T19:36:51Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T19:36:51Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T19:36:53Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T19:36:54Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T19:36:54Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T19:38:21Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T19:39:32Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:04:13Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:05:05Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:05:11Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:05:12Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:05:19Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:06:13Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:06:15Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:07:18Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:07:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddToCart/' | METHOD='POST'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:07:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:14:03Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:05Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:05Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:05Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:06Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:06Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:06Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:07Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:14:51Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/AddToCart/' | METHOD='POST' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:14:51Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:15:10Z]-[WARNING]-[f4h]:
+Msg= 'Non_int product id'
+Fields= IP='127.0.0.1' | URL='/AddToCart/' | METHOD='POST'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:338 github.com/0ne-zero/f4h/web/controller.AddToCart
+----------------------------------------------------------------------
+[2022-09-02T20:15:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:18:21Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/AddToCart' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:18:21Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:18:22Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/AddToCart'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:18:22Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:18:46Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:19:08Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:19:33Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:19:53Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:20:15Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:20:15Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:20:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:20:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:20:40Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T20:22:38Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:26:48Z]-[WARNING]-[f4h]:
+Msg= 'Entered category name doesn't exists in database'
+Fields= IP='127.0.0.1' | URL='/Products/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:204 github.com/0ne-zero/f4h/web/controller.ProductList
+----------------------------------------------------------------------
+[2022-09-02T20:28:55Z]-[WARNING]-[f4h]:
+Msg= 'Entered category name doesn't exists in database'
+Fields= IP='127.0.0.1' | URL='/Products/drug' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:204 github.com/0ne-zero/f4h/web/controller.ProductList
+----------------------------------------------------------------------
+[2022-09-02T20:28:56Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:29:02Z]-[WARNING]-[f4h]:
+Msg= 'Entered category name doesn't exists in database'
+Fields= IP='127.0.0.1' | URL='/Products/x' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:204 github.com/0ne-zero/f4h/web/controller.ProductList
+----------------------------------------------------------------------
+[2022-09-02T20:29:02Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:30:50Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/products/Music' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:30:50Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:35:01Z]-[WARNING]-[f4h]:
+Msg= 'Entered category name doesn't exists in database'
+Fields= IP='127.0.0.1' | URL='/Products/index.html' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:204 github.com/0ne-zero/f4h/web/controller.ProductList
+----------------------------------------------------------------------
+[2022-09-02T20:35:01Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T20:35:07Z]-[WARNING]-[f4h]:
+Msg= 'Entered category name doesn't exists in database'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/Products/x'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:204 github.com/0ne-zero/f4h/web/controller.ProductList
+----------------------------------------------------------------------
+[2022-09-02T22:17:37Z]-[WARNING]-[f4h]:
+Msg= 'invalid field found for struct github.com/0ne-zero/f4h/database/model.Wishlist's field Products: define a valid foreign key for relations or implement the Valuer/Scanner interface'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:305 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T22:17:38Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/css/font-awesome.min.css'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:17:45Z]-[WARNING]-[f4h]:
+Msg= 'invalid field found for struct github.com/0ne-zero/f4h/database/model.Wishlist's field Products: define a valid foreign key for relations or implement the Valuer/Scanner interface'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:305 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T22:17:45Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:17:46Z]-[WARNING]-[f4h]:
+Msg= 'invalid field found for struct github.com/0ne-zero/f4h/database/model.Wishlist's field Products: define a valid foreign key for relations or implement the Valuer/Scanner interface'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:305 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T22:17:46Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:17:46Z]-[WARNING]-[f4h]:
+Msg= 'invalid field found for struct github.com/0ne-zero/f4h/database/model.Wishlist's field Products: define a valid foreign key for relations or implement the Valuer/Scanner interface'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:305 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T22:17:46Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:17:46Z]-[WARNING]-[f4h]:
+Msg= 'invalid field found for struct github.com/0ne-zero/f4h/database/model.Wishlist's field Products: define a valid foreign key for relations or implement the Valuer/Scanner interface'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:305 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T22:17:46Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:18:46Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-02T22:20:14Z]-[WARNING]-[f4h]:
+Msg= 'Error occured during get wishlist products'
+Fields= IP='127.0.0.1' | URL='/Wishlist' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:370 github.com/0ne-zero/f4h/web/controller.Wishlist
+----------------------------------------------------------------------
+[2022-09-02T22:20:14Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:24:59Z]-[WARNING]-[f4h]:
+Msg= 'Error occured during get wishlist products'
+Fields= IP='127.0.0.1' | URL='/Wishlist' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:370 github.com/0ne-zero/f4h/web/controller.Wishlist
+----------------------------------------------------------------------
+[2022-09-02T22:24:59Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:26:50Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:28:39Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:29:00Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:29:31Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:33:19Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:33:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:33:27Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:36:46Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/index.html' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:36:46Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/css/font-awesome.min.css'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:04Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:05Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:05Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:05Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:05Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:06Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:06Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:06Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:06Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:07Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:09Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:37:09Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:38:08Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/js/jquery-1.10.2.min.map' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:42:14Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/js/jquery-1.10.2.min.map' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:43:17Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:43:27Z]-[WARNING]-[f4h]:
+Msg= 'sql: Scan error on column index 0, name "joined_at": unsupported Scan, storing driver.Value type <nil> into type *time.Time'
+Fields= IP='127.0.0.1' | URL='/Profile' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:523 github.com/0ne-zero/f4h/web/controller.Profile_GET
+----------------------------------------------------------------------
+[2022-09-02T22:43:27Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:43:38Z]-[WARNING]-[f4h]:
+Msg= 'sql: Scan error on column index 0, name "joined_at": unsupported Scan, storing driver.Value type <nil> into type *time.Time'
+Fields= URL='/Profile' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:523 github.com/0ne-zero/f4h/web/controller.Profile_GET
+----------------------------------------------------------------------
+[2022-09-02T22:43:38Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:43:47Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:44:41Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:44:53Z]-[WARNING]-[f4h]:
+Msg= 'sql: Scan error on column index 0, name "joined_at": unsupported Scan, storing driver.Value type <nil> into type *time.Time'
+Fields= IP='127.0.0.1' | URL='/Profile' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:523 github.com/0ne-zero/f4h/web/controller.Profile_GET
+----------------------------------------------------------------------
+[2022-09-02T22:44:53Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:45:16Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/Login'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:45:16Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-02T22:50:21Z]-[WARNING]-[f4h]:
+Msg= 'Entered category name doesn't exists in database'
+Fields= IP='127.0.0.1' | URL='/Products/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:204 github.com/0ne-zero/f4h/web/controller.ProductList
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddToWishlist/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/default/sprite.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/default/sprite_x.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/prettyPhoto/default/sprite_y.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/default/sprite_next.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/default/sprite_prev.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/default/default_thumb.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/prettyPhoto/default/loader.gif'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/light_rounded/sprite.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/images/prettyPhoto/light_rounded/btnNext.png' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_rounded/sprite.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/light_rounded/btnPrevious.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_rounded/contentPattern.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_rounded/btnNext.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_rounded/btnPrevious.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_rounded/loader.gif' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_square/loader.gif' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/images/prettyPhoto/dark_square/btnNext.png' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_square/sprite.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/dark_square/btnPrevious.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/light_square/sprite.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/light_square/btnPrevious.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/sprite.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/light_square/btnNext.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/contentPatternTop.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/contentPatternLeft.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/contentPatternRight.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/btnPrevious.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/images/prettyPhoto/facebook/btnNext.png' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/loader.gif' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/contentPatternBottom.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/facebook/default_thumbnail.gif' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:18Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/prettyPhoto/light_rounded/loader.gif' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:57Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddToWishlist/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T17:22:57Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:45:55Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:46:02Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddWishlist/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:46:03Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:46:39Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddWishlist/1' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:46:39Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:47:27Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/AddWishlist/2' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:47:27Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:48:14Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-03T19:48:15Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:48:29Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:49:10Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:49:12Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T19:49:21Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------

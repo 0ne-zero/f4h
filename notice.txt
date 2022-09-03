@@ -45,3 +45,4 @@
 -- write recommned products code (model_function.go)
 -- fix rating image in product image (_product_detail.html)
 -- santisize add comment in product detail
+-- increaase/decrease quantity doesn't works sometimes

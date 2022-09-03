@@ -184,10 +184,19 @@ func getUserProductsCount(user_id int) (int, error) {
 }
 
 func convertProductToBasicProductBasicViewModel(product *model.Product) viewmodel.ProductBasicViewModel {
-	return viewmodel.ProductBasicViewModel{
-		ID:    int(product.ID),
-		Name:  product.Name,
-		Price: product.Price,
+	if product.Images == nil {
+		return viewmodel.ProductBasicViewModel{
+			ID:    int(product.ID),
+			Name:  product.Name,
+			Price: product.Price,
+		}
+	} else {
+		return viewmodel.ProductBasicViewModel{
+			ID:        int(product.ID),
+			Name:      product.Name,
+			Price:     product.Price,
+			ImagePath: product.Images[0].Path,
+		}
 	}
 }
 

@@ -8,15 +8,15 @@
 					<div class="product-image-wrapper">
 						<div class="single-products">
 							<div class="productinfo text-center">
-								<img src="/statics/images/shop/product12.jpg" alt="" />
+								<img src="{{$product.ImagePath}}" alt="{{$product.Name}}" />
 								<h2>${{$product.Price}}</h2>
 								<p>{{$product.Name}}</p>
-								<a href="/ProductDetails/{{$product.ID}}" class="btn btn-default"><i class="fa"></i>Product Details</a>
+								<a href="/ProductDetails/{{$product.ID}}" class="btn btn-default" style="margin-bottom: 15px;"><i class="fa"></i>Product Details</a>
 							</div>
 						</div>
 						<div class="choose">
 							<ul class="nav nav nav-justified">
-								<li><a href="/AddWishlist/{{$product.ID}}"><i>Add to wishlist</i></a></li>
+								<li><a href="/AddToWishlist/{{$product.ID}}"><i>Add to wishlist</i></a></li>
 							</ul>
 						</div>
 					</div>

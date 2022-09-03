@@ -41,9 +41,9 @@ func MakeRoute() *gin.Engine {
 	r.Use(sessions.Sessions(constansts.AppName+"_Session_KEY", store))
 
 	// Public routes
-	r.GET("/login", controller.Login_GET)
-	r.POST("/login", controller.Login_POST)
-	r.POST("/register", controller.Register_POST)
+	r.GET("/Login", controller.Login_GET)
+	r.POST("/Login", controller.Login_POST)
+	r.POST("/Register", controller.Register_POST)
 	r.GET("/admin", controller.Admin_Index)
 	r.Use(middleware.SetSession())
 	// Public authorized
@@ -56,6 +56,7 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/Products/*category", controller.ProductList)
 		authorized.GET("/ProductDetails/:id", controller.ProductDetails)
 		authorized.GET("/Profile", controller.Profile_GET)
+		authorized.GET("/Wishlist", controller.Wishlist)
 		authorized.GET("/Cart", controller.Cart)
 
 		// Forum
@@ -72,8 +73,9 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/DeleteCartItem/:id", controller.DeleteCartItem)
 		authorized.GET("/IncreaseCartItemQuantity/:id", controller.IncreaseCartItemQuantity)
 		authorized.GET("/DecreaseCartItemQuantity/:id", controller.DecreaseCartItemQuantity)
-		authorized.GET("/AddToCart/:id", controller.AddToCart)
+		authorized.POST("/AddToCart", controller.AddToCart)
 		authorized.POST("/AddProductComment/", controller.AddProductComment)
+		authorized.GET("/AddToWishlist/:p_id", controller.AddToWishlist)
 	}
 	constansts.Routes = r.Routes()
 

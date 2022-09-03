@@ -59,7 +59,8 @@ type User struct {
 	Product_Comment_Votes []*Product_Comment_Vote
 	// User has many Topic_Vote
 	Topic_Votes []*Topic_Vote
-	// User has one ProfileSetting
+	// User has one Wishlist
+	Wishlist *Wishlist
 }
 
 type Address struct {
@@ -123,8 +124,17 @@ type Product struct {
 	Comments []*Product_Comment
 	// Product has many ProductTag
 	Tags []*Product_Tag `gorm:"many2many:product_tag_m2m;NOT NULL"`
+	// Product has many wishlist
+	Wishlists []*Wishlist `gorm:"many2many:product_wishlist_m2m;"`
 	// Product has one User
 	UserID uint `gorm:"NOT NULL;"`
+}
+type Wishlist struct {
+	BasicModel
+	// Wishlist has one user
+	UserID int
+	// Wishlist has many Products
+	Products []*Product `gorm:"many2many:product_wishlist_m2m;"`
 }
 type Product_Category struct {
 	BasicModel
