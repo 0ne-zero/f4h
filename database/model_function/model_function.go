@@ -164,6 +164,17 @@ func GetProductDetailsImagesInViewData(p_id int) (*viewmodel.ProductDetailsImage
 		}
 		vm.SubImages = append(vm.SubImages, viewmodel.ImageViewData{Path: images_path[i], Name: p_name})
 	}
+	// Computing number of slides
+	n := float64(len(vm.SubImages)) / float64(3)
+	// Is n round or not
+	if general_func.IsFloatNumberRound(n) {
+		vm.NumberOfSlides = int(n)
+	} else {
+		vm.NumberOfSlides = int(n) + 1
+	}
+	if vm.NumberOfSlides == 0 {
+		vm.NumberOfSlides = 1
+	}
 	return &vm, nil
 }
 func GetUserWishlistInViewmodel(user_id int) ([]viewmodel.ProductBasicViewModel, error) {
@@ -243,18 +254,16 @@ func GetUserProductsInViewmodel(user_id int) ([]viewmodel.ProductDetailsUserProd
 		return nil, err
 	}
 	user_products_vm := make([]viewmodel.ProductDetailsUserProduct, len(user_products))
-	if user_products != nil {
-		for i := range user_products {
-			user_products_vm[i].ID = int(user_products[i].ID)
-			user_products_vm[i].Name = user_products[i].Name
-			user_products_vm[i].Price = user_products[i].Price
-			// Get main image path of product
-			main_img_path, err := getMainImagePathOfProduct(user_products_vm[i].ID)
-			if err != nil {
-				return nil, err
-			}
-			user_products_vm[i].ImagePath = main_img_path
+	for i := range user_products {
+		user_products_vm[i].ID = int(user_products[i].ID)
+		user_products_vm[i].Name = user_products[i].Name
+		user_products_vm[i].Price = user_products[i].Price
+		// Get main image path of product
+		main_img_path, err := getMainImagePathOfProduct(user_products_vm[i].ID)
+		if err != nil {
+			return nil, err
 		}
+		user_products_vm[i].ImagePath = main_img_path
 	}
 	return user_products_vm, nil
 }

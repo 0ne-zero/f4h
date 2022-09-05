@@ -42,6 +42,14 @@ func HashPassword(pass string) (string, error) {
 func ComparePassword(hashed_pass string, pass string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashed_pass), []byte(pass))
 }
+func IsFloatNumberRound(n float64) bool {
+	str_n := fmt.Sprint(n)
+	if strings.Contains(str_n, ".") {
+		return false
+	} else {
+		return true
+	}
+}
 
 // Remove slice element and keeping the order
 // Just shift
@@ -93,7 +101,6 @@ func AppendTextToFile(path string, text string) error {
 	return nil
 }
 func GetCallerInfo(skip int) wrapper_logger.ErrorLocation {
-
 	// Remove this function from stack
 	skip += 1
 
@@ -122,10 +129,10 @@ func GetCallerInfo(skip int) wrapper_logger.ErrorLocation {
 }
 
 // Case-insensitive strings.Contains
-func ContainsI(a string, b string) bool {
+func ContainsI(s string, sub string) bool {
 	return strings.Contains(
-		strings.ToLower(a),
-		strings.ToLower(b),
+		strings.ToLower(s),
+		strings.ToLower(sub),
 	)
 }
 func AddFieldsToString(s string, fields map[string]string) string {

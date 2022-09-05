@@ -2663,3 +2663,508 @@ Msg= 'Not Found'
 Fields= IP='127.0.0.1' | URL='/xsfsdfsadfd' | METHOD='GET'
 Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------
+[2022-09-03T22:04:26Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-03T22:11:49Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-03T22:11:49Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-03T22:18:15Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:20:44Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:24:28Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:24:53Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:25:06Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:26:35Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:27:22Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:28:43Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:36:06Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:38:46Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:40:19Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:41:36Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:41:43Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/120' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:281 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:41:43Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:41:43Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/102' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:281 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:41:43Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= URL='/ProductDetails/115' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:281 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:42:30Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:42:30Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/120'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:281 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:42:30Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/115' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:281 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T20:42:30Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/102'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:281 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:00:10Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:03:10Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:05:16Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:05:16Z]-[WARNING]-[f4h]:
+Msg= 'record not found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/120'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:281 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:06:22Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:09:10Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:09:10Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= URL='/ProductDetails/{drug xsfsdfsadfd}' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:12:05Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/favicon.ico'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:12:19Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar1.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:12:19Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar2.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:12:19Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar3.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:12:19Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:19:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar1.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:19:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar2.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:19:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar3.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:19:20Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:20:43Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:23:51Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:24:00Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:24:00Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/{drug xsfsdfsadfd}' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:24:16Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:24:16Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/{drug xsfsdfsadfd}' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:25:37Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:25:37Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/{drug xsfsdfsadfd}' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:27:02Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:27:02Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/{drug xsfsdfsadfd}' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:29:12Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:29:12Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/{drug xsfsdfsadfd}'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:30:57Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:31:05Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:31:05Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/{drug xsfsdfsadfd}' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:32:28Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:32:28Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "{drug xsfsdfsadfd}": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/{drug xsfsdfsadfd}' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:33:34Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T21:33:34Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar1.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:33:34Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar2.jpg'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T21:33:34Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar3.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T23:42:34Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T23:42:34Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar1.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T23:42:34Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar2.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T23:42:34Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar3.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T23:42:37Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-04T23:42:37Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar1.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T23:42:37Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar2.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T23:42:37Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/product-details/similar3.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-04T23:42:58Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:02:55Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:05:59Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:06:00Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:06:01Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:06:08Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:06:34Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:06:35Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T00:06:35Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T00:06:39Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:06:40Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T00:06:40Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T00:06:44Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:08:03Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:11:00Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:31:16Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:34:18Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:34:19Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T00:36:17Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:37:14Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:37:44Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:47:16Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:48:27Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:49:47Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:52:13Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:52:43Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:53:03Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T00:58:54Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/similar4.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T00:58:54Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T01:00:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/similar4.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T01:00:20Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------
+[2022-09-05T01:04:31Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/similar4.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-05T01:04:31Z]-[WARNING]-[f4h]:
+Msg= 'strconv.Atoi: parsing "xsfsdfsadfd": invalid syntax'
+Fields= URL='/ProductDetails/xsfsdfsadfd' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:273 github.com/0ne-zero/f4h/web/controller.ProductDetails
+----------------------------------------------------------------------

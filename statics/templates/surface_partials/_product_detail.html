@@ -1,31 +1,31 @@
 {{define "_product_detail"}}
-<div class="col-sm-7">
-	<div class="product-information" style="min-height:380px;max-height:380px"><!--/product-information-->
-		<h2>{{.Name}}</h2>
-		<img src="/statics/images/product-details/rating.png" alt="" />
-		<br>
-		<span>
-			<span style="color:#696763">Price: </span>
-			<span>${{.Price}} US</span>
-		</span>
-
-		<p><b>Inventory:</b> {{.Inventory}}</p>
-		
-		<form action="/AddToCart/" method="POST" >
-			<label>Quantity:</label>
+	<div class="col-sm-7">
+		<div class="product-information" style="min-height:380px;max-height:380px"><!--/product-information-->
+			<h2>{{.Name}}</h2>
+			<img src="/statics/images/product-details/rating.png" alt="" />
+			<br>
 			<span>
-				<input type="text" name="p_quantity" value="1" />
+				<span style="color:#696763">Price: </span>
+				<span>${{.Price}} US</span>
 			</span>
-			<input type="hidden" name="p_id" value="{{.ID}}"/>
-			<br>
-			<br>
-			<br>
-			<button type="submit" class="btn btn-fefault cart" style="float:right;margin-right:35px">
-				<i class="fa fa-shopping-cart"></i>
-				Add to cart
-			</button>
-		</form>
-		
-	</div><!--/product-information-->
-</div>
+
+			<p><b>Inventory:</b> {{.Inventory}}</p>
+			
+			<form action="/AddToCart/" method="POST" >
+				<label>Quantity:</label>
+				<span>
+					<input type="text" name="p_quantity" value="1" />
+				</span>
+				<input type="hidden" name="p_id" value="{{.ID}}"/>
+				<br>
+				<br>
+				<br>
+				<button type="submit" class="btn btn-fefault cart" style="float:right;margin-right:35px">
+					<i class="fa fa-shopping-cart"></i>
+					Add to cart
+				</button>
+			</form>
+			
+		</div><!--/product-information-->
+	</div>
 {{end}}
