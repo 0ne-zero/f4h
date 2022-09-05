@@ -408,11 +408,14 @@ func AddProductComment(c *gin.Context) {
 		return
 	}
 	comment_text := strings.TrimSpace(c.PostForm("text"))
+	// Sanitize
+	comment_text = constansts.XSSPreventor.Sanitize(comment_text)
 	if comment_text == "" {
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Empty comment", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
+
 	err = model_function.AddProductComment(user_id, product_id, comment_text)
 	if err != nil {
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during add product comment", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
