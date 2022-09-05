@@ -28,6 +28,19 @@ func getDayMonthYearFromTime(t time.Time) string {
 func toString(i interface{}) string {
 	return fmt.Sprint(i)
 }
+
+// Get Field of selected element of image view data slice
+func getFieldOfIndexOfImageViewData(slice []viewmodel.ImageViewData, index int, field_name string) any {
+	e := slice[index]
+	switch field_name {
+	case "Path":
+		return e.Path
+	case "Name":
+		return e.Name
+	default:
+		panic("You selected unknown field of ImageViewData")
+	}
+}
 func iterate(end int) []uint {
 	var list []uint
 	for i := 0; i < end; i++ {
@@ -54,16 +67,18 @@ func replaceString(s, o_char, n_char string) string {
 func AddFunctionsToRoute(r *gin.Engine) {
 	r.SetFuncMap(
 		template.FuncMap{
-			"iterate":              iterate,
-			"remainder":            remainder,
-			"stringSliceLength":    sliceLength[string],
-			"TopicTagsSliceLength": sliceLength[viewmodel.TopicTagBasicInformation],
-			"plus":                 plus,
-			"minus":                minus,
-			"formatTime":           getDayMonthYearFromTime,
-			"titlelizeEachWord":    titlelizeEachWordFirstLetter,
-			"replace":              replaceString,
-			"toString":             toString,
+			"iterate":                 iterate,
+			"remainder":               remainder,
+			"stringSliceLength":       sliceLength[string],
+			"TopicTagsSliceLength":    sliceLength[viewmodel.TopicTagBasicInformation],
+			"imagesLength":            sliceLength[viewmodel.ImageViewData],
+			"plus":                    plus,
+			"minus":                   minus,
+			"formatTime":              getDayMonthYearFromTime,
+			"titlelizeEachWord":       titlelizeEachWordFirstLetter,
+			"replace":                 replaceString,
+			"toString":                toString,
+			"getFieldOfImageViewData": getFieldOfIndexOfImageViewData,
 		},
 	)
 }

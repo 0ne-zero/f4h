@@ -183,23 +183,6 @@ func getUserProductsCount(user_id int) (int, error) {
 	return int(count), err
 }
 
-func convertProductToBasicProductBasicViewModel(product *model.Product) viewmodel.ProductBasicViewModel {
-	if product.Images == nil {
-		return viewmodel.ProductBasicViewModel{
-			ID:    int(product.ID),
-			Name:  product.Name,
-			Price: product.Price,
-		}
-	} else {
-		return viewmodel.ProductBasicViewModel{
-			ID:        int(product.ID),
-			Name:      product.Name,
-			Price:     product.Price,
-			ImagePath: product.Images[0].Path,
-		}
-	}
-}
-
 func getUserInformationByIDForShowTopicInViewModel(user_id int) (*viewmodel.TopicUserViewModel, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
