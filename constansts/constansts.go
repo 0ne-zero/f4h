@@ -21,6 +21,7 @@ var SettingFilePath string
 var UtilitiesDirectory string
 var MarkdownFilePath string
 var LogFilePath string
+var ImagesDirectory string
 
 // DSN
 var DSN string
@@ -62,11 +63,12 @@ func init() {
 		var err error
 		SettingData, err = readSettingFile(SettingFilePath)
 		if err != nil {
+			fmt.Println(err)
 			os.Exit(1)
 		}
 		AppName = SettingData["APP_NAME"]
 		LogFilePath = filepath.Join(SettingData["LOG_FILE_PARENT_DIRECTORY"], SettingData["APP_NAME"], "log.txt")
-
+		ImagesDirectory = SettingData["ImagesDirectory"]
 		// Initial XSS preventation
 		XSSPreventor = bluemonday.UGCPolicy()
 		// Set loaded to true, so next time it won't load again and will use them immediately
@@ -96,8 +98,8 @@ func validateSettingData(data map[string]string) error {
 		"APP_NAME",
 		"LOG_FILE_PARENT_DIRECTORY",
 		"DSN",
-		"HASH_COST_NUMBER",
 		"CONTACT_EMAIL",
+		"ImagesDirectory",
 	}
 
 	var exists bool

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -53,7 +54,13 @@ func Login_POST(c *gin.Context) {
 		return
 	}
 	// Compare user password with entered password
-	if err := general_func.ComparePassword(user_fields.PasswordHash, password); err != nil {
+	status, err := general_func.ComparePassword(user_fields.PasswordHash, password)
+	if err != nil {
+		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Error occurred during compare passwords", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	if !status {
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered Incorrect password", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		data := gin.H{
 			"Title": "Login/Signup",
@@ -125,7 +132,7 @@ func Register_POST(c *gin.Context) {
 	}
 	// So far user not exists, should register client
 	// Create password hash
-	pass_hash, err := general_func.HashPassword(password)
+	pass_hash, err := general_func.Hashing(password)
 	if err != nil {
 		//Log
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
@@ -142,7 +149,7 @@ func Register_POST(c *gin.Context) {
 }
 func Index(c *gin.Context) {
 	// Get products
-	products, err := model_function.GetProductInViewModel(15)
+	products, err := model_function.GetProductInProductBasicViewModel(15)
 	if err != nil {
 		// Log Error
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
@@ -183,7 +190,253 @@ func Index(c *gin.Context) {
 	if products != nil {
 		view_data["Products"] = products
 	}
-	c.HTML(http.StatusOK, "index.html", view_data)
+	c.HTML(200, "index.html", view_data)
+}
+func AddProduct_GET(c *gin.Context) {
+	view_data := gin.H{
+		"Title": controller_helper.SetTitle("Add Product"),
+	}
+	c.HTML(200, "add-product.html", view_data)
+}
+
+// Incomplete (get selected categories)
+func AddProduct_POST(c *gin.Context) {
+	p_name := strings.TrimSpace(c.PostForm("name"))
+	p_price := strings.TrimSpace(c.PostForm("price"))
+	p_inventory := strings.TrimSpace(c.PostForm("inventory"))
+	p_description := strings.TrimSpace(c.PostForm("description"))
+	p_tags := strings.TrimSpace(c.PostForm("tags"))
+
+	// Validate data
+	view_data := controller_helper.AddProductValidation(p_name, p_price, p_inventory, p_description, p_tags)
+	if view_data != nil {
+		c.HTML(200, "add-product.html", view_data)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	p_price_float, _ := strconv.ParseFloat(p_price, 64)
+	p_inventory_int, _ := strconv.Atoi(p_inventory)
+	var tags []*model.Product_Tag
+	// we have multiple tags
+	if strings.Contains(p_tags, "|") {
+		splitted_tags := strings.Split(p_tags, "|")
+		for i := range splitted_tags {
+			tag, err := model_function.FirstOrCreateProductTagByName(strings.TrimSpace(splitted_tags[i]))
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get tag by name", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+			tags = append(tags, tag)
+		}
+	} else {
+		tag, err := model_function.FirstOrCreateProductTagByName(p_tags)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get tag by name", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		tags = append(tags, tag)
+	}
+	// Save Images
+	form, err := c.MultipartForm()
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during parse multipart form\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	files := form.File["files[]"]
+	p_images := make([]*model.Product_Image, len(files))
+	for i := range files {
+		var file_name string
+		var err error
+		var file_name_exists bool = true
+		for file_name_exists {
+			file_name, err = general_func.GenerateRandomHex(64)
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred generate random hex\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+			// Here loop can be break
+			file_name_exists, err = general_func.IsImageExists(file_name, "PRODUCT")
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during checking image exists\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+		}
+		file_path := filepath.Join(constansts.ImagesDirectory, "product", file_name, ".jpeg")
+		err = c.SaveUploadedFile(files[i], file_path)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during saving uploaded image\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		p_images = append(p_images, &model.Product_Image{Path: file_path})
+	}
+	//TODO: Selected categories
+
+	// Create product
+	product := &model.Product{
+		UserID:      uint(user_id),
+		Name:        p_name,
+		Description: p_description,
+		Price:       p_price_float,
+		Inventory:   uint(p_inventory_int),
+		Tags:        tags,
+		Images:      p_images,
+	}
+
+	err = model_function.Add(product)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during add product to database\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+
+	c.Redirect(http.StatusMovedPermanently, fmt.Sprint("/ProductDetails/", product.ID))
+}
+func EditProduct_GET(c *gin.Context) {
+	p_id, err := strconv.Atoi(strings.TrimSpace(c.Param("id")))
+	if err != nil {
+		return
+	}
+	p, err := model_function.GetProductInViewModel(p_id)
+	if err != nil {
+
+	}
+	view_data := gin.H{
+		"Title":   controller_helper.SetTitle(fmt.Sprintf("Edit %s Product", p.Name)),
+		"Product": p,
+	}
+	c.HTML(200, "edit-product.html", view_data)
+}
+
+// Incomplete (get selected categories)
+func EditProduct_POST(c *gin.Context) {
+	p_id := strings.TrimSpace(c.PostForm("id"))
+	p_name := strings.TrimSpace(c.PostForm("name"))
+	p_price := strings.TrimSpace(c.PostForm("price"))
+	p_inventory := strings.TrimSpace(c.PostForm("inventory"))
+	p_description := strings.TrimSpace(c.PostForm("description"))
+	p_tags := strings.TrimSpace(c.PostForm("tags"))
+
+	// Validate data
+	view_data := controller_helper.AddProductValidation(p_name, p_price, p_inventory, p_description, p_tags)
+	if view_data != nil {
+		c.HTML(200, "add-product.html", view_data)
+		return
+	}
+	if p_id == "" {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Product id is Empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	p_id_int, err := strconv.Atoi(p_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Product id is non-int", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	p_price_float, _ := strconv.ParseFloat(p_price, 64)
+	p_inventory_int, _ := strconv.Atoi(p_inventory)
+
+	var tags []*model.Product_Tag
+	// we have multiple tags
+	if strings.Contains(p_tags, "|") {
+		splitted_tags := strings.Split(p_tags, "|")
+		for i := range splitted_tags {
+			tag, err := model_function.FirstOrCreateProductTagByName(strings.TrimSpace(splitted_tags[i]))
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get tag by name", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+			tags = append(tags, tag)
+		}
+	} else {
+		tag, err := model_function.FirstOrCreateProductTagByName(p_tags)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get tag by name", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		tags = append(tags, tag)
+	}
+	// Save Images
+	form, err := c.MultipartForm()
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during parse multipart form\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	files := form.File["files[]"]
+	p_images := make([]*model.Product_Image, len(files))
+	// Save uploaded images
+	for i := range files {
+		var file_name string
+		var err error
+		var file_name_exists bool = true
+		for file_name_exists {
+			file_name, err = general_func.GenerateRandomHex(64)
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred generate random hex\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+			// Here loop can be break
+			file_name_exists, err = general_func.IsImageExists(file_name, "PRODUCT")
+			if err != nil {
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during checking image exists\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+				return
+			}
+		}
+		file_path := filepath.Join(constansts.ImagesDirectory, "product", file_name, ".jpeg")
+		err = c.SaveUploadedFile(files[i], file_path)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during saving uploaded image\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		p_images = append(p_images, &model.Product_Image{Path: file_path})
+	}
+	// Delete old images
+	old_images_path, err := model_function.GetProductImagesPath(p_id_int)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get product old images\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	err = general_func.DeleteFiles(old_images_path...)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during delete product old images\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	//TODO: Get selected categories
+
+	product := &model.Product{
+		BasicModel:  model.BasicModel{ID: uint(p_id_int)},
+		UserID:      uint(user_id),
+		Name:        p_name,
+		Description: p_description,
+		Price:       p_price_float,
+		Inventory:   uint(p_inventory_int),
+		Tags:        tags,
+		Images:      p_images,
+	}
+	// Edit Product
+	_, err = model_function.Update(&model.Product{BasicModel: model.BasicModel{ID: uint(p_id_int)}}, product)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during edit product", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+
+	c.Redirect(http.StatusMovedPermanently, fmt.Sprint("ProductDetails/", p_id_int))
 }
 func ProductList(c *gin.Context) {
 	enteredCategory := c.Param("category")
@@ -350,13 +603,13 @@ func AddToCart(c *gin.Context) {
 	// Get user cart id by user id
 	cart_id, err := model_function.GetCartIDByUserID(user_id)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during get cart id by user id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get cart id by user id", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
 	err = model_function.AddProductToCart(p_id, cart_id, p_quantity)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during add product to user cart", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during add product to user cart", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -367,7 +620,7 @@ func Wishlist(c *gin.Context) {
 	// Get wishlist products
 	wishlist_products, err := model_function.GetUserWishlistInViewmodel(user_id)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during get wishlist products", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get wishlist products", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -386,7 +639,7 @@ func AddToWishlist(c *gin.Context) {
 	}
 	err = model_function.AddToWishlist(user_id, p_id)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during add product to wishlist", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during add product to wishlist", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -418,7 +671,7 @@ func AddProductComment(c *gin.Context) {
 
 	err = model_function.AddProductComment(user_id, product_id, comment_text)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during add product comment", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during add product comment", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -553,7 +806,7 @@ func Cart(c *gin.Context) {
 	// Get users cart information
 	cart, err := model_function.GetUserCart(user_id)
 	if err != nil {
-		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during get users cart information", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during get users cart information", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
@@ -570,7 +823,7 @@ func DeleteCartItem(c *gin.Context) {
 		if id_int, err := strconv.Atoi(id_str); err == nil {
 			err = model_function.DeleteCartItem(id_int)
 			if err != nil {
-				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during delete cart item", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during delete cart item", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 				return
 			}
@@ -584,7 +837,7 @@ func DecreaseCartItemQuantity(c *gin.Context) {
 		if id_int, err := strconv.Atoi(id_str); err == nil {
 			err = model_function.DecreaseCartItemQuantity(id_int)
 			if err != nil {
-				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during decrease cart item quantity", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during decrease cart item quantity", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 				return
 			}
@@ -598,7 +851,7 @@ func IncreaseCartItemQuantity(c *gin.Context) {
 		if id_int, err := strconv.Atoi(id_str); err == nil {
 			err = model_function.IncreaseCartItemQuantity(id_int)
 			if err != nil {
-				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occured during increase cart item quantity", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Error occurred during increase cart item quantity", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 				return
 			}
@@ -1022,7 +1275,7 @@ func EditTopic_Get(c *gin.Context) {
 }
 func EditTopic_POST(c *gin.Context) {
 	// Get topic id
-	topic_id_str := c.Param("topic_id")
+	topic_id_str := strings.TrimSpace(c.PostForm("id"))
 	if topic_id_str == "" {
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Empty toipc id entered", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, "Entered topic id in the url is empty.")

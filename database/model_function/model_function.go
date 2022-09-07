@@ -17,7 +17,7 @@ import (
 )
 
 type Model interface {
-	model.Forum | model.Discussion | model.CartItem | model.User | model.Product_Category | model.Product_Comment | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
+	model.Forum | model.Discussion | model.CartItem | model.User | model.Product_Tag | model.Product_Category | model.Product_Comment | model.Product | model.Request | model.Discussion_Category | model.BadRequest | model.Topic | model.Topic_Tag
 }
 
 func Add[m Model](model *m) error {
@@ -138,6 +138,22 @@ func GetProductDetailInViewData(p_id int) (*viewmodel.ProductDetailsDetail, erro
 	var vm viewmodel.ProductDetailsDetail
 	err := db.Model(&model.Product{}).Where("id = ?", p_id).Select("id", "name", "inventory", "price").Scan(&vm).Error
 	return &vm, err
+}
+func GetProductImagesPath(p_id int) ([]string, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var images []model.Product_Image
+	err := db.Model(&model.Product_Image{}).Where("product_id = ?", p_id).Select("Path").Scan(&images).Error
+	if err != nil {
+		return nil, err
+	}
+	var images_path []string
+	for i := range images {
+		images_path = append(images_path, images[i].Path)
+	}
+	return images_path, nil
 }
 func GetProductDetailsImagesInViewData(p_id int) (*viewmodel.ProductDetailsImagesViewData, error) {
 	db := database.InitializeOrGetDB()
@@ -361,7 +377,7 @@ func TooManyRequest(ip string, url string, method string) (bool, error) {
 	}
 	return false, nil
 }
-func GetProductInViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error) {
+func GetProductInProductBasicViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error) {
 
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -472,11 +488,13 @@ func GetCategoriesWithRelationsInViewModel(ordering bool) ([]viewmodel.SidebarCa
 		})
 	}
 	var result []viewmodel.SidebarCategoryViewModel
-
 	for _, c := range categories {
 		var view_cat viewmodel.SidebarCategoryViewModel
 		view_cat.Name = c.Name
-
+		// If category is a sub-category skip it
+		if c.ParentID != nil {
+			continue
+		}
 		for _, sub := range c.SubCategories {
 			var view_cat_sub viewmodel.SidebarCategoryViewModel
 			view_cat_sub.Name = sub.Name
@@ -626,8 +644,49 @@ func GetDiscussionForumsInViewModel(discussion_id int) ([]viewmodel.ForumViewMod
 	}
 	return forums, err
 }
-func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
+func GetProductInViewModel(p_id int) (*viewmodel.ProductViewModel, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var p model.Product
+	err := db.Model(&model.Product{}).Where("id = ?", p_id).Preload("Tags").Preload("Categories").Preload("Images").Scan(&p).Error
+	if err != nil {
+		return nil, err
+	}
+	vm := viewmodel.ProductViewModel{
+		Name:        p.Name,
+		Description: p.Description,
+		Price:       p.Price,
+		Inventory:   int(p.Inventory),
+	}
+	var i int
+	for i = range p.Images {
+		vm.ImagesPath = append(vm.ImagesPath, p.Images[i].Path)
+	}
+	// Reset i
+	i = 0
 
+	var tags_str string
+	p_tags_len := len(p.Tags)
+
+	for i = range p.Tags {
+		if i == p_tags_len {
+			tags_str += p.Tags[i].Name
+		} else {
+			tags_str += p.Tags[i].Name + "|"
+		}
+	}
+	vm.Tags = tags_str
+	// Reset i
+	i = 0
+	for i = range p.Categories {
+		vm.SelectedCategory = append(vm.SelectedCategory, p.Categories[i].Name)
+	}
+	return &vm, nil
+}
+
+func GetDiscussionTopics(discussion_id int) ([]viewmodel.TopicBriefViewModel, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
@@ -809,8 +868,32 @@ func FirstOrCreate[m Model](model *m) error {
 	err := db.FirstOrCreate(&model).Error
 	return err
 }
+func FirstOrCreateProductTagByName(name string) (*model.Product_Tag, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var t model.Product_Tag
+	err := GetFieldsByAnotherFieldValue(&t, []string{"id"}, "name", name)
+	if err != nil {
+		return nil, err
+	}
+	if t.ID != 0 {
+		err := db.Model(&t).Where("id = ?", t.ID).First(&t).Error
+		if err != nil {
+			return nil, err
+		}
+		return &t, err
+	} else {
+		t.Name = name
+		err = Add(&t)
+		if err != nil {
+			return nil, err
+		}
+		return &t, nil
+	}
+}
 func FirstOrCreateTopicTagByName(name string) (*model.Topic_Tag, error) {
-
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
@@ -823,10 +906,16 @@ func FirstOrCreateTopicTagByName(name string) (*model.Topic_Tag, error) {
 	// Topic tag is exists
 	if t.ID != 0 {
 		err := db.Model(&t).Where("id = ?", t.ID).First(&t).Error
+		if err != nil {
+			return nil, err
+		}
 		return &t, err
 	} else {
 		t.Name = name
-		err := Add(&t)
+		err = Add(&t)
+		if err != nil {
+			return nil, err
+		}
 		return &t, err
 	}
 }

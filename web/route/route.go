@@ -17,6 +17,8 @@ import (
 
 func MakeRoute() *gin.Engine {
 	r := gin.Default()
+	// Max memory for multipart forms
+	r.MaxMultipartMemory = 12 << 20
 	// Html template function
 	template_func.AddFunctionsToRoute(r)
 	// Statics
@@ -58,6 +60,10 @@ func MakeRoute() *gin.Engine {
 		authorized.GET("/Profile", controller.Profile_GET)
 		authorized.GET("/Wishlist", controller.Wishlist)
 		authorized.GET("/Cart", controller.Cart)
+		authorized.GET("/AddProduct", controller.AddProduct_GET)
+		authorized.POST("/AddProduct", controller.AddProduct_POST)
+		authorized.GET("/EditProduct/:id", controller.EditProduct_GET)
+		authorized.POST("/EditProduct/", controller.EditProduct_POST)
 
 		// Forum
 		authorized.GET("/Discussions", controller.Discussions)

@@ -1,12 +1,15 @@
 package general
 
 import (
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
-	"strconv"
 	"strings"
 
 	html_to_markdown "github.com/JohannesKaufmann/html-to-markdown"
@@ -15,32 +18,103 @@ import (
 	"github.com/0ne-zero/f4h/constansts"
 	"github.com/0ne-zero/f4h/public_struct"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
-	"github.com/0ne-zero/f4h/utilities/functions/setting"
 	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
 
-func HashPassword(pass string) (string, error) {
-	// Generate bcrypt hash from password with 17 cost
-	// Get hash cost number from settings file
-	hash_cost_number_string, err := setting.ReadFieldInSettingData("HASH_COST_NUMBER")
-	if err != nil {
-		return "", err
-	}
-	// convert hash_cost_number_string to int
-	hash_cost_number, err := strconv.ParseInt(hash_cost_number_string, 10, 64)
-	if err != nil {
-		return "", err
-	}
-	hash_bytes, err := bcrypt.GenerateFromPassword([]byte(pass), int(hash_cost_number))
-	if err != nil {
-		return "", err
-	}
-	return string(hash_bytes), nil
+func GenerateRandomBytes(size int) ([]byte, error) {
+	bytes := make([]byte, size)
+	_, err := rand.Read(bytes)
+	return bytes, err
 }
-func ComparePassword(hashed_pass string, pass string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hashed_pass), []byte(pass))
+func GenerateRandomHex(length int) (string, error) {
+	var byte_size = length
+	if length%2 != 0 {
+		byte_size += 1
+	}
+	bytes, err := GenerateRandomBytes(byte_size / 2)
+	if err != nil {
+		return "", err
+	}
+	hex := hex.EncodeToString(bytes)
+	hex_len := len(hex)
+	for hex_len != length {
+		hex = hex[:hex_len-1]
+		hex_len = len(hex)
+	}
+	return hex, nil
+}
+func DeleteFiles(files_path ...string) error {
+	for i := range files_path {
+		_, err := os.Stat(files_path[i])
+		if os.IsNotExist(err) {
+			return fmt.Errorf("\"%s\" file isn't exists", files_path[i])
+		}
+	}
+	return nil
+}
+func GetListofFilesNameInDirectory(dir string) ([]string, error) {
+	if _, err := os.Stat(dir); err != nil {
+		if os.IsNotExist(err) {
+			return nil, err
+		}
+	}
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	var files_name = make([]string, len(files))
+	for i := range files {
+		files_name[i] = files[i].Name()
+	}
+	return files_name, nil
+}
+
+// category indicates that where folder should be look
+func IsImageExists(f_name, category string) (bool, error) {
+	switch category {
+	case "PRODUCT":
+		files_name, err := GetListofFilesNameInDirectory(filepath.Join(constansts.ImagesDirectory, "product"))
+		if err != nil {
+			return false, err
+		}
+		for i := range files_name {
+			if files_name[i] == f_name {
+				return true, nil
+			}
+		}
+		return false, nil
+	case "AVATAR":
+		files_name, err := GetListofFilesNameInDirectory(filepath.Join(constansts.ImagesDirectory, "avatar"))
+		if err != nil {
+			return false, err
+		}
+		for i := range files_name {
+			if files_name[i] == f_name {
+				return true, nil
+			}
+		}
+		return false, nil
+	default:
+		panic("You passed unknown category")
+	}
+}
+func Hashing(input string) (string, error) {
+	h := sha256.New()
+	h.Write([]byte(input))
+	r := h.Sum(nil)
+	return string(r), nil
+}
+func ComparePassword(hashed_pass string, pass string) (bool, error) {
+	pass_hash, err := Hashing(pass)
+	if err != nil {
+		return false, nil
+	}
+	if hashed_pass == pass_hash {
+		return true, nil
+	} else {
+		return false, nil
+	}
 }
 func IsFloatNumberRound(n float64) bool {
 	str_n := fmt.Sprint(n)

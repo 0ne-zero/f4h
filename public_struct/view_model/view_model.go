@@ -180,7 +180,15 @@ type ProductDetailsImagesViewData struct {
 	NumberOfSlides int
 	SubImages      []ImageViewData
 }
-
+type ProductViewModel struct {
+	Name             string
+	Description      string
+	Price            float64
+	Inventory        int
+	Tags             string
+	ImagesPath       []string
+	SelectedCategory []string
+}
 type ProductDetailsDetail struct {
 	ID        int
 	Name      string
