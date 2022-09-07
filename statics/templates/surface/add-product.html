@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--head-->
+<head>
+{{template "_head" .Title}}
+</head>
+<!--/head-->
+
+<body>
+	<!--header-->
+	<header id="header">
+	{{template "_header" .HeaderData}}
+	</header>
+	<!--/header-->
+
+	<section>
+		<br>
+	 	<br>
+		<div id="contact-page" class="container">
+            <div class="row">
+			    {{template "_add_product" .ProductInfo}}
+                {{template "_add_product_notes" .NotesData}}
+            </div>
+
+		</div>
+	</section>
+
+	<!--Footer-->
+	<footer id="footer">
+		{{template "_footer"}}	
+	</footer>
+	<!--/Footer-->
+
+	<!--javascript-->
+	{{template "_js"}}
+	<!--/javascript-->
+</body>
+</html>

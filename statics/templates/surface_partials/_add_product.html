@@ -1,0 +1,71 @@
+{{define "_add_product"}}
+<div class="col-sm-8">
+	<div class="contact-form">
+		<h2 class="title text-center">Add Product</h2>
+		<div class="status alert alert-success" style="display: none"></div>
+    	<form action="/AddProduct" enctype="multipart/form-data" id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+            {{if .}}
+                <div class="form-group col-md-6">
+                    <input type="text" name="name" value="{{.Name}}" class="form-control" required="required" placeholder="Title">
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text" name="price" value="{{.Price}}" class="form-control" required="required" placeholder="Price">
+                </div>
+                <div class="form-group col-md-12">
+                    <input type="text" name="inventory" value="{{.Inventory}}" class="form-control" required="required" placeholder="Inventory">
+                </div>
+
+                <div class="form-group col-md-12">
+                    <textarea name="description" id="description" required class="form-control" rows="8" placeholder="Description">{{.Description}}</textarea>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <input type="text" name="tags" id="tags" value="{{.Tags}}" class="form-control" rows="8" placeholder="Tags (Split them by '|' character)">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label style="color:gray"> Select Product Images :</label>
+                    <input type="file" name="files[]" class="form-control" placeholder="Select Multiple Files" multiple>
+                </div>
+                
+                <!--<input type="checkbox" name="files" class="" placeholder="Select Multiple Files">-->
+
+                <div class="form-group col-md-12">
+                    <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
+                </div>
+
+            {{else}}
+                <div class="form-group col-md-6">
+                    <input type="text" name="name" class="form-control" required="required" placeholder="Title">
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text" name="price" class="form-control" required="required" placeholder="Price">
+                </div>
+                <div class="form-group col-md-12">
+                    <input type="text" name="inventory" class="form-control" required="required" placeholder="Inventory">
+                </div>
+
+                <div class="form-group col-md-12">
+                    <textarea name="description" id="description" required class="form-control" rows="8" placeholder="Description"></textarea>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <input type="text" name="tags" id="tags" class="form-control" rows="8" placeholder="Tags (Split them by '|' character)">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label style="color:gray"> Select Product Images :</label>
+                    <input type="file" name="files" class="form-control" placeholder="Select Multiple Files" multiple>
+                </div>
+                
+                <!--<input type="checkbox" name="files" class="" placeholder="Select Multiple Files">-->
+
+                <div class="form-group col-md-12">
+                    <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
+                </div>
+
+            {{end}}
+        </form>
+	</div>
+</div>
+{{end}}

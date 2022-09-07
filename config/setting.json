@@ -3,6 +3,6 @@
     "APP_NAME":"f4h",
     "LOG_FILE_PARENT_DIRECTORY":"/home/me/code/go/src/f4h/logdir",
     "DSN":"me:***REMOVED***@tcp(127.0.0.1:3306)/f4h?parseTime=true",
-    "HASH_COST_NUMBER":"8",
+    "IMAGESDIRECTORY":"./statics/",
     "CONTACT_EMAIL":"nothing@pro.com"
 }

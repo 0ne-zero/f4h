@@ -186,6 +186,7 @@
     </form>
     {{else if eq .Mode "Edit"}}
     <form id="postform" method="post" action="/EditTopic/{{.TopicID}}" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{.TopicID}}">
         <div class="panel" id="postingbox">
         <div class="inner">
             <h3> Edit a topic</h3>
