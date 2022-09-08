@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/microcosm-cc/bluemonday"
@@ -22,6 +23,7 @@ var UtilitiesDirectory string
 var MarkdownFilePath string
 var LogFilePath string
 var ImagesDirectory string
+var DefaultAvatarPath string
 
 // DSN
 var DSN string
@@ -41,6 +43,9 @@ var GetCallerInfoErrorCount int
 
 // Errors
 var SomethingBadHappenedError string
+
+// File name length
+var FileNameLength int
 
 // Is already loaded
 var loaded bool
@@ -68,7 +73,14 @@ func init() {
 		}
 		AppName = SettingData["APP_NAME"]
 		LogFilePath = filepath.Join(SettingData["LOG_FILE_PARENT_DIRECTORY"], SettingData["APP_NAME"], "log.txt")
-		ImagesDirectory = SettingData["ImagesDirectory"]
+		ImagesDirectory = SettingData["IMAGES_DIRECTORY"]
+		file_name_length_int, err := strconv.Atoi(SettingData["FILE_NAME_LENGTH"])
+		if err != nil {
+			fmt.Println("FILE_NAME_LENGTH field is non-int in setting file\n%s", err.Error())
+			os.Exit(1)
+		}
+		FileNameLength = file_name_length_int
+
 		// Initial XSS preventation
 		XSSPreventor = bluemonday.UGCPolicy()
 		// Set loaded to true, so next time it won't load again and will use them immediately
@@ -84,7 +96,7 @@ func readSettingFile(setting_path string) (map[string]string, error) {
 	var data map[string]string
 	err = json.Unmarshal(file_bytes, &data)
 	if err != nil {
-		return nil, errors.New("Error occurred during unmarshal setting file")
+		return nil, fmt.Errorf("error occurred during unmarshal setting file")
 	}
 	err = validateSettingData(data)
 	if err != nil {
@@ -98,8 +110,10 @@ func validateSettingData(data map[string]string) error {
 		"APP_NAME",
 		"LOG_FILE_PARENT_DIRECTORY",
 		"DSN",
+		"FILE_NAME_LENGTH",
 		"CONTACT_EMAIL",
-		"ImagesDirectory",
+		"IMAGES_DIRECTORY",
+		"DEFAULT_AVATAR_PATH",
 	}
 
 	var exists bool
@@ -107,10 +121,10 @@ func validateSettingData(data map[string]string) error {
 	for _, data_name := range expect_fields_name {
 		data_value, exists = data[data_name]
 		if !exists {
-			return errors.New(fmt.Sprintf("%s doesn't exists in setting file", data_name))
+			return fmt.Errorf("%s doesn't exists in setting file", data_name)
 		}
 		if data_value == "" {
-			return errors.New(fmt.Sprintf("%s is empty in setting file", data_name))
+			return fmt.Errorf("%s is empty in setting file", data_name)
 		}
 
 	}

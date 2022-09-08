@@ -21,6 +21,7 @@ type User struct {
 	Signature    string
 	AvatarPath   string
 	JoinedAt     *time.Time
+	IsAdmin      bool
 	// User has many Order
 	Orders []*Order `gorm:"foreignkey:UserID;references:ID"`
 	// User has many Cart

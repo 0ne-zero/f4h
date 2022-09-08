@@ -116,6 +116,9 @@ type TopicForEditViewModel struct {
 }
 
 // User Panel
+type UserPanel_Overview_EditAvatar struct {
+	AvatarPath string
+}
 type UserPanel_Overview_Front struct {
 	JoinedAt              *time.Time
 	LastLoginAt           *time.Time
@@ -148,9 +151,7 @@ type UserPanel_Profile_ManageAddress struct {
 	Description    string
 }
 type UserPanel_Profile_ManageWallet struct {
-	Name      string
-	Addr      string
-	IsDefault bool
+	WalletAddr string
 }
 type UserPanel_Profile_EditSignature struct {
 	Signature string
