@@ -785,7 +785,7 @@ func ManageAddress_POST(c *gin.Context) {
 }
 func ManageWallet_POST(c *gin.Context) {
 	wallet_addr := strings.TrimSpace(c.PostForm("wallet_addr"))
-	validate_err := controller_helper.ManageWalletValidation(&wallet_addr)
+	validate_err := controller_helper.ManageWalletValidation(wallet_addr)
 	if validate_err != nil {
 		view_data, err := controller_helper.MakeProfileViewData(c, true)
 		if err != nil {

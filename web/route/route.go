@@ -88,8 +88,6 @@ func MakeRoute() *gin.Engine {
 		authorized.POST("/EditAvatar", controller.EditAvatar_POST)
 		authorized.POST("/ManageWallet", controller.ManageWallet_POST)
 		authorized.POST("/ManageAddress", controller.ManageAddress_POST)
-		authorized.POST("/EditAccount", controller.EditAccount_POST)
-		authorized.POST("/EditAccount", controller.EditAccount_POST)
 	}
 	constansts.Routes = r.Routes()
 
