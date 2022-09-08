@@ -10,7 +10,6 @@ import (
 
 	"github.com/0ne-zero/f4h/database"
 	"github.com/0ne-zero/f4h/database/model"
-	"github.com/0ne-zero/f4h/public_struct"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
 	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
@@ -237,15 +236,7 @@ func GetUserWishlistInViewmodel(user_id int) ([]viewmodel.ProductBasicViewModel,
 	}
 	return vm, nil
 }
-func isProductInCart(cart_id, p_id int) (bool, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var is bool
-	err := db.Model(&model.CartItem{}).Select("count(*) > 0").Where("cart_id = ? AND product_id = ?", cart_id, p_id).Scan(&is).Error
-	return is, err
-}
+
 func AddProductToCart(p_id, cart_id, quantity int) error {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -269,15 +260,6 @@ func AddProductToCart(p_id, cart_id, quantity int) error {
 	} else {
 		return Add(&model.CartItem{ProductID: uint(p_id), CartID: uint(cart_id), ProductQuantity: uint(quantity)})
 	}
-}
-func getMainImagePathOfProduct(p_id int) (string, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var main_image_path string
-	err := db.Model(&model.Product_Image{}).Where("product_id = ?", p_id).Select("path").First(&main_image_path).Error
-	return main_image_path, err
 }
 func GetUserProductsInViewmodel(user_id int) ([]viewmodel.ProductDetailsUserProduct, error) {
 	db := database.InitializeOrGetDB()
@@ -1019,29 +1001,6 @@ func GetProductBasicInfoByID(product_id int) (*viewmodel.ProductBasicViewModel, 
 	}
 	return &p_vm, nil
 }
-func getProductInfoForCartItem(product_id int) (*public_struct.ProductForCartItems, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var p model.Product
-	err := db.Model(&model.Product{}).Where("id = ?", product_id).Find(&p).Error
-	if err != nil {
-		return nil, err
-	}
-	// Getting main image of product
-	// Check product has any images
-	var main_image_path = ""
-	if p.Images != nil && len(p.Images) > 0 {
-		main_image_path = p.Images[0].Path
-	}
-	return &public_struct.ProductForCartItems{
-		ID:        int(p.ID),
-		Name:      p.Name,
-		Price:     p.Price,
-		ImagePath: main_image_path,
-	}, nil
-}
 func AddProductComment(user_id int, p_id int, text string) error {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -1090,24 +1049,6 @@ func GetCartIDByUserID(user_id int) (int, error) {
 	var cart_id int
 	err := db.Model(&model.Cart{}).Where("user_id = ? AND is_ordered = FALSE", user_id).Select("id").Scan(&cart_id).Error
 	return cart_id, err
-}
-func getWishlistIDByUserID(user_id int) (int, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var wish_id int
-	err := db.Model(&model.Wishlist{}).Where("user_id = ?", user_id).Select("id").Scan(&wish_id).Error
-	return wish_id, err
-}
-func isProductInUserWishlist(wishlist_id, p_id int) (bool, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var exists bool
-	err := db.Table("product_wishlist_m2m").Select("count(*) > 0").Where("wishlist_id = ? AND product_id = ?", wishlist_id, p_id).Scan(&exists).Error
-	return exists, err
 }
 func AddToWishlist(user_id, p_id int) error {
 	db := database.InitializeOrGetDB()
