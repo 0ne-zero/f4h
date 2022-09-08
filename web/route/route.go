@@ -82,6 +82,14 @@ func MakeRoute() *gin.Engine {
 		authorized.POST("/AddToCart", controller.AddToCart)
 		authorized.POST("/AddProductComment/", controller.AddProductComment)
 		authorized.GET("/AddToWishlist/:p_id", controller.AddToWishlist)
+		authorized.GET("/DeleteTopic/:id", controller.DeleteTopic)
+		authorized.GET("/DeleteProduct/:id", controller.DeleteProduct)
+		authorized.POST("/EditAccount", controller.EditAccount_POST)
+		authorized.POST("/EditAvatar", controller.EditAvatar_POST)
+		authorized.POST("/ManageWallet", controller.ManageWallet_POST)
+		authorized.POST("/ManageAddress", controller.ManageAddress_POST)
+		authorized.POST("/EditAccount", controller.EditAccount_POST)
+		authorized.POST("/EditAccount", controller.EditAccount_POST)
 	}
 	constansts.Routes = r.Routes()
 

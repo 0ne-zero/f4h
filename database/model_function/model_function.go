@@ -27,6 +27,13 @@ func Add[m Model](model *m) error {
 	}
 	return db.Create(model).Error
 }
+func Delete[m Model](model *m, id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	return db.Unscoped().Delete(model, id).Error
+}
 
 // Input:
 // consider_model = model with its id
@@ -121,8 +128,20 @@ func GetUsernameByUserID(user_id int) (string, error) {
 	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("username").Scan(&username).Error
 	return username, err
 }
-func GetFieldsByAnotherFieldValue[m Model](model *m, out_fields_name []string, in_field_name string, in_field_value string) error {
 
+func GetUserAvatarPath(user_id int) (string, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var avatar_path string
+	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("avatar_path").Scan(&avatar_path).Error
+	if err != nil {
+		return "", err
+	}
+	return avatar_path, err
+}
+func GetFieldsByAnotherFieldValue[m Model](model *m, out_fields_name []string, in_field_name string, in_field_value string) error {
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
@@ -139,6 +158,7 @@ func GetProductDetailInViewData(p_id int) (*viewmodel.ProductDetailsDetail, erro
 	err := db.Model(&model.Product{}).Where("id = ?", p_id).Select("id", "name", "inventory", "price").Scan(&vm).Error
 	return &vm, err
 }
+
 func GetProductImagesPath(p_id int) ([]string, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -999,98 +1019,6 @@ func GetProductBasicInfoByID(product_id int) (*viewmodel.ProductBasicViewModel, 
 	}
 	return &p_vm, nil
 }
-
-// Overview tab
-func GetUserDataForUserPanel_Overview_FrontPage(user_id int) (*viewmodel.UserPanel_Overview_Front, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var joined_at time.Time
-	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("joined_at").Scan(&joined_at).Error
-	if err != nil {
-		return nil, err
-	}
-
-	activity, err := getUserActivity(user_id)
-	if err != nil {
-		return nil, err
-	}
-	total_posts, err := getUserPostCount(user_id)
-	if err != nil {
-		return nil, err
-	}
-	total_products, err := getUserProductsCount(user_id)
-	if err != nil {
-		return nil, err
-	}
-	var total_polls int
-	total_polls, err = getUserPollsCount(user_id)
-	if err != nil {
-		return nil, err
-	}
-
-	return &viewmodel.UserPanel_Overview_Front{
-		JoinedAt:              &joined_at,
-		LastLoginAt:           activity.LastLoginAt,
-		LastPasswordChangedAt: activity.LastChangePasswordAt,
-		LastBuyAt:             activity.LastBuyAt,
-		TotalPosts:            total_posts,
-		TotalProducts:         total_products,
-		TotalPolls:            total_polls,
-	}, nil
-}
-func GetUserDataForUserPanel_Overview_Orders(user_id int) ([]viewmodel.UserPanel_Overview_LastBuy, error) {
-	orders, err := getUserOrders(user_id)
-	if err != nil {
-		return nil, err
-	}
-	var last_buy_vm []viewmodel.UserPanel_Overview_LastBuy
-	for order_i := range orders {
-		var d_vm viewmodel.UserPanel_Overview_LastBuy
-		d_vm.Time = &orders[order_i].CreatedAt
-		d_vm.TotalPrice = (orders[order_i].Cart.TotalPrice)
-		order_status, err := GetOrderStatusByOrderID(int(orders[order_i].ID))
-		if err != nil {
-			return nil, err
-		}
-		d_vm.OrderStatus = order_status
-		d_vm.OrderID = int(orders[order_i].ID)
-		last_buy_vm = append(last_buy_vm, d_vm)
-	}
-	return last_buy_vm, nil
-}
-func GetUserDataForUserPanel_Overview_Logins(user_id int) ([]viewmodel.UserPanel_Overview_Login, error) {
-	db := database.InitializeOrGetDB()
-	if db == nil {
-		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
-	}
-	var activity_logins model.Activity
-	err := db.Model(&model.Activity{}).Where("user_id = ?", user_id).Select("logins_at").First(&activity_logins).Error
-	if err != nil {
-		return nil, err
-	}
-	// Check if there is more than one logintime in database (logins time seperated with "|")
-	if strings.Contains(activity_logins.LoginsAt, "|") {
-		// Seperate times and get a list of them in string
-		str_times := strings.Split(activity_logins.LoginsAt, "|")
-		vm_l := make([]viewmodel.UserPanel_Overview_Login, len(str_times))
-		for i := range str_times {
-			t, err := time.Parse(time.RFC3339, str_times[i])
-			if err != nil {
-				return nil, err
-			}
-			vm_l[i].Login_At = &t
-		}
-		return vm_l, nil
-	} else {
-		t, err := time.Parse(time.RFC3339, activity_logins.LoginsAt)
-		if err != nil {
-			return nil, err
-		}
-		return []viewmodel.UserPanel_Overview_Login{{Login_At: &t}}, nil
-	}
-}
 func getProductInfoForCartItem(product_id int) (*public_struct.ProductForCartItems, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -1205,7 +1133,6 @@ func AddToWishlist(user_id, p_id int) error {
 	err = db.Table("product_wishlist_m2m").Create(&p_w_data).Error
 	return err
 }
-
 func GetUserCart(user_id int) (*viewmodel.Cart, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -1242,13 +1169,108 @@ func GetUserCart(user_id int) (*viewmodel.Cart, error) {
 	return &cart_vm, err
 }
 
+// Overview tab
+func GetUserDataForUserPanel_Overview_FrontPage(user_id int) (*viewmodel.UserPanel_Overview_Front, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var joined_at time.Time
+	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("created_at").Scan(&joined_at).Error
+	if err != nil {
+		return nil, err
+	}
+
+	activity, err := getUserActivity(user_id)
+	if err != nil {
+		return nil, err
+	}
+	total_posts, err := getUserPostCount(user_id)
+	if err != nil {
+		return nil, err
+	}
+	total_products, err := getUserProductsCount(user_id)
+	if err != nil {
+		return nil, err
+	}
+	var total_polls int
+	total_polls, err = getUserPollsCount(user_id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &viewmodel.UserPanel_Overview_Front{
+		JoinedAt:              &joined_at,
+		LastLoginAt:           activity.LastLoginAt,
+		LastPasswordChangedAt: activity.LastChangePasswordAt,
+		LastBuyAt:             activity.LastBuyAt,
+		TotalPosts:            total_posts,
+		TotalProducts:         total_products,
+		TotalPolls:            total_polls,
+	}, nil
+}
+func GetUserDataForUserPanel_Overview_Orders(user_id int) ([]viewmodel.UserPanel_Overview_LastBuy, error) {
+	orders, err := getUserOrders(user_id)
+	if err != nil {
+		return nil, err
+	}
+	var last_buy_vm []viewmodel.UserPanel_Overview_LastBuy
+	for order_i := range orders {
+		var d_vm viewmodel.UserPanel_Overview_LastBuy
+		d_vm.Time = &orders[order_i].CreatedAt
+		d_vm.TotalPrice = (orders[order_i].Cart.TotalPrice)
+		order_status, err := GetOrderStatusByOrderID(int(orders[order_i].ID))
+		if err != nil {
+			return nil, err
+		}
+		d_vm.OrderStatus = order_status
+		d_vm.OrderID = int(orders[order_i].ID)
+		last_buy_vm = append(last_buy_vm, d_vm)
+	}
+	return last_buy_vm, nil
+}
+func GetUserDataForUserPanel_Overview_Logins(user_id int) ([]viewmodel.UserPanel_Overview_Login, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var activity_logins model.Activity
+	err := db.Model(&model.Activity{}).Where("user_id = ?", user_id).Select("logins_at").First(&activity_logins).Error
+	if err != nil {
+		return nil, err
+	}
+	// Check if there is more than one logintime in database (logins time seperated with "|")
+	if strings.Contains(activity_logins.LoginsAt, "|") {
+		// Seperate times and get a list of them in string
+		str_times := strings.Split(activity_logins.LoginsAt, "|")
+		vm_l := make([]viewmodel.UserPanel_Overview_Login, len(str_times))
+		for i := range str_times {
+			t, err := time.Parse(time.RFC3339, str_times[i])
+			if err != nil {
+				return nil, err
+			}
+			vm_l[i].Login_At = &t
+		}
+		return vm_l, nil
+	} else {
+		t, err := time.Parse(time.RFC3339, activity_logins.LoginsAt)
+		if err != nil {
+			return nil, err
+		}
+		return []viewmodel.UserPanel_Overview_Login{{Login_At: &t}}, nil
+	}
+}
+
 // Profile tab
 // Should be complete
-func GetUserDataForUserPanel_Profile_FrontPage(user_id int) {
-}
-func GetUserDataForUserPanel_Profile_EditAvatar(user_id int) {
-}
-func GetUserDataForUserPanel_Profile_ManageLogin(user_id int) {
+func GetUserDataForUserPanel_Profile_EditAvatar(user_id int) (*viewmodel.UserPanel_Overview_EditAvatar, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var a_path string
+	err := db.Model(&model.User{}).Where("id = ?", user_id).Select("avatar_path").Scan(&a_path).Error
+	return &viewmodel.UserPanel_Overview_EditAvatar{AvatarPath: a_path}, err
 }
 func GetUserDataForUserPanel_Profile_EditAccount(user_id int) (*viewmodel.UserPanel_Profile_EditAccount, error) {
 	db := database.InitializeOrGetDB()
@@ -1284,9 +1306,7 @@ func GetUserDataForUserPanel_Profile_ManageWallet(user_id int) ([]viewmodel.User
 	var wallets_vm = make([]viewmodel.UserPanel_Profile_ManageWallet, 0, len(wallets))
 	for i := range wallets {
 		wallets_vm = append(wallets_vm, viewmodel.UserPanel_Profile_ManageWallet{
-			Name:      wallets[i].Name,
-			Addr:      wallets[i].Addr,
-			IsDefault: wallets[i].IsDefault,
+			WalletAddr: wallets[i].Addr,
 		})
 	}
 	return wallets_vm, nil

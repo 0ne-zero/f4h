@@ -40,3 +40,4 @@
 -- increaase/decrease quantity doesn't works sometimes
 -- add selecting category of product in add product page
 -- use a proper hash algorithm for hashing
+-- complete IsXMRWalletAddrValid

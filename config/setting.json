@@ -3,6 +3,8 @@
     "APP_NAME":"f4h",
     "LOG_FILE_PARENT_DIRECTORY":"/home/me/code/go/src/f4h/logdir",
     "DSN":"me:***REMOVED***@tcp(127.0.0.1:3306)/f4h?parseTime=true",
-    "IMAGESDIRECTORY":"./statics/",
-    "CONTACT_EMAIL":"nothing@pro.com"
+    "FILE_NAME_LENGTH":"64",
+    "IMAGES_DIRECTORY":"./statics/",
+    "CONTACT_EMAIL":"nothing@pro.com",
+    "DEFAULT_AVATAR_PATH":"/statics/no-avatar.jpeg"
 }

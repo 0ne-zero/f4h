@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"net/http"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -208,7 +207,7 @@ func AddProduct_POST(c *gin.Context) {
 	p_tags := strings.TrimSpace(c.PostForm("tags"))
 
 	// Validate data
-	view_data := controller_helper.AddProductValidation(p_name, p_price, p_inventory, p_description, p_tags)
+	view_data := controller_helper.AddProductValidation(&p_name, &p_price, &p_inventory, &p_description, &p_tags)
 	if view_data != nil {
 		c.HTML(200, "add-product.html", view_data)
 		return
@@ -252,7 +251,7 @@ func AddProduct_POST(c *gin.Context) {
 		var err error
 		var file_name_exists bool = true
 		for file_name_exists {
-			file_name, err = general_func.GenerateRandomHex(64)
+			file_name, err = general_func.GenerateRandomHex(constansts.FileNameLength)
 			if err != nil {
 				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred generate random hex\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
@@ -323,7 +322,7 @@ func EditProduct_POST(c *gin.Context) {
 	p_tags := strings.TrimSpace(c.PostForm("tags"))
 
 	// Validate data
-	view_data := controller_helper.AddProductValidation(p_name, p_price, p_inventory, p_description, p_tags)
+	view_data := controller_helper.AddProductValidation(&p_name, &p_price, &p_inventory, &p_description, &p_tags)
 	if view_data != nil {
 		c.HTML(200, "add-product.html", view_data)
 		return
@@ -380,7 +379,7 @@ func EditProduct_POST(c *gin.Context) {
 		var err error
 		var file_name_exists bool = true
 		for file_name_exists {
-			file_name, err = general_func.GenerateRandomHex(64)
+			file_name, err = general_func.GenerateRandomHex(constansts.FileNameLength)
 			if err != nil {
 				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred generate random hex\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
@@ -583,6 +582,27 @@ func ProductDetails(c *gin.Context) {
 	view_data["Categories"] = categories
 	c.HTML(http.StatusOK, "product-details.html", view_data)
 }
+func DeleteProduct(c *gin.Context) {
+	p_id := strings.TrimSpace(c.Param("id"))
+	if p_id == "" {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered product id is empty", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	p_id_int, err := strconv.Atoi(p_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during convert str product id to int\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	err = model_function.Delete(&model.Product{}, p_id_int)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during delete product\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(200, "/")
+}
 func AddToCart(c *gin.Context) {
 	user_id := sessions.Default(c).Get("UserID").(int)
 	// Get product id
@@ -680,125 +700,149 @@ func AddProductComment(c *gin.Context) {
 
 // Incomplete
 func Profile_GET(c *gin.Context) {
-	// Available tabs and their modes
-	tabs_modes := map[string][]string{
-		"overview": {"front_page", "logins", "orders"},
-		"profile":  {"edit_account", "edit_signature", "edit_avatar", "manage_login", "manage_address", "manage_wallets"},
-		"products": {"front_page"},
-		"payments": {"front_page"},
-		"topics":   {"front_page"},
-		"polls":    {"front_page"},
-	}
-	// Get user id
-	user_id := sessions.Default(c).Get("UserID").(int)
-	// Sort tabs and modes
-	sorted_tabs := general_func.GetMapKeys(tabs_modes)
-	sort.Strings(sorted_tabs)
-
-	// Finally view data
-	view_data := gin.H{
-		"Title": fmt.Sprintf("%s Profile | %s", sessions.Default(c).Get("Username"), constansts.AppName),
-		"Tabs":  sorted_tabs,
-	}
-
-	// Check is user selected tab
-	if tab := c.Query("tab"); tab != "" {
-		// Check selected tab is available
-		if !general_func.ExistsStringInStringSlice(tab, general_func.GetMapKeys(tabs_modes)) {
-			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered unavailable tab", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
-			return
-		}
-		// Insert tab to information that will send to template
-		view_data["Tab"] = tab
-		// Check user selected tab mode
-		if mode := c.Query("mode"); mode != "" {
-			// Check entered mode available
-			if !general_func.ExistsStringInStringSlice(mode, tabs_modes[tab]) {
-				wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: "Entered unavailable mode", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-				controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
-				return
-			}
-			// Insert mode to information that will send to template
-			view_data["Mode"] = mode
-
-			// Get panel data
-			switch tab {
-			case "overview":
-				switch mode {
-				case "front_page":
-					// panel_data, err := model_function.GetUserDataForUserPanel_Overview_FrontPage(user_id)
-					// if err != nil {
-					// 	wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-					// 	controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
-					// 	return
-					// }
-					// view_data["PanelData"] = panel_data
-				case "logins":
-					//panel_data,err := model_function.GetUserDataForUserPanel_Overview_FrontPage()
-				case "orders":
-				}
-			case "profile":
-				switch mode {
-				case "edit_account":
-				case "edit_signature":
-				case "edit_avatar":
-				case "manage_login":
-				case "manage_address":
-				case "manage_wallets":
-				}
-			case "products":
-				switch mode {
-				case "front_page":
-				}
-			case "payments":
-				switch mode {
-				case "front_page":
-				}
-			case "topics":
-				switch mode {
-				case "front_page":
-				}
-			case "polls":
-				switch mode {
-				case "front_page":
-				}
-
-			}
-
-			c.HTML(200, "profile.html", view_data)
-			return
-		}
-		// Tab's mode isn't selected so select default mode (first element)
-		view_data["Mode"] = tabs_modes[tab][0]
-
-		// Get panel data
-		switch tab {
-		case "overview":
-		case "profile":
-		case "products":
-		case "payments":
-		case "topics":
-		case "polls":
-		}
-		c.HTML(200, "profile.html", view_data)
-		return
-	}
-
-	// Neither tab nor tab mode is selected, so select default tab and default tab mode, which that means overview tab and its first mode
-	view_data["Tab"] = "overview"
-	view_data["Mode"] = "front_page"
-	view_data["TabModes"] = tabs_modes["overview"]
-
-	// Get panel data
-	panel_data, err := model_function.GetUserDataForUserPanel_Overview_FrontPage(user_id)
+	view_data, err := controller_helper.MakeProfileViewData(c, false)
 	if err != nil {
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
 		return
 	}
-	view_data["PanelData"] = panel_data
+	if err_msg := strings.TrimSpace(c.Param("error")); err_msg != "" {
+		view_data["ErrorMsg"] = err_msg
+	}
 	c.HTML(200, "profile.html", view_data)
+}
+
+// Redirect errors
+func EditAccount_POST(c *gin.Context) {
+	email := strings.TrimSpace(c.PostForm("email"))
+	new_pass := strings.TrimSpace(c.PostForm("new_password"))
+	new_pass_confirm := strings.TrimSpace(c.PostForm("password_confirm"))
+	cur_pass := strings.TrimSpace(c.PostForm("cur_password"))
+	username := sessions.Default(c).Get("Username").(string)
+	original_pass_hash, err := model_function.GetUserPassHashByUsername(username)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	err = controller_helper.EditAccountValidation(&email, &new_pass, &new_pass_confirm, &cur_pass, &original_pass_hash)
+	if err != nil {
+		view_data, err := controller_helper.MakeProfileViewData(c, true)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		view_data["ErrorMsg"] = err.Error()
+		c.HTML(200, "profile.html", view_data)
+		return
+	}
+	// User authenticated (entered correct password) and all inputs are validated
+	user_id := sessions.Default(c).Get("UserID").(int)
+	new_pass_hash, err := general_func.Hashing(new_pass_confirm)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	updated_user := model.User{
+		BasicModel:   model.BasicModel{ID: uint(user_id)},
+		Email:        email,
+		PasswordHash: new_pass_hash,
+	}
+	// Update user
+	_, err = model_function.Update(&model.User{BasicModel: model.BasicModel{ID: uint(user_id)}}, &updated_user)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, "/")
+}
+func ManageAddress_POST(c *gin.Context) {
+	var addr viewmodel.UserPanel_Profile_ManageAddress
+	addr.Name = strings.TrimSpace(c.PostForm("name"))
+	addr.Country = strings.TrimSpace(c.PostForm("country"))
+	addr.Province = strings.TrimSpace(c.PostForm("province"))
+	addr.City = strings.TrimSpace(c.PostForm("city"))
+	addr.Street = strings.TrimSpace(c.PostForm("street"))
+	addr.BuildingNumber = strings.TrimSpace(c.PostForm("building_number"))
+	addr.PostalCode = strings.TrimSpace(c.PostForm("postal_code"))
+	addr.Description = strings.TrimSpace(c.PostForm("description"))
+	validate_err := controller_helper.ManageAddressValidation(&addr)
+	if validate_err != nil {
+		view_data, err := controller_helper.MakeProfileViewData(c, true)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: validate_err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		view_data["ErrorMsg"] = validate_err.Error()
+		c.HTML(200, "profile.html", view_data)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func ManageWallet_POST(c *gin.Context) {
+	wallet_addr := strings.TrimSpace(c.PostForm("wallet_addr"))
+	validate_err := controller_helper.ManageWalletValidation(&wallet_addr)
+	if validate_err != nil {
+		view_data, err := controller_helper.MakeProfileViewData(c, true)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: validate_err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		view_data["ErrorMsg"] = validate_err.Error()
+		c.HTML(200, "profile.html", view_data)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func EditAvatar_POST(c *gin.Context) {
+	file, err := c.FormFile("avatar_upload_file")
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during parse posted avatar file\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	// Save new avatar
+	var file_name_exists bool
+	var file_name string
+	for file_name_exists {
+		file_name, err = general_func.GenerateRandomHex(constansts.FileNameLength)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during generate random hex\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+		file_name_exists, err = general_func.IsImageExists(file_name, "AVATAR")
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during checking image exists\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+	}
+	file_path := filepath.Join(constansts.ImagesDirectory, "avatar", file_name, ".jpeg")
+	err = c.SaveUploadedFile(file, file_path)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during saving uploaded image\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	// Delete old avatar
+	old_avatar_path, err := model_function.GetUserAvatarPath(user_id)
+	// If avatar isn't default so we should delete it
+	if old_avatar_path != constansts.DefaultAvatarPath {
+		err = general_func.DeleteFiles(old_avatar_path)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during delete old avatar\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+			return
+		}
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
 }
 
 func Cart(c *gin.Context) {
@@ -1532,6 +1576,17 @@ func ShowTopic(c *gin.Context) {
 	view_data["Topic"] = topic
 	view_data["TopicComments"] = topic_comments
 	c.HTML(200, "view_topic.html", view_data)
+}
+func DeleteTopic(c *gin.Context) {
+	t_id, err := strconv.Atoi(strings.TrimSpace(c.Param("id")))
+	if err != nil {
+
+	}
+	err = model_function.Delete(&model.Topic{}, t_id)
+	if err != nil {
+
+	}
+	c.Redirect(http.StatusMovedPermanently, "/")
 }
 func Admin_Index(c *gin.Context) {
 

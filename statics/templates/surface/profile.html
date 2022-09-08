@@ -136,7 +136,7 @@
                                             <dt>Last login at:</dt> 
                                             <dd>{{.PanelData.LastLoginAt}}</dd>
                                             <dt>Last password changed at:</dt>
-                                            <dd>{{.PanelData.LastPasswordChanged}}</dd>
+                                            <dd>{{.PanelData.LastPasswordChangedAt}}</dd>
                                             
                                             <dt>Total posts:</dt> 
                                             <dd>
@@ -253,7 +253,7 @@
                             {{end}}
                         {{else if eq $tab "profile"}}
                             {{if eq $mode "edit_account"}}
-                                <form id="ucp" method="post" action="/Profile">
+                                <form method="post" action="/EditAccount">
                                     <div class="panel">
                                         <div class="inner">
                                         <fieldset>
@@ -266,7 +266,7 @@
                                                     </span>
                                                 </dt>
                                                 <dd>
-                                                    <input type="email" name="email" id="email" maxlength="100" value="9909unknown9909@gmail.com" class="inputbox" title="Email address" autocomplete="off">
+                                                    <input type="email" name="email" id="email" maxlength="100" value="{{.PanelData.Email}}" class="inputbox" title="Email address" autocomplete="off">
                                                 </dd>
                                             </dl>
                                         </fieldset>
@@ -324,12 +324,16 @@
                                         </div>
                                     </div>
                                     <fieldset class="submit-buttons">
+                                        {{if .ErrorMsg}}
+                                            <label style="color:red;float: left;">{{.ErrorMsg}}</label>
+                                        {{end}}
+                                        
                                         <input type="submit" name="submit" value="Submit" class="button1">
                                     </fieldset>
                                 </form>
                             {{else if eq $mode "edit_signature"}}
                             {{else if eq $mode "edit_avatar"}}
-                                <form method="post" action="/Profile/EditAvatar_POST" enctype="multipart/form-data">
+                                <form method="post" action="/Profile/EditAvatar" enctype="multipart/form-data">
                                     <h2>Edit avatar</h2>
                                     <div class="panel">
                                         <div class="inner">
@@ -367,14 +371,16 @@
                                             </div>
                                         </div>
                                         <fieldset class="submit-buttons">
-                                            <input href="/Profile/DeleteAvatar" type="button" value="delete_avatar" name="delete_avatar" class="button2">
+                                            {{if .ErrorMsg}}
+                                                <label style="color:red;float: left;">{{.ErrorMsg}}</label>
+                                            {{end}}                                           
                                             <input type="submit" name="submit" value="Submit" class="button1">
                                         </fieldset>
                                         </div>
                                     </div>
                                 </form>                  
                             {{else if eq $mode "manage_address"}}
-                                <form id="ucp" method="post" action="/Profile">
+                                <form id="ucp" method="post" action="/ManageAddress">
                                     <div class="panel">
                                         <div class="inner">
                                             <fieldset>
@@ -383,10 +389,14 @@
                                                         <label for="new_password">Name:
                                                         </label>
                                                         <br>
-                                                        <span>It will write on packet.</span>
+                                                        <span>It will be write on packet.</span>
                                                     </dt>
                                                     <dd>
-                                                        <input type="text" name="Name" value="" class="inputbox" title="Reciver Name" autocomplete="off">
+                                                        {{if .PanelData.Name}}
+                                                            <input type="text" name="Name" value="{{.PanelData.Name}}" class="inputbox" title="Reciver Name" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="Name" value="" class="inputbox" title="Reciver Name" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                                 <dl>
@@ -398,7 +408,11 @@
                                                     </dt>
 
                                                     <dd>
-                                                        <input type="text" name="country" value="" class="inputbox" title="Country name" autocomplete="off">
+                                                        {{if .PanelData.Country}}
+                                                            <input type="text" name="country" value="{{.PanelData.Country}}" class="inputbox" title="Country name" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="country" value="" class="inputbox" title="Country name" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                                 <dl>
@@ -410,7 +424,11 @@
                                                     </dt>
 
                                                     <dd>
-                                                        <input type="text" name="province" value="" class="inputbox" title="Reciver province" autocomplete="off">
+                                                        {{if .PanelData.Province}}
+                                                            <input type="text" name="province" value="{{.PanelData.Province}}" class="inputbox" title="Reciver province" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="province" value="" class="inputbox" title="Reciver province" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                                 <dl>
@@ -422,7 +440,11 @@
                                                     </dt>
 
                                                     <dd>
-                                                        <input type="text" name="city" value="" class="inputbox" title="Reciver city" autocomplete="off">
+                                                        {{if .PanelData.City}}
+                                                            <input type="text" name="city" value="{{.PanelData.City}}" class="inputbox" title="Reciver province" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="city" value="" class="inputbox" title="Reciver city" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                                 <dl>
@@ -434,7 +456,11 @@
                                                     </dt>
 
                                                     <dd>
-                                                        <input type="text" name="street" value="" class="inputbox" title="Reciver street" autocomplete="off">
+                                                        {{if .PanelData.Street}}
+                                                            <input type="text" name="street" value="{{.PanelData.Street}}" class="inputbox" title="Reciver street" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="street" value="" class="inputbox" title="Reciver street" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                                 <dl>
@@ -447,7 +473,11 @@
                                                     </dt>
 
                                                     <dd>
-                                                        <input type="text" name="building_number" value="" class="inputbox" title="Reciver building number" autocomplete="off">
+                                                        {{if .PanelData.BuildingNumber}}
+                                                            <input type="text" name="building_number" value="{{.PanelData.BuildingNumber}}" class="inputbox" title="Reciver building number" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="building_number" value="" class="inputbox" title="Reciver building number" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                                 <dl>
@@ -459,7 +489,11 @@
                                                     </dt>
 
                                                     <dd>
-                                                        <input type="text" name="postal_code" value="" class="inputbox" title="Reciver postal-code" autocomplete="off">
+                                                        {{if .PanelData.PostalCode}}
+                                                            <input type="text" name="postal_code" value="{{.PanelData.PostalCode}}" class="inputbox" title="Reciver postal-code" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="postal_code" value="" class="inputbox" title="Reciver postal-code" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                                 <dl>
@@ -471,19 +505,25 @@
                                                     </dt>
 
                                                     <dd>
-                                                        <input type="text" name="description" value="" class="inputbox" title="Description" autocomplete="off">
+                                                        {{if .PanelData.Description}}
+                                                            <input type="text" name="description" value="{{.PanelData.Description}}" class="inputbox" title="Description" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="description" value="" class="inputbox" title="Description" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                             </fieldset>
                                             <fieldset class="submit-buttons">
-                                                <input href="/Profile/DeleteAvatar/" type="button" value="delete_avatar" name="delete_avatar" class="button2">
+                                                {{if .ErrorMsg}}
+                                                    <label style="color:red;float: left;">{{.ErrorMsg}}</label>
+                                                {{end}}
                                                 <input type="submit" name="submit" value="Submit" class="button1">
                                             </fieldset>
                                         </div>
                                     </div>
                                 </form>
                             {{else if eq $mode "manage_wallet"}}
-                                <form method="post" action="/Profile">
+                                <form method="post" action="/ManageWallet">
                                     <div class="panel">
                                         <div class="inner">
                                             <fieldset>
@@ -495,12 +535,18 @@
                                                         <span>Money from products sold will be deposited at this address.</span>
                                                     </dt>
                                                     <dd>
-                                                        <input type="text" name="Name" value="" class="inputbox" title="Wallet address" autocomplete="off">
+                                                        {{if .PanelData.WalletAddr}}
+                                                            <input type="text" name="Name" value="{{.WalletAddr}}" class="inputbox" title="Wallet address" autocomplete="off">
+                                                        {{else}}
+                                                            <input type="text" name="Name" value="" class="inputbox" title="Wallet address" autocomplete="off">
+                                                        {{end}}
                                                     </dd>
                                                 </dl>
                                             </fieldset>
                                             <fieldset class="submit-buttons">
-                                                <input href="/Profile/SetWalletAddress" type="button" value="delete_avatar" name="delete_avatar" class="button2">
+                                                {{if .ErrorMsg}}
+                                                    <label style="color:red;float: left;">{{.ErrorMsg}}</label>
+                                                {{end}}
                                                 <input type="submit" name="submit" value="Submit" class="button1">
                                             </fieldset>
                                         </div>
