@@ -3843,3 +3843,18 @@ Msg= 'Not Found'
 Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
 Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------
+[2022-09-09T03:47:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T03:47:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T03:47:26Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
