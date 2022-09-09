@@ -1,4 +1,4 @@
-# Freedom For Humans
+# Online Marketplace
 > *Incomplete*
 
 ## Table of Contents
@@ -40,8 +40,8 @@ $ go build && sudo ./f4h
 - Check the source code for more detail
 
 ## Project Status
-- Project status: _in_progress_
-- Usability: ـUnusableـ
+- Project status: _In_progress_
+- Usability: _Unusable_
 ## Contact
 - Created by [Pouria Khakpour](https://github.com/0ne-zero) - feel free to contact me!
 - You can reach me by pouria.khakpour9909@gmail.com
