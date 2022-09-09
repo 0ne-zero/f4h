@@ -6,5 +6,5 @@
     "FILE_NAME_LENGTH":"64",
     "IMAGES_DIRECTORY":"./statics/",
     "CONTACT_EMAIL":"nothing@pro.com",
-    "DEFAULT_AVATAR_PATH":"/statics/no-avatar.jpeg"
+    "DEFAULT_AVATAR_PATH":"/statics/images/avatar/no-avatar.jpeg"
 }

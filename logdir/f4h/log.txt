@@ -3623,3 +3623,223 @@ Msg= 'Not Found'
 Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
 Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
 ----------------------------------------------------------------------
+[2022-09-09T00:25:27Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T00:25:27Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:01:23Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:09:47Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/images/product/kilder.jpg' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:12:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:13:52Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/images/product/kilder.jpg' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:14:54Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:14:56Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:14:57Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:14:57Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:14:58Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:14:58Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:15:20Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:15:21Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/js/jquery-1.10.2.min.map' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:15:22Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:15:22Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:15:47Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/statics/images/product/kilder.jpg' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:15:47Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:15:47Z]-[WARNING]-[f4h]:
+Msg= 'Entered category name doesn't exists in database'
+Fields= IP='127.0.0.1' | URL='/Products/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/controller/controllers.go:456 github.com/0ne-zero/f4h/web/controller.ProductList
+----------------------------------------------------------------------
+[2022-09-09T01:16:48Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product/kilder.jpg' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:17:03Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/js/jquery-1.10.2.min.map'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:51:28Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:51:28Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:56:47Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:56:47Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:57:58Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/Forum' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:57:58Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= URL='/css/font-awesome.min.css' | METHOD='GET' | IP='127.0.0.1'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T01:58:03Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/favicon.ico' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:07:30Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/Forum' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:07:31Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/css/font-awesome.min.css' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:07:33Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/ico/favicon.ico'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:07:35Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:07:35Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:07:51Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:07:51Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:08:09Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:08:15Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:11:14Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:11:31Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:11:50Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/product-details/rating.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:12:02Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= METHOD='GET' | IP='127.0.0.1' | URL='/statics/images/product-details/rating.png'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:12:11Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:19:29Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/statics/images/product-details/rating.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------
+[2022-09-09T02:19:29Z]-[WARNING]-[f4h]:
+Msg= 'Not Found'
+Fields= IP='127.0.0.1' | URL='/ProductDetails/images/ico/apple-touch-icon-144-precomposed.png' | METHOD='GET'
+Location= /home/me/code/go/src/f4h/web/middleware/middleware.go:50 github.com/0ne-zero/f4h/web/middleware.NotFound.func1
+----------------------------------------------------------------------

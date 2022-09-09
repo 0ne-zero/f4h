@@ -196,6 +196,7 @@ func GetProductDetailsImagesInViewData(p_id int) (*viewmodel.ProductDetailsImage
 	for i := range images_path {
 		if i == 0 {
 			vm.MainImage = images_path[0]
+			continue
 		}
 		vm.SubImages = append(vm.SubImages, viewmodel.ImageViewData{Path: images_path[i], Name: p_name})
 	}
@@ -388,9 +389,9 @@ func GetProductInProductBasicViewModel(limit int) ([]viewmodel.ProductBasicViewM
 	var products []model.Product
 	var err error
 	if limit > 0 {
-		err = db.Model(&model.Product{}).Limit(limit).Preload("Images").Select("id", "name", "price").Scan(&products).Error
+		err = db.Model(&model.Product{}).Limit(limit).Preload("Images").Select("id", "name", "price").Find(&products).Error
 	} else {
-		err = db.Model(&model.Product{}).Preload("Images").Select("id", "name", "price").Scan(&products).Error
+		err = db.Model(&model.Product{}).Preload("Images").Select("id", "name", "price").Find(&products).Error
 	}
 	if len(products) < 1 {
 		return []viewmodel.ProductBasicViewModel{}, nil

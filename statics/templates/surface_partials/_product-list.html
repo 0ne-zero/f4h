@@ -7,8 +7,8 @@
 				<div class="col-sm-4">
 					<div class="product-image-wrapper">
 						<div class="single-products">
-							<div class="productinfo text-center">
-								<img src="{{$product.ImagePath}}" alt="{{$product.Name}}" />
+							<div class="productinfo text-center" style="min-height:300px">
+								<img src="{{$product.ImagePath}}" alt="{{$product.Name}}" style="max-width:255px;max-height:165px;min-height:165px;max-width:255px"/>
 								<h2>${{$product.Price}}</h2>
 								<p>{{$product.Name}}</p>
 								<a href="/ProductDetails/{{$product.ID}}" class="btn btn-default" style="margin-bottom: 15px;"><i class="fa"></i>Product Details</a>
