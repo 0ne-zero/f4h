@@ -216,11 +216,11 @@ func getProductInfoForCartItem(product_id int) (*public_struct.ProductForCartIte
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var p model.Product
-	err := db.Model(&model.Product{}).Where("id = ?", product_id).Find(&p).Error
+	err := db.Model(&model.Product{}).Preload("Images").Where("id = ?", product_id).Find(&p).Error
 	if err != nil {
 		return nil, err
 	}
-	// Getting main image of product
+	// Get main image of product
 	// Check product has any images
 	var main_image_path = ""
 	if p.Images != nil && len(p.Images) > 0 {

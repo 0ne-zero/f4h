@@ -107,6 +107,7 @@ func MigrateModels(db *gorm.DB) error {
 		&model.Product_Image{},
 		&model.Product_Comment{},
 		&model.Order{},
+		&model.BadRequest{},
 		&model.CartItem{},
 		&model.OrderStatus{},
 		&model.Cart{},
@@ -125,134 +126,175 @@ func MigrateModels(db *gorm.DB) error {
 		&model.Request{},
 	)
 }
-func CreateEssentialData(db *gorm.DB) {
-	var (
-		user           []model.User
-		order_statuses []model.OrderStatus
-		categories     []model.Product_Category
-		roles          []model.Role
-		products       []model.Product
-	)
-	user = []model.User{
-		{Username: "Unknown", Email: "Unknown", PasswordHash: "Unknown", IsSeller: false},
-	}
-
-	order_statuses = []model.OrderStatus{
-		{Status: "Waiting for payment"},
-		{Status: "Paid out"},
-		{Status: "Waiting for send"},
-		{Status: "Sending"},
-		{Status: "Delivered"},
-	}
-
-	categories = []model.Product_Category{
-		{Name: "Art", Description: "Selling Arts", SubCategories: []model.Product_Category{{Name: "Music", UserID: 1, Description: "msuics"}, {Name: "Theater", Description: "Theater"}}},
-		{Name: "Drugs", Description: "Selling Drugs"},
-		{Name: "Cannabis", Description: "Selling Cannabis"},
-		{Name: "Dissociative", Description: "Selling Dissociative"},
-		{Name: "Ecstasy", Description: "Selling Ecstasy"},
-		{Name: "Opioid", Description: "Selling Opioids"},
-	}
-	products = []model.Product{
-		{Name: "xx", Price: 234, UserID: 1, Description: "ssdf", Inventory: 434324},
-		{Name: "xx11111", Price: 234, UserID: 1, Description: "ssdf", Inventory: 43},
-	}
-	products[1].Categories = append(products[1].Categories, &categories[0])
-	products[0].Categories = append(products[0].Categories, &categories[0])
-	products[0].Categories = append(products[0].Categories, &categories[2])
-	products[0].Categories = append(products[0].Categories, &categories[3])
-	roles = []model.Role{
-		{Name: "Member", Description: "Member users"},
-		{Name: "Maintainer", Description: "Maintainers users"},
-		{Name: "Admin", Description: "Administrators users"},
-	}
-	db.Create(&user)
-	db.Create(&order_statuses)
-	db.Create(&categories)
-	db.Create(&products)
-	db.Create(&roles)
-}
-func CreateTestData(db *gorm.DB) {
+func CreateInitialData(db *gorm.DB) {
+	utc_now_time := time.Now().UTC()
 	// user
 	// role
-	db.Create(&model.User{Username: "admin", Email: "admin@gmail.com", PasswordHash: "x", IsSeller: false, Roles: []*model.Role{{Name: "xxxx", Description: "xssxx"}, {Name: "xxssssssssxxx", Description: ""}}})
+	db.Create(
+		&model.User{
+			Username: "admin", Email: "admin@gmail.com",
+			PasswordHash: "d83f900baedb967c3b4e5fb5411abb4ea1986b018804bfea9887345626e9a36efb711872a76fa212ab83e634f96bb7c711808bc8231db849777361eb7ae409db",
+			IsSeller:     false,
+			Roles:        []*model.Role{{Name: "admin", Description: "admin group"}},
+			Signature:    "The great admin",
+			AvatarPath:   "/statics/images/avatar/admin_avatar.jpeg",
+			JoinedAt:     &utc_now_time,
+			IsAdmin:      true})
 	// activity
-	utc_now_time := time.Now().UTC()
-	db.Create(&model.Activity{LastLoginAt: &utc_now_time, LastBuyAt: nil, LastChangePasswordAt: nil, UserID: 1})
+	db.Create(
+		&model.Activity{
+			LastLoginAt: &utc_now_time, LastBuyAt: nil, LastChangePasswordAt: nil, UserID: 1, LoginsAt: fmt.Sprintf("%s|", utc_now_time)})
 	// product
-	// inventory
-	// tag
-	// image path
-	db.Create(&model.Product{Name: "drug", Description: "x", Price: 114325, UserID: 1, Categories: []*model.Product_Category{{Name: "XXXX", Description: "xxxx"}, {Name: "XXxxxxXX", Description: "xxxxxxx"}}, Tags: []*model.Product_Tag{{Name: "sssssssssssss", Description: "ssssssssssss"}, {Name: "sssss", Description: "sssss"}}, Inventory: 21232223, Images: []*model.Product_Image{{Path: "xsfsdfsadfd"}}})
+	db.Create(
+		&model.Product{
+			Name: "Soviet Union Computer", Description: "An old computer made in soviet union", Price: 450, UserID: 1,
+			Categories: []*model.Product_Category{{Name: "Computer", Description: "Computers category", UserID: 1}},
+			Tags:       []*model.Product_Tag{{Name: "Pc", Description: "PC tags"}},
+			Inventory:  3})
+
+	db.Create(
+		&model.Product{
+			Name: "Klider Book", Description: "Klider book by Mahmoud Dolat Abadi", Price: 89, UserID: 1,
+			Categories: []*model.Product_Category{{Name: "Book", Description: "Books category", UserID: 1}},
+			Tags:       []*model.Product_Tag{{Name: "Book", Description: "Book"}},
+			Inventory:  74})
+
+	db.Create(
+		&model.Product{
+			Name: "Helicopter", Description: "I have a helicopter but, I don't know model of it", Price: 9320, UserID: 1,
+			Categories: []*model.Product_Category{{Name: "War", Description: "War category", UserID: 1}},
+			Tags:       []*model.Product_Tag{{Name: "War", Description: "War things"}},
+			Inventory:  1})
+
+	db.Create(
+		&model.Product{
+			Name: "Uniqe Hammer", Description: "An old uniqe hammer made in Korea", Price: 100020, UserID: 1,
+			Categories: []*model.Product_Category{{Name: "Hammer", Description: "", UserID: 1}},
+			Tags:       []*model.Product_Tag{{Name: "Hammer", Description: "Hammers category"}},
+			Inventory:  1})
+
+	db.Create(
+		&model.Product{
+			Name: "IBM Watson Super-Computer", Description: "Watson Super-Computer", Price: 100020, UserID: 1,
+			Categories: []*model.Product_Category{{BasicModel: model.BasicModel{ID: 1}}},
+			Tags:       []*model.Product_Tag{{BasicModel: model.BasicModel{ID: 1}}},
+			Inventory:  3})
+	db.Create(
+		&model.Product{
+			Name: "F-14 Aircraft", Description: "Now you can buy f-14 :)", Price: 100020, UserID: 1,
+			Categories: []*model.Product_Category{{BasicModel: model.BasicModel{ID: 3}}},
+			Tags:       []*model.Product_Tag{{BasicModel: model.BasicModel{ID: 3}}},
+			Inventory:  5})
+
+	db.Create(&model.Product_Image{ProductID: 1, Path: "/statics/images/product/soviet_union_pc.jpg"})
+	db.Create(&model.Product_Image{ProductID: 2, Path: "/statics/images/product/klider.jpg"})
+	db.Create(&model.Product_Image{ProductID: 3, Path: "/statics/images/product/helicopter.jpg"})
+	db.Create(&model.Product_Image{ProductID: 4, Path: "/statics/images/product/hammer.jpg"})
+	db.Create(&model.Product_Image{ProductID: 5, Path: "/statics/images/product/watson_sc.jpg"})
+	db.Create(&model.Product_Image{ProductID: 6, Path: "/statics/images/product/aircraft_f14.jpg"})
+
+	db.Create(&model.Product_Comment{
+		Text:      "This is a uniqe product",
+		UserID:    1,
+		ProductID: 1,
+	})
+	db.Create(&model.Product_Comment{
+		Text:      "It should be one of Stalin super computer :)",
+		UserID:    1,
+		ProductID: 1,
+	})
 	// address
-	db.Create(&model.Address{Name: "ssasdgss", Country: "ssss", City: "sdfasdfd", Street: "sasdgs", BuildingNumber: "sdfasdf", PostalCode: "sfaffas", Description: "sadfsdds", UserID: 1})
-	db.Create(&model.Address{Name: "ssgsgsasss", Country: "ssdfsdfxcxcvbdfshsdfgsadfsss", City: "sasdfasdfasdfasdfd", Street: "sasdfsdsafasfdsafaasdgs", BuildingNumber: "sadsfsafsadfasdf", PostalCode: "ssadfasdffaffas", Description: "sadfsssadsadfasffdds", UserID: 1})
+	db.Create(
+		&model.Address{
+			Name: "Joseph Stalin", Country: "Russia", City: "Stalingrad", Street: "Stalin",
+			BuildingNumber: "1-Stalin", PostalCode: "1", Description: "Don't look at the package!",
+			UserID: 1})
+
+	db.Create(
+		&model.Wishlist{
+			UserID: 1, Products: []*model.Product{{BasicModel: model.BasicModel{ID: 1}}}})
+
 	// wallet
-	db.Create(&model.WalletInfo{Name: "xxx", Addr: "xxx", IsDefault: true, UserID: 1})
-	db.Create(&model.WalletInfo{Name: "xxxx", Addr: "xxxx", IsDefault: false, UserID: 1, OrderID: 1})
-	db.Create(&model.WalletInfo{Name: "xxxx", Addr: "xxxx", IsDefault: true, UserID: 1, OrderID: 1})
+	db.Create(&model.WalletInfo{Name: "None", Addr: "A-valid-addr", IsDefault: true, UserID: 1})
 
 	// Discussion category
-	db.Create(&model.Discussion_Category{Name: "General", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", UserID: 1})
-	db.Create(&model.Discussion_Category{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", UserID: 1})
+	db.Create(
+		&model.Discussion_Category{
+			Name: "General", Description: "General things", UserID: 1})
+	db.Create(
+		&model.Discussion_Category{
+			Name: "Bitcoin", Description: "Bitcoin things", UserID: 1})
+	db.Create(
+		&model.Discussion_Category{
+			Name: "Art", Description: "Art things", UserID: 1})
 
-	db.Omit("Categories*").Create(&model.Discussion{Name: "Drug", Description: "drugs things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
-	db.Create(&model.Discussion{Name: "Art", Description: "Art things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
-	db.Create(&model.Discussion{Name: "Other", Description: "Other things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 2}}}})
+	// Discussion
+	db.Create(
+		&model.Discussion{
+			Name: "Mining discussion", Description: "Mining discussion", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 2}}}})
 
-	db.Create(&model.Forum{Name: "Medical", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 1, UserID: 1})
-	db.Create(&model.Forum{Name: "Bitcoin", Description: "Bitcoin Forum general discussion about the Bitcoin ecosystem that doesn't fit better elsewhere. The Bitcoin community, innovations, the general environment, etc. Discussion of specific Bitcoin-related services usually belongs in other sections.", DiscussionID: 2, UserID: 1})
+	db.Create(
+		&model.Discussion{
+			Name: "Buying discussion", Description: "Buying discussion", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 2}}}})
+
+	db.Create(
+		&model.Discussion{
+			Name: "Art discussions", Description: "Art discussions", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 3}}}})
+	db.Create(
+		&model.Discussion{
+			Name: "Other", Description: "Other things", UserID: 1, Categories: []*model.Discussion_Category{{BasicModel: model.BasicModel{ID: 1}}}})
 
 	// forum
-	db.Create(&model.Forum{Name: "blockchain", Description: "some description for blockchain", UserID: 1, DiscussionID: 1})
-	db.Create(&model.Forum{Name: "bitcoin", Description: "some description", UserID: 1, DiscussionID: 1})
-	db.Create(&model.Forum{Name: "sub", Description: "sub description", DiscussionID: 2, UserID: 1})
-	db.Create(&model.Forum{Name: "sub", Description: "sub description", DiscussionID: 3, UserID: 1})
-	db.Create(&model.Forum{Name: "sub", Description: "sub description", DiscussionID: 3, UserID: 1})
+	db.Create(
+		&model.Forum{
+			Name: "Mining in Russia", Description: "Mining in Russia forum", DiscussionID: 1, UserID: 1})
+	db.Create(
+		&model.Forum{
+			Name: "Mining in US", Description: "Mining in US forum", DiscussionID: 1, UserID: 1})
+	db.Create(
+		&model.Forum{
+			Name: "Buying in England", Description: "Buying in England forum", DiscussionID: 2, UserID: 1})
+	db.Create(
+		&model.Forum{
+			Name: "Buying in Finland", Description: "Buying in Finland forum", DiscussionID: 2, UserID: 1,
+		})
+	db.Create(
+		&model.Forum{
+			Name: "Music arts", Description: "Music arts forum", DiscussionID: 3, UserID: 1,
+		})
+	db.Create(
+		&model.Forum{
+			Name: "Something other", Description: "Other forum", DiscussionID: 4, UserID: 1,
+		})
 
 	// topics
-
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 1, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 1, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 2, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 2, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 2, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
-	db.Create(&model.Topic{Name: "topic", Description: "some description", ForumID: 3, UserID: 1})
+	db.Create(&model.Topic{Name: "Mining in Russia topic", Description: "How can i mine bitcoin in Russia?", ForumID: 1, UserID: 1})
+	db.Create(&model.Topic{Name: "Mining in US topic", Description: "How can i mine bitcoin in US?", ForumID: 2, UserID: 1})
+	db.Create(&model.Topic{Name: "Buying in England", Description: "How can i buy bitcoin in England", ForumID: 3, UserID: 1})
+	db.Create(&model.Topic{Name: "Buying in Finland", Description: "How can i buy bitcoin in Finland", ForumID: 4, UserID: 1})
+	db.Create(&model.Topic{Name: "Can AI make music", Description: "Is there any AI algorithm that can make musics", ForumID: 5, UserID: 1})
+	db.Create(&model.Topic{Name: "I want to ask some questions out of from your forums", Description: "Who am i?\nWho is you?\nAm i a robot?", ForumID: 6, UserID: 1})
 
 	// cart
-	db.Create(&model.Cart{TotalPrice: 2322, IsOrdered: true, UserID: 1})
-	db.Create(&model.Cart{TotalPrice: 232, IsOrdered: false, UserID: 1})
+	db.Create(
+		&model.Cart{
+			TotalPrice: 2322, IsOrdered: false, UserID: 1,
+			CartItems: []*model.CartItem{{ProductID: 1, ProductQuantity: 4}, {ProductID: 3, ProductQuantity: 1}, {ProductID: 4, ProductQuantity: 1}, {ProductID: 5, ProductQuantity: 1}, {ProductID: 6, ProductQuantity: 1}},
+		})
+
 	// order status
-	db.Create(&model.OrderStatus{Status: "xxxxxxxxxx"})
-	db.Create(&model.OrderStatus{Status: "xxxxxxxxxxx"})
-	db.Create(&model.OrderStatus{Status: "xxxxxxxxxxxx"})
+	db.Create(&model.OrderStatus{Status: "Processing"})
+	db.Create(&model.OrderStatus{Status: "Delivered"})
 	// order
-	db.Create(&model.Order{SenderWalletInfoID: 1, UserID: 1, OrderStatusID: 1, CartID: 1})
-	// order item
-	db.Create(&model.CartItem{ProductID: 1, CartID: 1, ProductQuantity: 2})
-	db.Create(&model.CartItem{ProductID: 1, CartID: 1, ProductQuantity: 2})
-	db.Create(&model.CartItem{ProductID: 1, CartID: 1, ProductQuantity: 2})
-	// poll
-	db.Create(&model.Poll{Name: "xxxx", Description: "xxxx", UserID: 1})
+	db.Create(&model.Order{SenderWalletInfoID: 1, UserID: 1, OrderStatusID: 2, CartID: 1})
 	// comment
-	db.Create(&model.Topic_Comment{Text: "xxxxxxxx", UserID: 1, TopicID: 1})
-	db.Create(&model.Topic_Comment{Text: "xxxxxxxx", UserID: 1, TopicID: 1})
-	db.Create(&model.Topic_Comment{Text: "xxxxxxxx", UserID: 1, TopicID: 1})
-	// vote
-	db.Create(&model.Topic_Comment_Vote{UserID: 1, Positive: 12121, Negative: 121, Topic_CommentID: 1})
-	db.Create(&model.Topic_Comment_Vote{UserID: 1, Positive: 12121, Negative: 121, Topic_CommentID: 2})
-	db.Create(&model.Topic_Comment_Vote{UserID: 1, Positive: 12121, Negative: 121, Topic_CommentID: 3})
-	db.Create(&model.Poll_Vote{UserID: 1, PollID: 1, Positive: 20, Negative: 75})
-	db.Create(&model.Topic_Vote{UserID: 1, TopicID: 1, Positive: 20523, Negative: 7523})
-	db.Create(&model.Topic_Vote{UserID: 1, TopicID: 2, Positive: 2120, Negative: 7545})
-	db.Create(&model.Topic_Vote{UserID: 1, TopicID: 3, Positive: 205342, Negative: 7534})
-	db.Create(&model.Product_Comment_Vote{UserID: 1, Product_CommentID: 1})
-	// unknown user
-	db.Create(&model.User{Username: "Unknown", Email: "ss", PasswordHash: "sda", IsSeller: false})
+	db.Create(&model.Topic_Comment{Text: "I can tell you, you can buy it very hard", UserID: 1, TopicID: 1})
+	db.Create(&model.Topic_Comment{Text: "Easy as drinking water", UserID: 1, TopicID: 3})
+	db.Create(&model.Topic_Comment{Text: "Easy as drinking water", UserID: 1, TopicID: 4})
+	db.Create(&model.Topic_Comment{Text: "Yes, There is some algorithms that can do that, But not as human", UserID: 1, TopicID: 5})
 }
+
+// Incomplete
 func AnonymizeUser(db *gorm.DB, user *model.User) {
 	var unknown_user_ID uint
 	db.Unscoped().Select("ID").Where("username = ?", "Unknown").First(&unknown_user_ID)
