@@ -74,7 +74,6 @@ func InitializeOrGetDB() *gorm.DB {
 	} else {
 		return getDB()
 	}
-
 }
 func connectDB(dsn string) (*gorm.DB, error) {
 	// Connect to database with gorm
