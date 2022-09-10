@@ -237,7 +237,6 @@ func GetUserWishlistInViewmodel(user_id int) ([]viewmodel.ProductBasicViewModel,
 	}
 	return vm, nil
 }
-
 func AddProductToCart(p_id, cart_id, quantity int) error {
 	db := database.InitializeOrGetDB()
 	if db == nil {
@@ -518,7 +517,6 @@ func GetCategoriesName() ([]string, error) {
 	err := db.Model(&model.Product_Category{}).Select("name").Scan(&s).Error
 	return s, err
 }
-
 func GetForumPostsCount(forum_id int) (int, error) {
 	var forum_posts_count int
 	forum_posts_count = getForumTopicsCount(forum_id)
@@ -530,7 +528,6 @@ func GetForumPostsCount(forum_id int) (int, error) {
 
 	return forum_posts_count, nil
 }
-
 func GetDiscussionForumsName(d *model.Discussion) ([]string, error) {
 
 	db := database.InitializeOrGetDB()
@@ -653,7 +650,7 @@ func GetProductInViewModel(p_id int) (*viewmodel.ProductViewModel, error) {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
 	}
 	var p model.Product
-	err := db.Model(&model.Product{}).Where("id = ?", p_id).Preload("Tags").Preload("Categories").Preload("Images").Scan(&p).Error
+	err := db.Model(&model.Product{}).Where("id = ?", p_id).Preload("Tags").Preload("Categories").Preload("Images").Find(&p).Error
 	if err != nil {
 		return nil, err
 	}
@@ -680,7 +677,9 @@ func GetProductInViewModel(p_id int) (*viewmodel.ProductViewModel, error) {
 			tags_str += p.Tags[i].Name + "|"
 		}
 	}
-	vm.Tags = tags_str
+	if tags_str != "" && tags_str != "|" {
+		vm.Tags = tags_str
+	}
 	// Reset i
 	i = 0
 	for i = range p.Categories {

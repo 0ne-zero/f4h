@@ -1,9 +1,19 @@
-{{define "_add_product"}}
+{{define "_add_edit_product"}}
 <div class="col-sm-8">
 	<div class="contact-form">
-		<h2 class="title text-center">Add Product</h2>
+        {{if eq .IsEdit false}}
+		    <h2 class="title text-center">Add Product</h2>
+        {{else}}
+        	<h2 class="title text-center">Edit {{.Name}} Product</h2>
+        {{end}}
 		<div class="status alert alert-success" style="display: none"></div>
-    	<form action="/AddProduct" enctype="multipart/form-data" id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+
+        {{if eq .IsEdit false}}
+    	    <form action="/AddProduct" enctype="multipart/form-data" id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+        {{else}}
+    	    <form action="/EditProduct" enctype="multipart/form-data" id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+                <input type="hidden" name="id" value="{{.ID}}">
+        {{end}}
             {{if .}}
                 <div class="form-group col-md-6">
                     <input type="text" name="name" value="{{.Name}}" class="form-control" required="required" placeholder="Title">

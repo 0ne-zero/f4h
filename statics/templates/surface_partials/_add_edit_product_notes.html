@@ -1,0 +1,22 @@
+{{define "_add_edit_product_notes"}}
+<div class="col-sm-4">
+	<div class="contact-info">
+		<h2 class="title text-center">IMPORTANT Notes</h2>
+		<address>
+			<p>Information should be correct</p>
+			<br>
+			<p>price is in dollor</p>
+			<br>
+			<p>Split tags with '|' character like: Art | Drug | Something</p>
+			<br>
+			<p>If you don't want to change images of product, leave product images field alone</p>
+			<br>
+			<p>First image file is the main image</p>
+			{{if .Error}}
+				<br>
+				<p style="color:red">{{.Error}}</p>
+			{{end}}
+		</address>
+	</div>
+</div>
+{{end}}

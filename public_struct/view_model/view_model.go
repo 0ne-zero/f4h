@@ -182,6 +182,7 @@ type ProductDetailsImagesViewData struct {
 	SubImages      []ImageViewData
 }
 type ProductViewModel struct {
+	ID               int
 	Name             string
 	Description      string
 	Price            float64
@@ -189,6 +190,10 @@ type ProductViewModel struct {
 	Tags             string
 	ImagesPath       []string
 	SelectedCategory []string
+}
+type Add_Edit_Product_Viewmodel struct {
+	ProductViewModel
+	IsEdit bool
 }
 type ProductDetailsDetail struct {
 	ID        int
