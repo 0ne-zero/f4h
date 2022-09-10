@@ -40,8 +40,8 @@ $ go build && sudo ./f4h
 - Check the source code for more detail
 
 ## Project Status
-- Project status: _In_progress_
-- Usability: _Unusable_
+- Project status: __In_progress__
+- Usability: __Unusable__
 ## Contact
 - Created by [Pouria Khakpour](https://github.com/0ne-zero) - feel free to contact me!
 - You can reach me by pouria.khakpour9909@gmail.com
