@@ -88,6 +88,14 @@ func MakeRoute() *gin.Engine {
 		authorized.POST("/EditAvatar", controller.EditAvatar_POST)
 		authorized.POST("/ManageWallet", controller.ManageWallet_POST)
 		authorized.POST("/ManageAddress", controller.ManageAddress_POST)
+		authorized.GET("/IncreaseProductCommentPositiveVote/:id", controller.IncreaseProductCommentPositiveVote)
+		authorized.GET("/DecreaseProductCommentPositiveVote/:id", controller.DecreaseProductCommentPositiveVote)
+		authorized.GET("/IncreaseProductCommentNegativeVote/:id", controller.IncreaseProductCommentPositiveVote)
+		authorized.GET("/DecreaseProductCommentNegativeVote/:id", controller.DecreaseProductCommentNegativeVote)
+		authorized.GET("/IncreaseTopicCommentPositiveVote/:id", controller.IncreaseTopicCommentPositiveVote)
+		authorized.GET("/DecreaseTopicCommentPositiveVote/:id", controller.DecreaseTopicCommentPositiveVote)
+		authorized.GET("/IncreaseTopicCommentNegativeVote/:id", controller.IncreaseTopicCommentNegativeVote)
+		authorized.GET("/DecreaseTopicCommentNegativeVote/:id", controller.DecreaseTopicCommentNegativeVote)
 	}
 	constansts.Routes = r.Routes()
 

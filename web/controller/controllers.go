@@ -712,6 +712,134 @@ func Profile_GET(c *gin.Context) {
 	}
 	c.HTML(200, "profile.html", view_data)
 }
+func IncreaseProductCommentPositiveVote(c *gin.Context) {
+	pc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.IncreaseProductCommentPositiveVote(user_id, pc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func DecreaseProductCommentPositiveVote(c *gin.Context) {
+	pc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.DecreaseProductCommentPositiveVote(user_id, pc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func IncreaseProductCommentNegativeVote(c *gin.Context) {
+	pc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.IncreaseProductCommentNegativeVote(user_id, pc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func DecreaseProductCommentNegativeVote(c *gin.Context) {
+	pc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.DeccreaseProductCommentNegativeVote(user_id, pc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func IncreaseTopicCommentPositiveVote(c *gin.Context) {
+	tc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.IncreaseTopicCommentPositiveVote(user_id, tc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func DecreaseTopicCommentPositiveVote(c *gin.Context) {
+	tc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.DecreaseTopicCommentPositiveVote(user_id, tc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func IncreaseTopicCommentNegativeVote(c *gin.Context) {
+	tc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.IncreaseTopicCommentNegativeVote(user_id, tc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
+func DecreaseTopicCommentNegativeVote(c *gin.Context) {
+	tc_id, err := controller_helper.GetIDFromURLParameters(c)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get id from url parameter\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	user_id := sessions.Default(c).Get("UserID").(int)
+	err = model_function.DecreaseTopicCommentNegativeVote(user_id, tc_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during increase product comment positive voute\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
+}
 
 // Redirect errors
 func EditAccount_POST(c *gin.Context) {
