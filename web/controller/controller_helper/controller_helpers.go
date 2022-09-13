@@ -433,6 +433,14 @@ func ErrorPage(c *gin.Context, user_msg string) {
 	view_data["Error"] = user_msg
 	c.HTML(http.StatusInternalServerError, "error.html", view_data)
 }
+func GetIDFromURLParameters(c *gin.Context) (int, error) {
+	id_str := c.Param("id")
+	if id_str == "" {
+		return 0, fmt.Errorf("there isn't id in parameters")
+	}
+	id_int, err := strconv.Atoi(id_str)
+	return id_int, err
+}
 func AddBadRequest(c *gin.Context) error {
 	var bad_request = model.BadRequest{
 		IP:     c.ClientIP(),

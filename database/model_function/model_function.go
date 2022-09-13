@@ -468,7 +468,6 @@ func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
 	return nil
 }
 func GetCategoriesWithRelationsInViewModel(ordering bool) ([]viewmodel.SidebarCategoryViewModel, error) {
-
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
@@ -506,6 +505,168 @@ func GetCategoriesWithRelationsInViewModel(ordering bool) ([]viewmodel.SidebarCa
 		result = append(result, view_cat)
 	}
 	return result, err
+}
+func IncreaseProductCommentPositiveVote(user_id, pc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToProductComment(user_id, pc_id)
+	if err != nil {
+		return err
+	} else if !is_voted {
+		var current_positive_vote int
+		err = db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Select("positive").Scan(&current_positive_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Update("positive", current_positive_vote+1).Error
+	}
+	return err
+}
+func DecreaseProductCommentPositiveVote(user_id, pc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToProductComment(user_id, pc_id)
+	if err != nil {
+		return err
+	}
+	if !is_voted {
+		var current_positive_vote int
+		err := db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Select("positive").Scan(&current_positive_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Update("positive", current_positive_vote-1).Error
+	}
+	return err
+}
+func IncreaseProductCommentNegativeVote(user_id, pc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToProductComment(user_id, pc_id)
+	if err != nil {
+		return err
+	} else if !is_voted {
+		var current_negative_vote int
+		err := db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Select("negative").Scan(&current_negative_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Update("negative", current_negative_vote+1).Error
+	}
+	return err
+}
+func DeccreaseProductCommentNegativeVote(user_id, pc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToProductComment(user_id, pc_id)
+	if err != nil {
+		return err
+	} else if !is_voted {
+		var current_negative_vote int
+		err := db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Select("negative").Scan(&current_negative_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Product_Comment_Vote{}).Where("product_comment_id = ?", pc_id).Update("negative", current_negative_vote-1).Error
+	}
+	return err
+}
+
+func IncreaseTopicCommentPositiveVote(user_id, tc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToTopicComment(user_id, tc_id)
+	if err != nil {
+		return err
+	} else if !is_voted {
+		var current_positive_vote int
+		err := db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?", tc_id).Select("positive").Scan(&current_positive_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?", tc_id).Update("positive", current_positive_vote+1).Error
+	}
+	return err
+}
+func DecreaseTopicCommentPositiveVote(user_id, tc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToTopicComment(user_id, tc_id)
+	if err != nil {
+		return err
+	} else if !is_voted {
+		var current_positive_vote int
+		err := db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?", tc_id).Select("positive").Scan(&current_positive_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?", tc_id).Update("positive", current_positive_vote-1).Error
+	}
+	return err
+}
+func IncreaseTopicCommentNegativeVote(user_id, tc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToTopicComment(user_id, tc_id)
+	if err != nil {
+		return err
+	} else if !is_voted {
+		var current_negative_vote int
+		err := db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?", tc_id).Select("negative").Scan(&current_negative_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?").Update("negative", current_negative_vote+1).Error
+	}
+	return err
+}
+func DecreaseTopicCommentNegativeVote(user_id, tc_id int) error {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	// Check user already voted
+	// Each user can vote one time
+	is_voted, err := isUserVotedToTopicComment(user_id, tc_id)
+	if err != nil {
+		return err
+	} else if !is_voted {
+		var current_negative_vote int
+		err := db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?", tc_id).Select("negative").Scan(&current_negative_vote).Error
+		if err != nil {
+			return err
+		}
+		return db.Model(&model.Topic_Comment_Vote{}).Where("topic_comment_id = ?").Update("negative", current_negative_vote-1).Error
+	}
+	return err
 }
 func GetCategoriesName() ([]string, error) {
 

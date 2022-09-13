@@ -173,6 +173,24 @@ func getUserOrders(user_id int) ([]model.Order, error) {
 	}
 	return orders, nil
 }
+func isUserVotedToProductComment(user_id, pc_id int) (bool, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var is_voted bool
+	err := db.Model(&model.Product_Comment_Vote{}).Select("count(*) > 0").Where("product_comment_id = ? AND user_id = ?", pc_id, user_id).Scan(&is_voted).Error
+	return is_voted, err
+}
+func isUserVotedToTopicComment(user_id, tc_id int) (bool, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var is_voted bool
+	err := db.Model(&model.Product_Comment_Vote{}).Select("count(*) > 0").Where("topic_comment_id = ? AND user_id = ?", tc_id, user_id).Scan(&is_voted).Error
+	return is_voted, err
+}
 func getUserProductsCount(user_id int) (int, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
