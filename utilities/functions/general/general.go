@@ -201,6 +201,17 @@ func GetCallerInfo(skip int) wrapper_logger.ErrorLocation {
 	}
 	return wrapper_logger.ErrorLocation{FilePath: path, Line: line, FuncName: runtime.FuncForPC(pc).Name()}
 }
+func FindLargestvalueInMap(m map[int]int) int {
+	var largest_key int
+	var current_largest_value int
+	for k, v := range m {
+		if v > current_largest_value {
+			current_largest_value = v
+			largest_key = k
+		}
+	}
+	return largest_key
+}
 
 // Case-insensitive strings.Contains
 func ContainsI(s string, sub string) bool {

@@ -13,6 +13,7 @@ import (
 	"github.com/0ne-zero/f4h/database/model_function"
 	viewmodel "github.com/0ne-zero/f4h/public_struct/view_model"
 	general_func "github.com/0ne-zero/f4h/utilities/functions/general"
+	"github.com/0ne-zero/f4h/utilities/wrapper_logger"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -21,8 +22,66 @@ func SetTitle(t string) string {
 	return constansts.AppName + fmt.Sprintf(" | %s", t)
 }
 
+func RenderHTML(code int, name string, view_data gin.H, context *gin.Context) {
+	var found bool
+	if _, found = view_data["IsLogged"]; !found {
+		_, username, is_logged, err := IsUserLogged(context)
+		if err != nil {
+			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get to know user is logged or isn't\n%s", err.Error()), Fields: ClientInfoInMap(context), ErrorLocation: general_func.GetCallerInfo(0)})
+			ErrorPage(context, constansts.SomethingBadHappenedError)
+			return
+		}
+		if is_logged {
+			view_data["HeaderData"] = gin.H{
+				"Username": username,
+				"IsLogged": true,
+			}
+		} else {
+			view_data["HeaderData"] = gin.H{"IsLogged": false}
+		}
+
+	}
+	if _, found = view_data["Title"]; !found {
+		// Set title from template name
+		template_name_words := strings.Split(strings.Replace(strings.Split(name, ".")[0], "_", "", -1), " ")
+		var title string
+		var counter int
+		for i := range template_name_words {
+			if counter == 0 {
+				title += strings.Title(template_name_words[i])
+				counter += 1
+			} else {
+				title += " " + strings.Title(template_name_words[i])
+			}
+		}
+		if title != "" {
+			view_data["Title"] = SetTitle(title)
+		}
+	}
+	context.HTML(code, name, view_data)
+}
 func IsXMRWalletAddrValid(addr *string) bool {
 	return false
+}
+
+// If user is logged returns user id and username, otherwise returns just error
+func IsUserLogged(c *gin.Context) (int, string, bool, error) {
+	var exists bool
+	user_id, exists := sessions.Default(c).Get("UserID").(int)
+	if !exists {
+		return 0, "", false, fmt.Errorf("user id not found in session")
+	}
+	user_name, exists := sessions.Default(c).Get("Username").(string)
+	if !exists {
+		return 0, "", false, fmt.Errorf("user name not found in session")
+	}
+	if user_id == 0 {
+		return 0, "", false, fmt.Errorf("user id is invalid (0)")
+	}
+	if user_name == "" {
+		return 0, "", false, fmt.Errorf("user name is invalid (\"\")")
+	}
+	return user_id, user_name, true, nil
 }
 func ManageWalletValidation(wallet_addr string) error {
 	if wallet_addr == "" {

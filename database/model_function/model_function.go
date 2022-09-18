@@ -379,8 +379,7 @@ func TooManyRequest(ip string, url string, method string) (bool, error) {
 	}
 	return false, nil
 }
-func GetProductInProductBasicViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error) {
-
+func GetProductsOrderByLatestInProductBasicViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {
 		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
@@ -388,7 +387,7 @@ func GetProductInProductBasicViewModel(limit int) ([]viewmodel.ProductBasicViewM
 	var products []model.Product
 	var err error
 	if limit > 0 {
-		err = db.Model(&model.Product{}).Limit(limit).Preload("Images").Select("id", "name", "price").Find(&products).Error
+		err = db.Model(&model.Product{}).Limit(limit).Preload("Images").Select("id", "name", "price").Order("created_at DESC").Find(&products).Error
 	} else {
 		err = db.Model(&model.Product{}).Preload("Images").Select("id", "name", "price").Find(&products).Error
 	}
@@ -405,6 +404,80 @@ func GetProductInProductBasicViewModel(limit int) ([]viewmodel.ProductBasicViewM
 		}
 	}
 	return vm, err
+}
+func GetProductsOrderByViewsInProductBasicViewModel(limit int) ([]viewmodel.ProductBasicViewModel, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var products []model.Product
+	var err error
+	if limit > 0 {
+		err = db.Model(&model.Product{}).Limit(limit).Preload("Images").Select("id", "name", "price").Order("views DESC").Find(&products).Error
+	} else {
+		err = db.Model(&model.Product{}).Preload("Images").Select("id", "name", "price").Order("views DESC").Find(&products).Error
+	}
+	if len(products) < 1 {
+		return []viewmodel.ProductBasicViewModel{}, nil
+	}
+	var vm = make([]viewmodel.ProductBasicViewModel, len(products))
+	for i := range products {
+		vm[i].ID = int(products[i].ID)
+		vm[i].Name = products[i].Name
+		vm[i].Price = products[i].Price
+		if products[i].Images != nil {
+			vm[i].ImagePath = products[i].Images[0].Path
+		}
+	}
+	return vm, err
+}
+func GetProductsOrderByBestsellersInProductBasicViewModel() ([]viewmodel.ProductBasicViewModel, error) {
+	db := database.InitializeOrGetDB()
+	if db == nil {
+		wrapper_logger.Fatal(&wrapper_logger.LogInfo{Message: "InitializeOrGetDB returns nil db", ErrorLocation: general_func.GetCallerInfo(1)})
+	}
+	var sold_products_id []int
+	err := db.Model(&model.CartItem{}).Select("product_id").Scan(&sold_products_id).Error
+	if err != nil {
+		return nil, err
+	}
+	ordered_product_id := orderBestSellerProductsID(sold_products_id)
+	// Get products order by sold numbers
+	var products []model.Product
+	err = db.Model(&model.Product{}).Preload("Images").Select("id", "name", "price").Order("views DESC").Where("id IN ?", ordered_product_id).Find(&products).Error
+	if err != nil {
+		return nil, err
+	}
+	// Get unsold products
+	var unsold_products []model.Product
+	err = db.Model(&model.Product{}).Preload("Images").Select("id", "name", "price").Order("views DESC").Where("id NOT IN ?", ordered_product_id).Find(&unsold_products).Error
+	// Fill view model
+	var vms []viewmodel.ProductBasicViewModel
+
+	for i := range products {
+		vm := viewmodel.ProductBasicViewModel{
+			ID:    int(products[i].ID),
+			Name:  products[i].Name,
+			Price: products[i].Price,
+		}
+		if products[i].Images != nil {
+			vm.ImagePath = products[i].Images[0].Path
+		}
+		vms = append(vms, vm)
+	}
+
+	for i := range unsold_products {
+		vm := viewmodel.ProductBasicViewModel{
+			ID:    int(unsold_products[i].ID),
+			Name:  unsold_products[i].Name,
+			Price: unsold_products[i].Price,
+		}
+		if unsold_products[i].Images != nil {
+			vm.ImagePath = unsold_products[i].Images[0].Path
+		}
+		vms = append(vms, vm)
+	}
+	return vms, err
 }
 func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmodel.ProductBasicViewModel, error) {
 	db := database.InitializeOrGetDB()
@@ -433,7 +506,7 @@ func GetProductByCategoryInViewModel(category_name string, limit int) ([]viewmod
 	}
 	return vm, nil
 }
-func GetCategoryByOrderingProductsCount(c *[]model.Product_Category) error {
+func GetCategoriesByOrderingProductsCount(c *[]model.Product_Category) error {
 
 	db := database.InitializeOrGetDB()
 	if db == nil {
