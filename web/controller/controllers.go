@@ -962,6 +962,11 @@ func EditAvatar_POST(c *gin.Context) {
 	user_id := sessions.Default(c).Get("UserID").(int)
 	// Delete old avatar
 	old_avatar_path, err := model_function.GetUserAvatarPath(user_id)
+	if err != nil {
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during get user avatar path\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
+		return
+	}
 	// If avatar isn't default so we should delete it
 	if old_avatar_path != constansts.DefaultAvatarPath {
 		err = general_func.DeleteFiles(old_avatar_path)
@@ -1709,11 +1714,15 @@ func ShowTopic(c *gin.Context) {
 func DeleteTopic(c *gin.Context) {
 	t_id, err := strconv.Atoi(strings.TrimSpace(c.Param("id")))
 	if err != nil {
-
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Entered Non-Int id\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, "Topic id entered in the url is invalid.")
+		return
 	}
 	err = model_function.Delete(&model.Topic{}, t_id)
 	if err != nil {
-
+		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: fmt.Sprintf("Error occurred during delete topic\n%s", err.Error()), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
+		controller_helper.ErrorPage(c, "Topic id entered in the url is invalid.")
+		return
 	}
 	c.Redirect(http.StatusMovedPermanently, "/")
 }
