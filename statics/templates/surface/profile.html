@@ -3,7 +3,7 @@
 <!--head-->
 <head>
 <link href="/statics/css/bootstrap.min.css" rel="stylesheet">
-{{template "_forum_head"}}
+{{template "_forum_head" .Title}}
 <link href="/statics/css/main.css" rel="stylesheet">
 <link rel="shortcut icon" href="/statics/images/ico/favicon.ico">
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
@@ -16,7 +16,7 @@
 <body>
 	<!--header-->
 	<header id="header">
-	    {{template "_header"}}
+	    {{template "_header" .HeaderData}}
 	</header>
 	<!--/header-->
 

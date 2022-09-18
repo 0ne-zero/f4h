@@ -23,7 +23,7 @@ func Login_GET(c *gin.Context) {
 	view_data := gin.H{
 		"Title": "Login/Signup",
 	}
-	c.HTML(http.StatusOK, "login.html", view_data)
+	controller_helper.RenderHTML(http.StatusOK, "login.html", view_data, c)
 }
 func Login_POST(c *gin.Context) {
 	// Get username & password from form
@@ -33,11 +33,11 @@ func Login_POST(c *gin.Context) {
 	if username == "" || password == "" {
 		// Log
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered empty username or password", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-		data := gin.H{
+		view_data := gin.H{
 			"Title":      "Login/Signup",
 			"LoginError": "Fill all field",
 		}
-		c.HTML(http.StatusUnprocessableEntity, "login.html", data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "login.html", view_data, c)
 		return
 	}
 	// Get user
@@ -45,11 +45,11 @@ func Login_POST(c *gin.Context) {
 	err := model_function.GetFieldsByAnotherFieldValue(&user_fields, []string{"password_hash"}, "username", username)
 	if err != nil {
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered incorrect username", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-		data := gin.H{
+		view_data := gin.H{
 			"Title":      "Login/Signup",
 			"LoginError": "Username or Password is incorrect.",
 		}
-		c.HTML(http.StatusUnprocessableEntity, "login.html", data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "login.html", view_data, c)
 		return
 	}
 	// Compare user password with entered password
@@ -61,12 +61,12 @@ func Login_POST(c *gin.Context) {
 	}
 	if !status {
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered Incorrect password", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
-		data := gin.H{
+		view_data := gin.H{
 			"Title": "Login/Signup",
 
 			"LoginError": "Username or Password is incorrect.",
 		}
-		c.HTML(http.StatusOK, "login.html", data)
+		controller_helper.RenderHTML(http.StatusOK, "login.html", view_data, c)
 		return
 	}
 
@@ -108,7 +108,7 @@ func Register_POST(c *gin.Context) {
 
 		view_data := gin.H{}
 		view_data["RegisterError"] = "Fill all field"
-		c.HTML(http.StatusUnprocessableEntity, "login.html", view_data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "login.html", view_data, c)
 		return
 	}
 	exists, err := model_function.IsUserExistsByUsername(username)
@@ -118,7 +118,7 @@ func Register_POST(c *gin.Context) {
 
 		view_data := gin.H{}
 		view_data["RegisterError"] = "Unknown error"
-		c.HTML(http.StatusUnprocessableEntity, "login.html", view_data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "login.html", view_data, c)
 		return
 	}
 	if exists {
@@ -126,7 +126,7 @@ func Register_POST(c *gin.Context) {
 		wrapper_logger.Debug(&wrapper_logger.LogInfo{Message: "Entered unavailable username", Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 		view_data := gin.H{}
 		view_data["RegisterError"] = "This username is unavailable"
-		c.HTML(http.StatusUnprocessableEntity, "login.html", view_data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "login.html", view_data, c)
 		return
 	}
 	// So far user not exists, should register client
@@ -138,7 +138,7 @@ func Register_POST(c *gin.Context) {
 
 		view_data := gin.H{}
 		view_data["RegisterError"] = "Unknown error,try again."
-		c.HTML(http.StatusUnprocessableEntity, "login.html", view_data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "login.html", view_data, c)
 		return
 	}
 	// Add User
@@ -148,7 +148,7 @@ func Register_POST(c *gin.Context) {
 }
 func Index(c *gin.Context) {
 	// Get products
-	products, err := model_function.GetProductInProductBasicViewModel(15)
+	products, err := model_function.GetProductsOrderByLatestInProductBasicViewModel(15)
 	if err != nil {
 		// Log Error
 		wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
@@ -189,13 +189,13 @@ func Index(c *gin.Context) {
 	if products != nil {
 		view_data["Products"] = products
 	}
-	c.HTML(200, "index.html", view_data)
+	controller_helper.RenderHTML(200, "index.html", view_data, c)
 }
 func AddProduct_GET(c *gin.Context) {
 	view_data := gin.H{
 		"Title": controller_helper.SetTitle("Add Product"),
 	}
-	c.HTML(200, "add_edit_product.html", view_data)
+	controller_helper.RenderHTML(200, "add_edit_product.html", view_data, c)
 }
 
 // Incomplete (get selected categories)
@@ -209,7 +209,7 @@ func AddProduct_POST(c *gin.Context) {
 	// Validate data
 	view_data := controller_helper.AddProductValidation(&p_name, &p_price, &p_inventory, &p_description, &p_tags)
 	if view_data != nil {
-		c.HTML(200, "add_edit_product.html", view_data)
+		controller_helper.RenderHTML(200, "add_edit_product.html", view_data, c)
 		return
 	}
 	user_id := sessions.Default(c).Get("UserID").(int)
@@ -314,7 +314,7 @@ func EditProduct_GET(c *gin.Context) {
 		"Title":       controller_helper.SetTitle(fmt.Sprintf("Edit %s Product", p.Name)),
 		"ProductInfo": viewmodel.Add_Edit_Product_Viewmodel{IsEdit: true, ProductViewModel: *p},
 	}
-	c.HTML(200, "add_edit_product.html", view_data)
+	controller_helper.RenderHTML(200, "add_edit_product.html", view_data, c)
 }
 
 // Incomplete (get selected categories)
@@ -329,7 +329,7 @@ func EditProduct_POST(c *gin.Context) {
 	// Validate data
 	view_data := controller_helper.AddProductValidation(&p_name, &p_price, &p_inventory, &p_description, &p_tags)
 	if view_data != nil {
-		c.HTML(200, "add_edit_product.html", view_data)
+		controller_helper.RenderHTML(200, "add_edit_product.html", view_data, c)
 		return
 	}
 	if p_id == "" {
@@ -481,7 +481,7 @@ func ProductList(c *gin.Context) {
 		if products != nil {
 			view_data["Products"] = products
 		}
-		c.HTML(http.StatusOK, "product-list.html", view_data)
+		controller_helper.RenderHTML(http.StatusOK, "product-list.html", view_data, c)
 	} else {
 		// Unspecified category
 		var products []model.Product
@@ -492,7 +492,7 @@ func ProductList(c *gin.Context) {
 			return
 		}
 		var categories []model.Product_Category
-		err = model_function.GetCategoryByOrderingProductsCount(&categories)
+		err = model_function.GetCategoriesByOrderingProductsCount(&categories)
 		if err != nil {
 			wrapper_logger.Warning(&wrapper_logger.LogInfo{Message: err.Error(), Fields: controller_helper.ClientInfoInMap(c), ErrorLocation: general_func.GetCallerInfo(0)})
 			controller_helper.ErrorPage(c, constansts.SomethingBadHappenedError)
@@ -507,7 +507,7 @@ func ProductList(c *gin.Context) {
 		if products != nil {
 			view_data["Products"] = products
 		}
-		c.HTML(http.StatusOK, "product-list.html", view_data)
+		controller_helper.RenderHTML(http.StatusOK, "product-list.html", view_data, c)
 	}
 }
 func ProductDetails(c *gin.Context) {
@@ -581,7 +581,7 @@ func ProductDetails(c *gin.Context) {
 	view_data["ProductTabs"] = tabs_view_data
 	view_data["RecommendedProducts"] = recommended_viewdata
 	view_data["Categories"] = categories
-	c.HTML(http.StatusOK, "product-details.html", view_data)
+	controller_helper.RenderHTML(http.StatusOK, "product-details.html", view_data, c)
 }
 func DeleteProduct(c *gin.Context) {
 	p_id := strings.TrimSpace(c.Param("id"))
@@ -648,7 +648,7 @@ func Wishlist(c *gin.Context) {
 	view_data := gin.H{}
 	view_data["Title"] = "Wishlist"
 	view_data["Products"] = wishlist_products
-	c.HTML(200, "wishlist.html", view_data)
+	controller_helper.RenderHTML(200, "wishlist.html", view_data, c)
 }
 func AddToWishlist(c *gin.Context) {
 	user_id := sessions.Default(c).Get("UserID").(int)
@@ -710,7 +710,7 @@ func Profile_GET(c *gin.Context) {
 	if err_msg := strings.TrimSpace(c.Param("error")); err_msg != "" {
 		view_data["ErrorMsg"] = err_msg
 	}
-	c.HTML(200, "profile.html", view_data)
+	controller_helper.RenderHTML(200, "profile.html", view_data, c)
 }
 func IncreaseProductCommentPositiveVote(c *gin.Context) {
 	pc_id, err := controller_helper.GetIDFromURLParameters(c)
@@ -863,7 +863,7 @@ func EditAccount_POST(c *gin.Context) {
 			return
 		}
 		view_data["ErrorMsg"] = err.Error()
-		c.HTML(200, "profile.html", view_data)
+		controller_helper.RenderHTML(200, "profile.html", view_data, c)
 		return
 	}
 	// User authenticated (entered correct password) and all inputs are validated
@@ -907,7 +907,7 @@ func ManageAddress_POST(c *gin.Context) {
 			return
 		}
 		view_data["ErrorMsg"] = validate_err.Error()
-		c.HTML(200, "profile.html", view_data)
+		controller_helper.RenderHTML(200, "profile.html", view_data, c)
 		return
 	}
 	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
@@ -923,7 +923,7 @@ func ManageWallet_POST(c *gin.Context) {
 			return
 		}
 		view_data["ErrorMsg"] = validate_err.Error()
-		c.HTML(200, "profile.html", view_data)
+		controller_helper.RenderHTML(200, "profile.html", view_data, c)
 		return
 	}
 	c.Redirect(http.StatusMovedPermanently, c.Request.Referer())
@@ -987,7 +987,7 @@ func Cart(c *gin.Context) {
 	view_data["Title"] = "Cart"
 	view_data["CartItems"] = cart.CartItems
 	view_data["CartInfo"] = cart
-	c.HTML(200, "cart.html", view_data)
+	controller_helper.RenderHTML(200, "cart.html", view_data, c)
 }
 
 func DeleteCartItem(c *gin.Context) {
@@ -1096,7 +1096,7 @@ func Discussions(c *gin.Context) {
 	view_data := gin.H{}
 	view_data["Title"] = "Discussions"
 	view_data["DiscussionsCategories"] = discussion_categories_view_model
-	c.HTML(http.StatusOK, "discussions.html", view_data)
+	controller_helper.RenderHTML(http.StatusOK, "discussions.html", view_data, c)
 }
 
 func DiscussionForums(c *gin.Context) {
@@ -1133,7 +1133,7 @@ func DiscussionForums(c *gin.Context) {
 	}
 	view_data["Topics"] = _topics_list_template_view_model
 	view_data["Forums"] = discussion_forums
-	c.HTML(http.StatusOK, "discussion_forums.html", view_data)
+	controller_helper.RenderHTML(http.StatusOK, "discussion_forums.html", view_data, c)
 }
 
 func ForumTopics(c *gin.Context) {
@@ -1163,7 +1163,7 @@ func ForumTopics(c *gin.Context) {
 	}
 	view_data["Title"] = fmt.Sprintf("%s Topics", forum_name)
 	view_data["Topics"] = _topics_list_template_view_model
-	c.HTML(http.StatusBadRequest, "forum_topics.html", view_data)
+	controller_helper.RenderHTML(http.StatusBadRequest, "forum_topics.html", view_data, c)
 }
 
 func AddTopic_GET(c *gin.Context) {
@@ -1195,7 +1195,7 @@ func AddTopic_GET(c *gin.Context) {
 			"TopicTags":     s.Get("TopicTags"),
 		},
 	}
-	c.HTML(200, "edit_add_topic.html", view_data)
+	controller_helper.RenderHTML(200, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 }
 func AddTopic_POST(c *gin.Context) {
 	// Get forum name from the url
@@ -1231,7 +1231,7 @@ func AddTopic_POST(c *gin.Context) {
 				"Error":         "Topic Markdown field must be filled",
 			},
 		}
-		c.HTML(http.StatusUnprocessableEntity, "edit_add_topic.html", view_data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 		return
 	}
 	topic_markdown = strings.TrimSpace(topic_markdown)
@@ -1256,7 +1256,7 @@ func AddTopic_POST(c *gin.Context) {
 				"TopicTags":     c.Request.FormValue("tags"),
 			},
 		}
-		c.HTML(200, "edit_add_topic.html", view_data)
+		controller_helper.RenderHTML(200, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 		return
 		// User wants save her/his topic markdown (draft)
 	} else if is_save := c.Request.FormValue("save"); is_save != "" {
@@ -1280,7 +1280,7 @@ func AddTopic_POST(c *gin.Context) {
 				"TopicTags":     c.Request.FormValue("tags"),
 			},
 		}
-		c.HTML(200, "edit_add_topic.html", view_data)
+		controller_helper.RenderHTML(200, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 		return
 		// User wants submit her/his text
 	} else if is_submit := c.Request.FormValue("submit"); is_submit != "" {
@@ -1301,7 +1301,7 @@ func AddTopic_POST(c *gin.Context) {
 				},
 			}
 			// 442 = Unprocessable
-			c.HTML(442, "edit_add_topic.html", view_data)
+			controller_helper.RenderHTML(442, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 			return
 		}
 		// Fill topic and insert it in database
@@ -1328,7 +1328,7 @@ func AddTopic_POST(c *gin.Context) {
 					},
 				}
 				// 442 = Unprocessable
-				c.HTML(442, "edit_add_topic.html", view_data)
+				controller_helper.RenderHTML(442, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 				return
 			}
 			for i := range splited_tags {
@@ -1409,7 +1409,7 @@ func EditTopic_Get(c *gin.Context) {
 				"TopicTags":     s.Get("TopicTags"),
 			},
 		}
-		c.HTML(200, "edit_add_topic.html", view_data)
+		controller_helper.RenderHTML(200, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 		return
 	}
 
@@ -1444,7 +1444,7 @@ func EditTopic_Get(c *gin.Context) {
 			"TopicTags":     general_func.SplitEachTagsWithPipe(topic.Tags),
 		},
 	}
-	c.HTML(200, "edit_add_topic.html", view_data)
+	controller_helper.RenderHTML(200, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 }
 func EditTopic_POST(c *gin.Context) {
 	// Get topic id
@@ -1488,7 +1488,7 @@ func EditTopic_POST(c *gin.Context) {
 				"Error":         "Topic Markdown field must be filled",
 			},
 		}
-		c.HTML(http.StatusUnprocessableEntity, "edit_add_topic.html", view_data)
+		controller_helper.RenderHTML(http.StatusUnprocessableEntity, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 		return
 	}
 	topic_markdown = strings.TrimSpace(topic_markdown)
@@ -1521,7 +1521,7 @@ func EditTopic_POST(c *gin.Context) {
 				"TopicTags":     c.Request.FormValue("tags"),
 			},
 		}
-		c.HTML(200, "edit_add_topic.html", view_data)
+		controller_helper.RenderHTML(200, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 		return
 		// User wants save her/his topic markdown
 	} else if is_save := c.Request.FormValue("save"); is_save != "" {
@@ -1553,7 +1553,7 @@ func EditTopic_POST(c *gin.Context) {
 				"TopicTags":     c.Request.FormValue("tags"),
 			},
 		}
-		c.HTML(200, "edit_add_topic.html", view_data)
+		controller_helper.RenderHTML(200, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 		return
 		// User wants submit her/his text
 	} else if is_submit := c.Request.FormValue("submit"); is_submit != "" {
@@ -1583,7 +1583,7 @@ func EditTopic_POST(c *gin.Context) {
 				},
 			}
 			// 442 = Unprocessable
-			c.HTML(442, "edit_add_topic.html", view_data)
+			controller_helper.RenderHTML(442, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 			return
 		}
 		// Fill topic and insert it in database
@@ -1626,7 +1626,7 @@ func EditTopic_POST(c *gin.Context) {
 				}
 
 				// 442 = Unprocessable
-				c.HTML(442, "edit_add_topic.html", view_data)
+				controller_helper.RenderHTML(442, "edit_add_topicontroller_helper.RenderHTML", view_data, c)
 				return
 			}
 			for i := range splited_tags {
@@ -1704,7 +1704,7 @@ func ShowTopic(c *gin.Context) {
 	// Topic and topic comments
 	view_data["Topic"] = topic
 	view_data["TopicComments"] = topic_comments
-	c.HTML(200, "view_topic.html", view_data)
+	controller_helper.RenderHTML(200, "view_topicontroller_helper.RenderHTML", view_data, c)
 }
 func DeleteTopic(c *gin.Context) {
 	t_id, err := strconv.Atoi(strings.TrimSpace(c.Param("id")))
@@ -1719,7 +1719,7 @@ func DeleteTopic(c *gin.Context) {
 }
 func Admin_Index(c *gin.Context) {
 
-	c.HTML(200, "admin_index.html", nil)
+	controller_helper.RenderHTML(200, "admin_index.html", nil, c)
 }
 
 //endregion

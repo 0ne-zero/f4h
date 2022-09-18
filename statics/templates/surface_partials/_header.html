@@ -14,10 +14,12 @@
 							<li><a href="/Profile"><i class="fa fa-user"></i> Account</a></li>
 							<li><a href="/Wishlist"><i class="fa fa-star"></i> Wishlist</a></li>
 							<li><a href="/Cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-							{{if .Username}}
-								<li><a href="/Profile"><i class="fa fa-sign-out"></i>{{.Username}}</a></li>
-							{{else}}
-								<li><a href="/Login"><i class="fa fa-sign-in"></i> Login</a></li>
+							{{if eq .IsLogged true}}
+								{{if .Username}}
+									<li><a href="/Profile"><i class="fa fa-sign-out"></i>{{.Username}}</a></li>
+								{{else}}
+									<li><a href="/Login"><i class="fa fa-sign-in"></i> Login</a></li>
+								{{end}}
 							{{end}}
 						</ul>
 					</div>

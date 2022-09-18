@@ -182,6 +182,26 @@ func isUserVotedToProductComment(user_id, pc_id int) (bool, error) {
 	err := db.Model(&model.Product_Comment_Vote{}).Select("count(*) > 0").Where("product_comment_id = ? AND user_id = ?", pc_id, user_id).Scan(&is_voted).Error
 	return is_voted, err
 }
+func orderBestSellerProductsID(products_id []int) []int {
+	// key = product id
+	// value = how many times sold
+	var data = make(map[int]int, len(products_id))
+	for _, i := range products_id {
+		if _, ok := data[i]; ok {
+			data[i] = data[i] + 1
+		} else {
+			data[i] = 1
+		}
+	}
+	var ordered_data []int
+
+	for range data {
+		largest_key := general_func.FindLargestvalueInMap(data)
+		delete(data, largest_key)
+		ordered_data = append(ordered_data, largest_key)
+	}
+	return ordered_data
+}
 func isUserVotedToTopicComment(user_id, tc_id int) (bool, error) {
 	db := database.InitializeOrGetDB()
 	if db == nil {

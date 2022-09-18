@@ -116,6 +116,7 @@ type Product struct {
 	Description string  `gorm:"NOT NULL;"`
 	Price       float64 `gorm:"NOT NULL;"`
 	Inventory   uint
+	Views       uint
 	// Product has many ImagePath
 	Images []*Product_Image `gorm:"NOT NULL;"`
 
